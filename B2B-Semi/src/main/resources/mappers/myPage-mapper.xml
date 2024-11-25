@@ -3,14 +3,25 @@
 <mapper namespace="edu.kh.project.myPage.model.mapper.MyPageMapper">
 	
 	<!-- 회원정보 수정 -->
-	<update id="editInfo">
-		UPDATE "MEMBER" SET
-		MEMBER_ID = #{memberId}
+	<update id="editInfo" parameterType="Member">
+		UPDATE "TB_MEMBER" SET
 		MEMBER_NICKNAME = #{memberNickname},
 		MEMBER_TEL = #{memberTel},
+		MEMBER_BOOK_CATEGORY = #{memberBookCategory},
 		MEMBER_ADDRESS = #{memberAddress}
 		WHERE MEMBER_NO = #{memberNo}
 	</update>
+	
+	
+	
+	<!-- 프로필 이미지 변경 -->
+  	<update id="profileImageInfo">
+  		UPDATE "TB_MEMBER" SET
+  		PROFILE_IMG = #{profileImg}
+  		WHERE MEMBER_NO = #{memberNo}
+  	</update>
+	
+	
 	
 	
 	<!-- 찜한 도서 목록 조회 -->

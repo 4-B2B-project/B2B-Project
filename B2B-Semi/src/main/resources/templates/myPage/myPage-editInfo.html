@@ -9,7 +9,7 @@
   <!-- 공용 css/js 추가 -->
   <th:block th:replace="~{common/common}"></th:block>
 
-  <link rel="stylesheet" href="/B2B-Project/B2B-Semi/src/main/resources/static/css/myPage/myPage-info.css">
+  <link rel="stylesheet" href="/css/myPage/myPage-editInfo.css">
 
   <style>
     /* 기본 전체 설정 시작 */
@@ -73,126 +73,7 @@
     }
 
     /* 부제목 끝 */
-
-    /* 메인 컨텐츠 css*/
-    /* 프로필 컨테이너 */
-    .profile-container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    .profile-image-container {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .profile-image {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 10px;
-      border: 2px solid #ddd;
-    }
-
-    /* 폼 그룹 */
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      color: #333;
-      font-size: 0.9rem;
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 1rem;
-      background-color: white;
-    }
-
-    /* 폼 행 스타일 */
-    .myPage-row {
-      margin-bottom: 20px;
-    }
-
-    .myPage-row label {
-      display: block;
-      margin-bottom: 8px;
-      color: #333;
-      font-size: 0.9rem;
-    }
-
-    .myPage-row input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 1rem;
-      background-color: white;
-    }
-
-    .info-address input {
-      width: calc(100% - 120px);
-      margin-right: 10px;
-    }
-
-    .info-address button {
-      width: 100px;
-      padding: 12px;
-      background-color: #6366f1;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    .info-address button:hover {
-      background-color: #4f46e5;
-    }
-
-    /* 버튼 그룹 */
-    .button-group {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-      margin-top: 30px;
-    }
-
-    .myPage-submit {
-      padding: 12px 24px;
-      background-color: #6366f1;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    .myPage-submit:hover {
-      background-color: #4f46e5;
-    }
-
-    .myPage-submit-cancel {
-      padding: 12px 24px;
-      background-color: #9ca3af;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    .myPage-submit-cancel:hover {
-      background-color: #6b7280;
-    }
+    
   </style>
 
 
@@ -220,61 +101,71 @@
       <section class="genre-section">
         <div class="genre-header">
 
-          <div class="profile-container">
-            <div class="profile-image-container">
-              <img src="placeholder.jpg" alt="프로필 이미지" class="profile-image">
-            </div>
+          <div class="profile-container">           
 
-            <form action="info" method="POST" name="myPageFrm" id="updateInfo">
+            <form action="editInfo" method="POST" name="editInfoForm" id="editInfoForm" >
               
-              <div class="myPage-row">
-                <label>이름</label>
-                <input type="text" name="memberId" id="memberId">  <!-- th:value="${session.loginMember.memberId}" -->
-              </div>
+        
 
-              <div class="myPage-row">
+              <div class="input-group">
                 <label>닉네임</label>
 
-                <input type="text" name="memberNickname" maxlength="10" id="memberNickname">
+                <input type="text" name="memberNickname" maxlength="10" id="memberNickname" th:value="${session.loginMember.memberNickname}">
                 <!-- th:value="${session.loginMember.memberNickname}" -->
 
-                <input type="hidden" id="currentNickname"> <!-- th:value="${session.loginMember.memberNickname}" -->
+                <input type="hidden" id="currentNickname" th:value="${session.loginMember.memberNickname}"> <!-- th:value="${session.loginMember.memberNickname}" -->
               </div>
 
-              <div class="myPage-row">
+              <div class="input-group">
                 <label>전화번호</label>
-                <input type="text" name="memberTel" maxlength="11" id="memberTel">
+                <input type="text" name="memberTel" maxlength="11" id="memberTel" th:value="${session.loginMember.memberTel}">
                 <!-- th:value="${session.loginMember.memberTel}" -->
               </div>
 
-              <div class="myPage-row">
-                <label>이메일</label>
-                <input type="email" id="email"> <!-- th:value="${session.loginMember.memberEmail}"-->
+              
+                <!-- 선호 장르 -->
+              <div class="input-group">
+                <label for="memberBookCategory">선호 장르</label>
+                <select name="memberBookCategory" id="memberBookCategory" class="input-field" th:value="${session.loginMember.memberBookCategory}">
+                    <option value="">장르를 선택하세요</option>
+                    <option th:value="소설" th:selected="${session.loginMember.memberBookCategory == '소설'}">소설</option>
+                    <option value="시/에세이" th:selected="${session.loginMember.memberBookCategory == '시/에세이'}">시/에세이</option>
+                    <option value="경제/경영" th:selected="${session.loginMember.memberBookCategory == '경제/경영'}">경제/경영</option>
+                    <option value="자기계발" th:selected="${session.loginMember.memberBookCategory == '자기계발'}">자기계발</option>
+                    <option value="인문" th:selected="${session.loginMember.memberBookCategory == '인문'}">인문</option>
+                    <option value="역사/문화" th:selected="${session.loginMember.memberBookCategory == '역사/문화'}">역사/문화</option>
+                    <option value="사회/정치" th:selected="${session.loginMember.memberBookCategory == '사회/정치'}">사회/정치</option>
+                    <option value="과학/공학" th:selected="${session.loginMember.memberBookCategory == '과학/공학'}">과학/공학</option>
+                    <option value="예술/대중문화" th:selected="${session.loginMember.memberBookCategory == '예술/대중문화'}">예술/대중문화</option>
+                    <option value="아동" th:selected="${session.loginMember.memberBookCategory == '아동'}">아동</option>
+                    <option value="만화" th:selected="${session.loginMember.memberBookCategory == '만화'}">만화</option>
+                </select>
+              
               </div>
 
               <!-- 주소 -->
-              <div class="myPage-row info-title">
-                <span>주소</span>
-              </div>
+              <div class="input-group">
+                <label for="memberAddress">주소</label>
 
-              <div class="myPage-row info-address">
-                <input type="text" name="memberAddress" placeholder="우편번호" id="postcode" th:value="${postcode}">
+                <div class="input-group">
+                  <input type="text" name="memberAddress" placeholder="우편번호" id="postcode" th:value="${postcode}">
 
-                <button type="button" id="searchAddress">검색</button>
-              </div>
+                  <button type="button" id="searchAddress">검색</button>
+                </div>
 
-              <div class="myPage-row info-address">
-                <input type="text" name="memberAddress" placeholder="도로명/지번 주소" id="address" th:value="${address}">
-              </div>
+                <div class="input-group">
+                  <input type="text" name="memberAddress" placeholder="도로명/지번 주소" id="address" th:value="${address}">
+                </div>
 
-              <div class="myPage-row info-address">
-                <input type="text" name="memberAddress" placeholder="상세 주소" id="detailAddress"
-                  th:value="${detailAddress}">
+                <div class="input-group">
+                  <input type="text" name="memberAddress" placeholder="상세 주소" id="detailAddress"
+                    th:value="${detailAddress}">
+                </div>
               </div>
 
               <div class="button-group">
-                <button type="submit" class="myPage-submit">수정하기</button>
-                <button type="button" class="myPage-submit-cancel">수정 취소</button>
+                <button type="submit" class="submit-button">수정하기</button>
+                <button type="button" class="cancel-button">수정 취소</button>
               </div>
             </form>
           </div>
@@ -293,7 +184,8 @@
   <!-- 다음 주소 API 추가 -->
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <!-- js 추가 -->
-  <script src="/B2B-Project/B2B-Semi/src/main/resources/static/js/myPage/myPage.js"></script>
+  <script src="/js/myPage/myPage-editInfo.js"></script>
+  
 
 </body>
 

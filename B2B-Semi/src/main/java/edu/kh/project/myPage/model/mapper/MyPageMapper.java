@@ -37,7 +37,16 @@ public interface MyPageMapper {
 	 * @param memberNo
 	 * @return 
 	 */
-	List<Book> selectFavoriteBooks(); //int memberNo
+	List<Book> selectFavoriteBooks(int memberNo); //int memberNo
+
+
+	
+	
+	/** 프로필 이미지 변경
+	 * @param mem
+	 * @return
+	 */
+	int profileImageInfo(Member mem);
 
 	
 	

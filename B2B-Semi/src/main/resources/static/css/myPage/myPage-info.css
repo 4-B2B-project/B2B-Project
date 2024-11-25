@@ -1,5 +1,6 @@
+/* 메인 컨텐츠 css*/
 .profile-container {
-  max-width: 800px;
+  max-width: 600px;
   margin: 20px auto;
   background-color: white;
   border-radius: 8px;
@@ -43,8 +44,8 @@
   font-size: 0.875rem;
 }
 
-.update-Info-button {
-  background-color: #3b82f6;
+.editInfoBtn {
+  background-color: #4f46e5;
   color: white;
   border: none;
   padding: 6px 16px;
@@ -54,8 +55,8 @@
   transition: background-color 0.2s;
 }
 
-.update-Info-button:hover {
-  background-color: #2563eb;
+.editInfoBtn:hover {
+  background-color: #4338ca;
 }
 
 .stats-container {
@@ -78,4 +79,63 @@
 .stat-label {
   color: #666;
   font-size: 0.875rem;
+}
+
+/* ************* 프로필 화면 ************* */
+.profile-image-area{
+  width: 150px;
+  height: 150px;
+  border: 3px solid #ccc;
+  border-radius: 50%;
+
+  position: relative;
+
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+#profileImage{
+  height: 100%;
+}
+
+/* 삭제버튼 */
+form[name='myPageFrm']{position: relative;}
+
+#deleteImage{
+  position: absolute;
+  top: 0px;
+  right: 240px;
+  cursor: pointer;
+}
+
+/* 이미지 버튼 영역 */
+.profile-btn-area{
+  width: 230px;
+  margin: 20px 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-btn-area > *{
+  width: 110px;
+  height: 33px;
+  padding: 5px 10px;
+
+  border: 1px solid black;
+  background-color: white;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+}
+
+#imageInput{ display: none;}
+
+.profile-btn-area > button{
+  background-color: #455ba8;
+  color : white;
+  margin-left: 2px;
 }

@@ -1,0 +1,233 @@
+/* 프로필 컨테이너 */
+.profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.profile-image-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border: 2px solid #ddd;
+}
+
+/* 폼 그룹 */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: white;
+}
+
+/* 폼 행 스타일 */
+.myPage-row {
+  margin-bottom: 20px;
+}
+
+.myPage-row label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.myPage-row input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: white;
+}
+
+.info-address input {
+  width: calc(100% - 120px);
+  margin-right: 10px;
+}
+
+.info-address button {
+  width: 100px;
+  padding: 12px;
+  background-color: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.info-address button:hover {
+  background-color: #4f46e5;
+}
+
+/* 버튼 그룹 */
+.button-group {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 30px;
+}
+
+.myPage-submit {
+  padding: 12px 24px;
+  background-color: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.myPage-submit:hover {
+  background-color: #4f46e5;
+}
+
+.myPage-submit-cancel {
+  padding: 12px 24px;
+  background-color: #9ca3af;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.myPage-submit-cancel:hover {
+  background-color: #6b7280;
+}
+
+
+/* 수정시 input css */
+.input-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-group label {
+  display: block;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  position: relative;
+}
+
+.input-field,
+.signUp-input-area input[type="text"],
+#memberTel,
+#memberNickname,
+#postcode,
+#address,
+#detailAddress {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: #f9fafb;
+  margin-bottom: 0.5rem;
+}
+
+.input-field:focus,
+.signUp-input-area input[type="text"]:focus,
+#memberTel:focus,
+#memberNickname:focus,
+#postcode:focus,
+#address:focus,
+#detailAddress:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+
+/* 버튼 그룹 */
+
+/* 주소 검색 버튼 */
+#searchAddress {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--primary-color);
+  color: white;
+  white-space: nowrap;
+}
+
+#searchAddress:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* 버튼 그룹 */
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.button-group button {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* 제출 버튼 */
+.submit-button {
+  background: var(--primary-color);
+  color: white;
+}
+
+.submit-button:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* 취소 버튼 */
+.cancel-button {
+  background: #f3f4f6;
+  color: var(--text-primary);
+}
+
+.cancel-button:hover {
+  background: #e5e7eb;
+  transform: translateY(-1px);
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .button-group {
+    flex-direction: column;
+  }
+
+  #searchAddress {
+    width: 100%;
+  }
+}

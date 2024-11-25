@@ -9,7 +9,7 @@
   <!-- 공용 css/js 추가 -->
   <th:block th:replace="~{common/common}"></th:block>
 
-  <link rel="stylesheet" href="/B2B-Project/B2B-Semi/src/main/resources/static/css/myPage/myPage-info.css">
+  <link rel="stylesheet" href="/css/myPage/myPage-info.css">
 
   <style>
     /* 기본 전체 설정 시작 */
@@ -73,87 +73,7 @@
 
     /* 부제목 끝 */
 
-    .profile-container {
-      max-width: 600px;
-      margin: 20px auto;
-      background-color: white;
-      border-radius: 8px;
-      padding: 24px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-
-    .profile-header {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .profile-image {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      background-color: #e5e5e5;
-      overflow: hidden;
-    }
-
-    .profile-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .profile-info {
-      text-align: center;
-    }
-
-    .profile-name {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .profile-bio {
-      color: #666;
-      font-size: 0.875rem;
-    }
-
-    .editInfoBtn {
-      background-color: #4f46e5;
-      color: white;
-      border: none;
-      padding: 6px 16px;
-      border-radius: 9999px;
-      font-size: 0.875rem;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-
-    .editInfoBtn:hover {
-      background-color: #4338ca;
-    }
-
-    .stats-container {
-      display: flex;
-      justify-content: center;
-      gap: 48px;
-      margin-top: 32px;
-    }
-
-    .stat-item {
-      text-align: center;
-    }
-
-    .stat-number {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .stat-label {
-      color: #666;
-      font-size: 0.875rem;
-    }
+    
   </style>
 
 
@@ -185,12 +105,33 @@
 
             <div class="profile-container">
               <div class="profile-header">
-                <div class="profile-image">
-                  <img src="placeholder.jpg" alt="Profile">
-                </div>
+
+                <form action="profile" method="POST" name="myPageFrm" id="profile" enctype="multipart/form-data">
+                  <div class="profile-image-area">
+        
+                    <img th:with="user=#{user.default.image}"
+                        th:src="${session.loginMember.profileImg ?: user}"
+                        id="profileImg" >
+                      
+                  </div>
+                  <span id="deleteImage">x</span>
+        
+                  <div class="profile-btn-area">
+                    <label for="imageInput">이미지 선택</label>
+        
+                    <input type="file" name="profileImg" id="imageInput" accept="image/*">
+        
+                    <button>변경하기</button>
+                  </div>
+        
+        
+                </form>
+                
+
+
                 <div class="profile-info">
-                  <h1 class="profile-name">User123</h1>
-                  <p class="profile-bio">안녕하세요 User123입니다~~</p>
+                  <h1 th:text="${member != null ? member.memberId : '아이디 없음'}" class="profile-name">아이디</h1> <!-- 여기 이제부터 수정!!!!!!!!-->
+                  
                 </div>
                 <a href="/myPage/editInfo" class="editInfoBtn">
                   내 정보 수정
@@ -231,7 +172,7 @@
  
 
   <!-- js 추가 -->
-  <script src="/js/myPage/myPage.js"></script>
+  <script src="/js/myPage/myPage-info.js"></script>
 
 </body>
 
