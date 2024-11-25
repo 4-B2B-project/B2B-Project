@@ -13,6 +13,21 @@
 	</update>
 	
 	
+	<!-- 찜한 도서 목록 조회 -->
+	<select id="selectFavoriteBooks">
+		SELECT b.BOOK_ID, b.TITLE, b.AUTHOR, b.COVER_URL, b.CUSTOMER_REVIEW_RANK
+		FROM TB_FAVORITE f
+		JOIN TB_BOOKS b ON f.BOOK_ID = b.BOOK_ID
+		WHERE f.MEMBER_NO = #{memberNo}
+	</select>
+	
+
+	
+	
+	
+	
+	
+	
 	
 	
 	<!-- 회원 비밀번호 조회 -->

@@ -1,5 +1,6 @@
 package edu.kh.project.myPage.model.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.context.annotation.PropertySource;
@@ -7,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import edu.kh.project.book.model.dto.Book;
 import edu.kh.project.member.model.dto.Member;
 import edu.kh.project.myPage.model.mapper.MyPageMapper;
 import lombok.RequiredArgsConstructor;
@@ -52,14 +54,6 @@ public class MyPageServiceImpl implements MyPageService {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	// 비밀번호 변경
 	public int changePw(Map<String, Object> paramMap, int memberNo) {
 
@@ -93,6 +87,24 @@ public class MyPageServiceImpl implements MyPageService {
 		
 		return mapper.changePw(paramMap);
 		
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+	// 찜한 도서 목록
+	@Override
+	public List<Book> selectFavoriteBooks() { //int memberNo
+		
+		return mapper.selectFavoriteBooks(); //memberNo
 	}
 
 	

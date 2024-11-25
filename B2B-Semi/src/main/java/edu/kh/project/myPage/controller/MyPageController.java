@@ -1,17 +1,19 @@
 package edu.kh.project.myPage.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import edu.kh.project.book.model.dto.Book;
 import edu.kh.project.member.model.dto.Member;
 import edu.kh.project.myPage.model.service.MyPageService;
 import lombok.RequiredArgsConstructor;
@@ -42,12 +44,32 @@ public class MyPageController {
 		return "myPage/myPage-info";
 	}
 
+	
+	
 	// 찜한 도서 목록 이동
 	@GetMapping("favBook") // /myPage/favBook GET 방식 요청
-	public String favBook() {
+	public String favBook(
+				
+				Model model,
+				RedirectAttributes ra) { /*@SessionAttribute("loginMember") Member loginMember*/
+		
+		//int memberNo = loginMember.getMemberNo(); // 로그인한 회원 번호
+		
+		// 찜한 도서 목록 가져오기
+		List<Book> favoriteBooks = service.selectFavoriteBooks(); //memberNo
+		
+		// 모델에 데이터 추가
+		model.addAttribute("favoriteBooks", favoriteBooks);
+		
+		String message = null;
+		
+		
+
 		return "myPage/myPage-favBook";
 	}
 
+	
+	
 	// 게시글 목록 이동
 	@GetMapping("boardList") // /myPage/boardList GET 방식 요청
 	public String boardList() {

@@ -1,9 +1,11 @@
 package edu.kh.project.myPage.model.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import edu.kh.project.book.model.dto.Book;
 import edu.kh.project.member.model.dto.Member;
 
 @Mapper
@@ -29,6 +31,13 @@ public interface MyPageMapper {
 	 * @return
 	 */
 	int editInfo(Member inputMember);
+
+
+	/** 찜한 도서 목록 조회
+	 * @param memberNo
+	 * @return 
+	 */
+	List<Book> selectFavoriteBooks(); //int memberNo
 
 	
 	
