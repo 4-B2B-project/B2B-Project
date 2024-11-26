@@ -1,9 +1,11 @@
 package edu.kh.project.myPage.model.service;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import edu.kh.project.board.model.dto.Board;
 import edu.kh.project.book.model.dto.Book;
+import edu.kh.project.common.util.Pagination;
 import edu.kh.project.common.util.Utility;
 import edu.kh.project.member.model.dto.Member;
 import edu.kh.project.myPage.model.mapper.MyPageMapper;
@@ -28,16 +32,29 @@ public class MyPageServiceImpl implements MyPageService {
 
 	private final MyPageMapper mapper;
 
-	//BCrypt 암호화 객체 의존성 주입(SecurityConfig 참고)
+	// BCrypt 암호화 객체 의존성 주입(SecurityConfig 참고)
 	private final BCryptPasswordEncoder bcrypt;
-	
+
 	@Value("${my.profile.web-path}")
 	private String profileWebPath; // /myPage/profile/
-	
+
 	@Value("${my.profile.folder-path}")
 	private String profileFolderPath; // C:/uploadFiles/profile/
-	
-	
+
+	private String getCategoryByBoardCode(int boardCode) {
+		switch (boardCode) {
+		case 1:
+			return "자유";
+		case 2:
+			return "추천";
+		case 3:
+			return "공지";
+		case 4:
+			return "문의";
+		default:
+			return "기타";
+		}
+	}
 
 	// 회원정보 수정
 	@Override
@@ -101,7 +118,7 @@ public class MyPageServiceImpl implements MyPageService {
 		return mapper.selectFavoriteBooks(memberNo); // memberNo
 	}
 
-	
+	// 프로필 이미지 변경
 	@Override
 	public int profileImageInfo(MultipartFile profileImg, Member loginMember) throws Exception {
 		// 프로필 이미지 경로 (수정할 경로)
@@ -123,10 +140,7 @@ public class MyPageServiceImpl implements MyPageService {
 		}
 
 		// 수정된 프로필 이미지 경로 + 회원 번호를 저장할 DTO 객체
-		Member mem = Member.builder()
-				.memberNo(loginMember.getMemberNo())
-				.profileImg(updatePath)
-				.build();
+		Member mem = Member.builder().memberNo(loginMember.getMemberNo()).profileImg(updatePath).build();
 
 		// UPDATE 수행
 		int result = mapper.profileImageInfo(mem);
@@ -149,5 +163,54 @@ public class MyPageServiceImpl implements MyPageService {
 
 		return result;
 	}
+
+	
+	// 게시글 목록 조회
+		@Override
+		public List<Board> selectBoardList(int memberNo) {
+			// 1. 작성자의 전체 게시글 조회
+			/*int listCount = mapper.getBoardListCount(memberNo);
+
+			// 2. 페이징 처리
+			Pagination pagination = new Pagination(cp, listCount);
+			System.out.println(pagination); // 콘솔에 pagination 객체가 제대로 생성되었는지 확인
+
+			// 3. RowBounds 객체 생성 (offset, limit)
+			int limit = pagination.getLimit();
+			int offset = (cp - 1) * limit;
+			RowBounds rowBounds = new RowBounds(offset, limit);
+
+			// 4. 전체 게시글 목록 조회
+			List<Board> boardList = mapper.selectAllBoardList(memberNo, startRow, endRow);
+
+			// 5. boardCode를 활용하여 구분값 추가 처리
+			for (Board board : boardList) {
+				String category = getCategoryByBoardCode(board.getBoardCode());
+				board.setBoardTitle("[" + category + "] " + board.getBoardTitle());
+			}
+
+			// 5. 목록 조회 결과 + Pagination 객체를 Map으로 묶음
+			Map<String, Object> map = new HashMap<>();
+			map.put("pagination", pagination);
+			map.put("boardList", boardList);
+
+			return map;*/
+			 return mapper.selectAllBoardList(memberNo);
+		}
+	
+	
+
+
+	// 게시글 목록 검색 조회
+	@Override
+	public Map<String, Object> boardSearchList(int cp, Map<String, Object> paramMap) {
+
+		return mapper.searchBoardList(cp,paramMap);
+	}
+
+	
+	
+	
+	
 
 }

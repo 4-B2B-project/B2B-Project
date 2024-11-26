@@ -5,23 +5,34 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import edu.kh.project.board.model.dto.Board;
 import edu.kh.project.book.model.dto.Book;
 import edu.kh.project.member.model.dto.Member;
 
 public interface MyPageService {
 
 	
-	// 회원 정보 수정
+
+	/** 회원 정보 수정
+	 * @param inputMember
+	 * @param memberAddress
+	 * @return
+	 */
 	int editInfo(Member inputMember, String[] memberAddress);
 	
-	// 비밀번호 변경
+	/**  비밀번호 변경
+	 * @param paramMap
+	 * @param memberNo
+	 * @return
+	 */
 	int changePw(Map<String, Object> paramMap, int memberNo);
 
-	
-	// 찜한 도서목록 호출
-	List<Book> selectFavoriteBooks(int memberNo); //int memberNo
+	/** 찜한 도서목록 호출
+	 * @param memberNo
+	 * @return
+	 */
+	List<Book> selectFavoriteBooks(int memberNo); 
 
-	
 	
 	/** 내정보 - 프로필 이미지 수정
 	 * @param profileImg
@@ -30,5 +41,24 @@ public interface MyPageService {
 	 */
 	int profileImageInfo(MultipartFile profileImg, Member loginMember) throws Exception;
 
+
+	/** 게시글 목록 조회
+	 * @param cp
+	 * @return
+	 */
+	List<Board> selectBoardList(int memberNo);
+
+	
+
+	/** 게시글 목록 검색 조회
+	 * @param cp
+	 * @param paramMap
+	 * @return
+	 */
+	Map<String, Object> boardSearchList(int cp, Map<String, Object> paramMap);
+	
+
+	
+	
 
 }

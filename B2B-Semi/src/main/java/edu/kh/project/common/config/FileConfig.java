@@ -46,7 +46,7 @@ public class FileConfig implements WebMvcConfigurer{
 	private String profileResourceHandler; // /myPage/profile/**
 	
 	@Value("${my.profile.resource-location}")
-	private String profileResourceLocation; // file:///C:/uploadFiles/profile/
+	private String profileResourceLocation; // file:///C:/uploadFiles/info/ 
 	
 	// --------------------------------------------------------------------------
 	// 게시판 이미지 관련 경로

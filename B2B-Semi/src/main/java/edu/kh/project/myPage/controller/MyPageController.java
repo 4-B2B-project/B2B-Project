@@ -1,11 +1,17 @@
 package edu.kh.project.myPage.controller;
 
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +20,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import edu.kh.project.board.model.dto.Board;
 import edu.kh.project.book.model.dto.Book;
+import edu.kh.project.common.util.Pagination;
 import edu.kh.project.member.model.dto.Member;
 import edu.kh.project.myPage.model.service.MyPageService;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +50,12 @@ public class MyPageController {
 	// 내정보 화면 이동
 	@GetMapping("info") // /myPage/info GET 방식 요청
 	public String info(@SessionAttribute("loginMember") Member loginMember, Model model) {
+
+		System.out.println("loginMember: " + loginMember);
+
+		if (loginMember != null) {
+			model.addAttribute("member", loginMember);
+		}
 
 		return "myPage/myPage-info";
 	}
@@ -113,12 +127,79 @@ public class MyPageController {
 
 	
 
-	// 게시글 목록 이동
+	// 내가 작성한 게시글 목록 이동
 	@GetMapping("boardList") // /myPage/boardList GET 방식 요청
-	public String boardList() {
+	public String boardList(/*@PathVariable("boardCode") int boardCode,*/
+			@SessionAttribute("loginMember") Member loginMember,
+			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+			Model model,
+			@RequestParam Map<String, Object> paramMap ) {
+		
+		// 1. 로그인한 사용자의 회원 번호
+	    int memberNo = loginMember.getMemberNo();
+	    
+	  
+	    
+	    
+	    
+	    Map<String, Object> SearchList = null;
+		
+		
+	    List<Board> boardList = null;
+		
+		if (!paramMap.isEmpty()) {
+		    paramMap.remove("cp"); // paramMap에서 cp 제거
+		}
+		
+		
+		if(paramMap.isEmpty()) { 
+			// 검색 조건이 없을 경우
+			// 게시글 목록 조회
+			log.debug("사용자가 작성한 전체 게시글 조회 요청");
+			boardList  = service.selectBoardList(memberNo);
+			
+		} else {
+			paramMap.put("memberNo", memberNo);
+			// 검색 조건이 있을 경우
+			// 게시글 목록 검색 조회
+			 log.debug("사용자가 작성한 게시글 검색 요청, 조건: {}", paramMap);
+			 SearchList  = service.boardSearchList(cp,paramMap);
+			
+		}
+		
+		
+	  
+	    
+		
+	    // Pagination 객체를 직접 전달
+	    //Pagination pagination = (Pagination) map.get("pagination");
+		
+		// 데이터 전달
+	    // model.addAttribute("pagination", pagination);
+	    model.addAttribute("boardList", boardList);
+		
+		
+		// 검색 데이터 전달
+		model.addAttribute("paramMap", paramMap); // 검색 조건 및 파라미터
+		
+		//log.debug("rowNum : " + map.get("boardList"));
+		
+		
+		log.debug("paramMap: {}", paramMap);
+		log.debug("boardList: {}", boardList);
+		
+		
+		
+		
+		
+		
 		return "myPage/myPage-boardList";
 	}
 
+	
+	
+	
+	
 	
 	
 	// 댓글 목록 이동
@@ -214,7 +295,9 @@ public class MyPageController {
 	 */
 	@PostMapping("changePw") // /myPage/changePw POST 요청 매핑
 	public String changePw2(@SessionAttribute("loginMember") Member loginMember,
-			@RequestParam Map<String, Object> paramMap, RedirectAttributes ra) {
+			@RequestParam Map<String, Object> paramMap,
+			RedirectAttributes ra
+			) {
 
 		// 로그인한 회원의 번호
 		int memberNo = loginMember.getMemberNo();

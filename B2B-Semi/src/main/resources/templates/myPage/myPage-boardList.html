@@ -4,348 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Page</title>
+  <title>게시판 목록</title>
+
+  <link rel="stylesheet" href="/css/myPage/myPage-boardList.css">
 
   <!-- 공용 css/js 추가 -->
   <th:block th:replace="~{common/common}"></th:block>
 
-  <style>
-    /* 기본 전체 설정 시작 */
-    .wrapper {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    /* 기본 전체 설정 끝 */
-
-
-    /* Main Content Styles */
-    .main-content {
-      margin-left: var(--sidebar-width);
-      min-height: 75vh;
-      padding: 2rem;
-      flex-grow: 1;
-    }
-
-
-    /* 타이틀 시작 */
-    .ranking-header {
-      background: white;
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      margin-bottom: 2rem;
-    }
-
-    .ranking-title {
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: var(--dark-text);
-      margin-bottom: 1.5rem;
-    }
-
-    /* 타이틀 끝 */
-
-
-    /* 부제목 시작 */
-    .genre-section {
-      background: white;
-      border-radius: 15px;
-      padding: 2rem;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      margin-bottom: 2rem;
-    }
-
-    .genre-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-      padding-bottom: 1rem;
-      border-bottom: 2px solid var(--light-bg);
-    }
-
-    .genre-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--dark-text);
-    }
-
-    /* 부제목 끝 */
-
-    /* section, div{ border : 1px solid black;} */
-
-    .board-name {
-      font-size: 2em;
-      margin: 20px 0;
-    }
-
-    a {
-      text-decoration: none;
-      color: black;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .board-list {
-      /* display: flex; */
-      width: 1000px;
-      /* height: 800px; */
-      margin: 50px auto;
-    }
-
-    .board-title {
-      margin-left: 30px;
-      font-size: 2.5em;
-    }
-
-
-    .list-wrapper {
-      min-height: 670px;
-      width: 100%;
-    }
-
-    .list-table {
-      width: 100%;
-      padding: 20px;
-      border-collapse: collapse;
-    }
-
-    .list-table>thead {
-      background-color: #455ba8;
-      color: white;
-    }
-
-
-    .list-table tr {
-      height: 60px;
-    }
-
-    .list-table>tbody>tr {
-      border-bottom: 1px solid gray;
-
-    }
-
-
-    .list-table tr>* {
-      text-align: center;
-    }
-
-    .list-table tr>*:nth-of-type(1) {
-      width: 10%;
-    }
-
-    .list-table tr>td:nth-of-type(2) {
-      width: 50%;
-      text-align: left;
-      padding-left: 50px;
-      text-decoration: none;
-    }
-
-    .list-table tr>*:nth-of-type(3) {
-      width: 13%;
-    }
-
-    .list-table tr>*:nth-of-type(4) {
-      width: 10%;
-    }
-
-    .list-table tr>*:nth-of-type(5) {
-      width: 8%;
-    }
-
-    .list-table tr>*:nth-of-type(6) {
-      width: 8%;
-    }
-
-
-    .btn-area {
-      height: 50px;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-    }
-
-
-    .btn-area>button {
-      margin-right: 50px;
-
-      width: 80px;
-      height: 40px;
-      background-color: white;
-
-      font-weight: bold;
-      color: #455ba8;
-      border: 2px solid #455ba8;
-      border-radius: 5px;
-
-      cursor: pointer;
-
-    }
-
-
-    .pagination {
-      list-style: none;
-      display: flex;
-      justify-content: center;
-      padding: 0;
-    }
-
-    .pagination li {
-      width: 20px;
-      margin: 0 5px;
-      text-align: center;
-    }
-
-    .pagination a {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-    .current {
-      font-weight: bold;
-      background-color: #455ba8;
-      border-radius: 50%;
-      color: white !important;
-      letter-spacing: 0 !important;
-    }
-
-    #boardSearch {
-      text-align: center;
-      width: 500px;
-      height: 30px;
-      margin: 30px auto;
-
-      display: flex;
-      justify-content: space-between;
-    }
-
-
-    #boardSearch * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    #boardSearch select {
-      width: 100px;
-    }
-
-    #boardSearch input {
-      flex-grow: 1;
-      margin: 0 10px;
-      padding-left: 10px;
-    }
-
-    #boardSearch button {
-
-      width: 100px;
-
-      font-weight: bold;
-      background-color: #455ba8;
-      border: none;
-      color: white;
-
-      cursor: pointer;
-
-
-    }
-
-
-    /* 썸네일 */
-    .list-table .list-thumbnail {
-      position: absolute;
-      max-height: 30px;
-      max-width: 50px;
-      left: -15px;
-      top: 17px;
-    }
-
-    .list-table tr>td:nth-of-type(2) {
-      position: relative;
-    }
-
-    /* 모달 */
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-
-      width: 100%;
-      height: 100%;
-
-      display: none;
-      z-index: 50;
-
-      background-color: rgba(0, 0, 0, 0.4);
-    }
-
-    .modal.show {
-      display: flex;
-      animation-name: show;
-      animation-duration: 0.5s;
-      z-index: 500;
-    }
-
-    .modal.hide {
-      animation-name: hide;
-      animation-duration: 0.5s;
-    }
-
-
-    #modalImage {
-      background-color: white;
-      margin: auto;
-      border-radius: 10px;
-      max-width: 100%;
-      max-height: 100%;
-    }
-
-    /* @keyframes : 
-애니메이션 중간중간의 특정 지점들을 거칠 수 있는 키프레임들을 설정함으로써 CSS 애니메이션 과정의 중간 절차를 제어할 수 있게 합니다.  */
-    @keyframes show {
-      from {
-        opacity: 0;
-      }
-
-      to {
-        opacity: 1;
-      }
-    }
-
-    @keyframes hide {
-      from {
-        opacity: 1;
-      }
-
-      to {
-        opacity: 0;
-      }
-    }
-
-
-    /* 닫기 버튼 꾸미기 */
-    #modalClose {
-      position: absolute;
-      top: 20px;
-      right: 40px;
-
-      color: white;
-      font-size: 50px;
-      font-weight: bold;
-
-      transition-duration: 0.2s;
-      cursor: pointer;
-    }
-
-    #modalClose:hover {
-      transform: scale(1.2);
-    }
-  </style>
 </head>
 
 <body>
@@ -366,124 +31,102 @@
       </section>
 
       <section class="genre-section">
-        <div class="genre-header">
+        <form th:action="@{/boardList}" method="get" id="boardSearch">
+          <div class="search-section">
+            <div class="search-wrapper">
 
-          <section class="board-list">
-
-            <th:block th:each="boardType : ${application.boardTypeList}">
-
-              <h1 class="board-name" th:if="${boardType.boardCode} == ${boardCode}" th:text="${boardType.boardName}">게시판
-                이름</h1>
-
-            </th:block>
-
-            <div class="list-wrapper">
-              <table class="list-table">
-
-                <thead>
-                  <tr>
-                    <th>글번호</th>
-                    <th>제목</th>
-                    <th>작성자</th>
-                    <th>작성일</th>
-                    <th>조회수</th>
-                    <th>좋아요</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <!-- 게시글이 존재하지 않을 때 -->
-
-                  <!-- 여러행 조회 시 결과가 없을 경우 == List 가 비어있음 -->
-
-                  <!-- #lists : 타임리프에서 list 관련 기능을 제공하는 객체 -->
-                  <!-- ${#lists.size(boardList) == 0} -->
-                  <th:block th:if="${#lists.isEmpty(boardList)}">
-                    <tr>
-                      <th colspan="6">게시글이 존재하지 않습니다.</th>
-                    </tr>
-                  </th:block>
-
-                  <!-- 게시글이 존재할 때 -->
-                  <th:block th:unless="${#lists.isEmpty(boardList)}">
-
-                    <tr th:each="board, iterStat : ${boardList}" th:object="${board}">
-                      <td th:text="*{boardNo}">게시글 번호</td>
-
-                      <td>
-                        <!-- 썸네일 추가 예정 -->
-
-                        <!-- 상세 조회 주소에 cp가 포함된 이유 : 상세 -> 목록으로 돌아올 때 사용 -->
+              <div class="input-group flex-grow-1">
+                <select class="form-select" name="searchType" style="border-radius: 8px;" th:value="${searchType}">
+                  <option th:value="title" th:selected="${searchType == 'title'}">제목</option>
+                  <option th:value="content" th:selected="${searchType == 'content'}">내용</option>
+                </select>
+                <input type="text" class="form-control" name="searchInput" placeholder="검색어를 입력하세요"
+                  style="border-radius: 8px;" th:value="${searchInput}">
+              </div>
 
 
-                        <!-- 검색 X -->
-                        <a th:unless="${param.key}"
-                          th:href="@{/board/{boardCode}/{boardNo} (boardCode=${boardCode}, boardNo=*{boardNo}, cp=${pagination.currentPage})}"
-                          th:text="*{boardTitle}">게시글 제목</a>
 
-                        <!-- 검색 O -->
-                        <a th:if="${param.key}"
-                          th:href="@{/board/{boardCode}/{boardNo} (boardCode=${boardCode}, boardNo=*{boardNo}, cp=${pagination.currentPage}, key=${param.key}, query=${param.query})}"
-                          th:text="*{boardTitle}">게시글 제목</a>
+              <button class="search-button">
+                <i class="fas fa-search"></i>검색
+              </button>
 
-                        <th:block th:text="|[*{commentCount}]|">댓글 수</th:block>
-                      </td>
-
-                      <!-- 작성자 닉네임 -->
-                      <td th:text="*{memberNickname}">닉네임</td>
-
-                      <!-- 작성일 -->
-                      <td th:text="*{boardWriteDate}">2023-10-26</td>
-
-                      <!-- 조회수 -->
-                      <td th:text="*{readCount}">0</td>
-
-                      <!-- 좋아요 수 -->
-                      <td th:text="*{likeCount}">0</td>
-
-                    </tr>
-                  </th:block>
-
-                </tbody>
-              </table>
             </div>
+          </div>
+        </form>
+      </section>
+
+      <section class="genre-section">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th style="width: 10%;">
+                  구분
+                  <span class="sort-icon">
+                    <i class="fas fa-sort"></i>
+                  </span>
+                </th>
+
+                <th style="width: 40%;">
+                  제목
+                  <span class="sort-icon">
+                    <i class="fas fa-sort"></i>
+                  </span>
+                </th>
+
+                <th style="width: 27.5%;">
+                  작성자
+                  <span class="sort-icon">
+                    <i class="fas fa-sort"></i>
+                  </span>
+                </th>
+
+                <th style="width: 22.5%;">
+                  작성일
+                  <span class="sort-icon">
+                    <i class="fas fa-sort"></i>
+                  </span>
+                </th>
 
 
+              </tr>
+            </thead>
+            <tbody id="postList">
+              <th:block th:if="${#lists.isEmpty(boardList)}">
+                <tr>
+                  <td colspan="4" style="text-align: center;">게시글이 존재하지 않습니다.</td>
+                </tr>
+              </th:block>
 
-            <div class="btn-area">
-              <!-- 로그인 상태일 때만 글쓰기 버튼 노출 -->
-              <button id="insertBtn" th:if="${session.loginMember}">글쓰기</button>
-            </div>
+              <!-- 게시글 목록이 있을 때 -->
+              <th:block th:unless="${#lists.isEmpty(boardList)}">
+                <tr th:each="post : ${boardList}">
+                  <!-- 게시글 구분 -->
+                  <td th:text="${post.boardNo}">게시글 번호</td>
+
+                  <!-- 게시글 제목 -->
+                  <td>
+                    <div class="post-title" th:data-full-text="${post.boardTitle}"
+                      onmousemove="showTooltip(event, this)">
+                      <a th:href="@{/post/detail(id=${post.boardNo})}" th:text="${post.boardTitle}">게시글 제목</a>
+                    </div>
+                  </td>
+
+                  <!-- 작성자 -->
+                  <td th:text="${post.memberNickname}">작성자</td>
+
+                  <!-- 작성일 -->
+                  <td th:text="${post.boardWriteDate}">작성일</td>
+                </tr>
+              </th:block>
+            </tbody>
+          </table>
 
 
-            <!-- ============================================================================================================== -->
-
-            <!-- 게시글이 있을 때만 페이지네이션이 보이게 할 예정 -->
-            
-
-
-
-            <!-- 검색창 -->
-            <!-- 현재 : /board/1 
-              목표 : /board/1?key=w&query=짱구
-            -->
-            <form th:action="@{{boardCode}(boardCode=${boardCode})}" method="get" id="boardSearch">
-
-              <select name="key" id="searchKey">
-                <option value="t">제목</option>
-                <option value="c">내용</option>
-                <option value="tc">제목+내용</option>
-                <option value="w">작성자</option>
-              </select>
-
-              <input type="text" name="query" id="searchQuery" placeholder="검색어를 입력해주세요.">
-
-              <button>검색</button>
-            </form>
-
-          </section>
+         
         </div>
       </section>
+
 
 
     </main>
@@ -494,7 +137,7 @@
   </div>
 
   <!-- js 추가 -->
-  <script src="/B2B-Project/B2B-Semi/src/main/resources/static/js/myPage/myPage.js"></script>
+  <script src="/js/myPage/myPage-boardList.js"></script>
 </body>
 
 </html>

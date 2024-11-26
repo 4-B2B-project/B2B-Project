@@ -94,6 +94,7 @@
   display: flex;
   justify-content: center;
   align-content: center;
+  margin: 0 auto; /* center within parent */
 }
 
 #profileImage{
