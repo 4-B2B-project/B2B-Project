@@ -71,7 +71,7 @@ public interface BookMapper {
 	/** 도서 평점 수정
 	 * @param updateMap
 	 */
-	void updateBookRating(Map<String, Object> updateMap);
+	int updateBookRating(Map<String, Object> updateMap);
 
 	/** top20 도서 목록 조회
 	 * @return
@@ -116,6 +116,36 @@ public interface BookMapper {
 	 * @return
 	 */
 	List<Book> bookDetailPeriodList(RowBounds rowBounds, Map<String, Object> paramMap);
+
+	/** 리뷰 수정
+	 * @param paramMap
+	 * @return
+	 */
+	int updateBookReview(Map<String, Object> paramMap);
+
+	/** 리뷰 삭제
+	 * @param paramMap
+	 * @return
+	 */
+	int deleteReview(Map<String, Object> paramMap);
+
+	/** 찜 여부 확인
+	 * @param map
+	 * @return
+	 */
+	int selectSteamBook(Map<String, Object> map);
+
+	/** 찜 도서 삭제
+	 * @param map
+	 * @return
+	 */
+	int deleteSteamBook(Map<String, Object> map);
+
+	/** 찜 등록
+	 * @param map
+	 * @return
+	 */
+	int insertSteamBook(Map<String, Object> map);
 	
 	
 }

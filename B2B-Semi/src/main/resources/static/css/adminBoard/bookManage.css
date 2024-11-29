@@ -28,3 +28,46 @@ th {
 #searchInput {
 	width: 673px;
 }
+/* 페이지 네이션 */
+.pagination {
+	justify-content: center;
+	margin: 0;
+	gap: 10px;
+	/* 버튼 사이의 간격 */
+}
+
+.pagination .page-link {
+	min-width: 30px;
+	/* 버튼의 최소 너비 */
+	text-align: center;
+	border-radius: 4px;
+	/* 모서리 둥글게 */
+	margin: 0;
+	/* 기본 마진 제거 */
+}
+
+.pagination .disabled .page-link {
+	color: #fff;
+	/* 텍스트 색상을 흰색으로 변경 */
+	pointer-events: none;
+	background-color: #6c757d;
+	/* 회색 배경으로 변경 */
+	border-color: #6c757d;
+	cursor: not-allowed;
+	opacity: 0.65;
+}
+
+.pagination .active .page-link {
+	z-index: 3;
+	color: #fff;
+	background-color: #007bff;
+	border-color: #007bff;
+}
+
+.pagination .page-link:focus {
+	z-index: 2;
+	outline: 0;
+	box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+}
+
+/* 페이지 네이션 끝 */

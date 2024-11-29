@@ -1,4 +1,196 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="edu.kh.project.board.model.mapper.BoardMapper">
+
+
+	<!-- 자유게시판 글 개수 조회 -->
+	<select id="communityCount">
+		SELECT COUNT(*)
+		FROM "TB_BOARD"
+		WHERE BOARD_DEL_FL = 'N'
+		AND BOARD_CODE = 1
+	</select>
+	
+	
+	<!-- 자유게시판 글 목록 조회 -->
+	<select id="communityList">
+		SELECT 
+			ROWNUM ROW_NUM,
+			BOARD_NO,
+			BOARD_TITLE,
+			BOARD_CONTENT,
+			BOARD_WRITE_DATE,
+			BOARD_UPDATE_DATE,
+			READ_COUNT,
+			BOARD_DEL_FL,
+			MEMBER_NO,
+			MEMBER_NICKNAME,
+			BOARD_CODE
+		FROM
+			(SELECT 
+				BOARD_NO,
+				BOARD_TITLE,
+				BOARD_CONTENT,
+				TO_CHAR(BOARD_WRITE_DATE, 'YYYY-MM-DD') BOARD_WRITE_DATE,
+				TO_CHAR(BOARD_UPDATE_DATE, 'YYYY-MM-DD') BOARD_UPDATE_DATE,
+				READ_COUNT,
+				BOARD_DEL_FL,
+				MEMBER_NO,
+				(
+					SELECT MEMBER_NICKNAME 
+					FROM "TB_MEMBER" MEM
+					WHERE MEM.MEMBER_NO = BOA.MEMBER_NO
+				) AS MEMBER_NICKNAME,
+				BOARD_CODE
+			FROM "TB_BOARD" BOA
+			WHERE BOARD_DEL_FL = 'N'
+			AND BOARD_CODE = 1
+			ORDER BY BOARD_NO) BOARD
+	</select>
+	
+	
+	<!-- 자유게시판 검색 글 개수 조회 -->
+	<select id="communitySearchCount">
+		SELECT COUNT(*)
+		FROM "TB_BOARD" BOARD
+		WHERE BOARD_DEL_FL = 'N'
+		AND BOARD_CODE = 1
+		<choose>
+			<when test='searchType == "title"'>
+				AND BOARD_TITLE LIKE '%' || #{searchInput} || '%'
+			</when>
+			<when test='searchType == "content"'>
+				AND BOARD_CONTENT LIKE '%' || #{searchInput} || '%'
+			</when>
+			<when test='searchType == "writer"'>
+				AND (
+					SELECT MEMBER_NICKNAME 
+					FROM "TB_MEMBER" MEM
+					WHERE BOARD.MEMBER_NO = MEM.MEMBER_NO
+				) LIKE '%' || #{searchInput} || '%'
+			</when>
+		</choose>
+	</select>
+	
+	
+	<!-- 자유게시판 검색 글 목록 조회 -->
+	<select id="communitySearchList">
+		SELECT 
+			ROWNUM ROW_NUM,
+			BOARD_NO,
+			BOARD_TITLE,
+			BOARD_CONTENT,
+			BOARD_WRITE_DATE,
+			BOARD_UPDATE_DATE,
+			READ_COUNT,
+			BOARD_DEL_FL,
+			MEMBER_NO,
+			MEMBER_NICKNAME,
+			BOARD_CODE
+		FROM
+			(SELECT 
+				BOARD_NO,
+				BOARD_TITLE,
+				BOARD_CONTENT,
+				TO_CHAR(BOARD_WRITE_DATE, 'YYYY-MM-DD') BOARD_WRITE_DATE,
+				TO_CHAR(BOARD_UPDATE_DATE, 'YYYY-MM-DD') BOARD_UPDATE_DATE,
+				READ_COUNT,
+				BOARD_DEL_FL,
+				MEMBER_NO,
+				(
+					SELECT MEMBER_NICKNAME 
+					FROM "TB_MEMBER" MEM
+					WHERE MEM.MEMBER_NO = BOA.MEMBER_NO
+				) AS MEMBER_NICKNAME,
+				BOARD_CODE
+			FROM "TB_BOARD" BOA
+			WHERE BOARD_DEL_FL = 'N'
+			AND BOARD_CODE = 1
+			ORDER BY BOARD_NO) BOARD
+		WHERE 1=1
+		<choose>
+			<when test='searchType == "title"'>
+				AND BOARD_TITLE LIKE '%' || #{searchInput} || '%'
+			</when>
+			<when test='searchType == "content"'>
+				AND BOARD_CONTENT LIKE '%' || #{searchInput} || '%'
+			</when>
+			<when test='searchType == "writer"'>
+				AND MEMBER_NICKNAME LIKE '%' || #{searchInput} || '%'
+			</when>
+		</choose>
+	</select>
+
+
+	<!-- 자유게시판 글 상세 조회 -->
+	<select id="detailCommunity">
+		SELECT 
+			BOARD_NO,
+			BOARD_TITLE,
+			BOARD_CONTENT,
+			TO_CHAR(BOARD_WRITE_DATE, 'YYYY-MM-DD') BOARD_WRITE_DATE,
+			TO_CHAR(BOARD_UPDATE_DATE, 'YYYY-MM-DD') BOARD_UPDATE_DATE,
+			READ_COUNT,
+			BOARD_DEL_FL,
+			MEMBER_NO,
+			(
+				SELECT MEMBER_NICKNAME 
+				FROM "TB_MEMBER" MEM
+				WHERE MEM.MEMBER_NO = BOA.MEMBER_NO
+			) AS MEMBER_NICKNAME,
+			BOARD_CODE
+		FROM "TB_BOARD" BOA
+		WHERE BOARD_NO = #{boardNo}
+		AND BOARD_DEL_FL = 'N'
+	</select>
+	
+	
+	<!-- 게시글 작성 -->
+	<insert id="boardInsert">
+		
+		<selectKey order="BEFORE" resultType="_int" keyProperty="boardNo">
+			SELECT SEQ_BOARD_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO "TB_BOARD"
+		VALUES(
+			#{boardNo},
+			#{boardTitle},
+			#{boardContent},
+			DEFAULT,
+			NULL,
+			DEFAULT,
+			DEFAULT,
+			#{memberNo},
+			#{boardCode},
+			NULL,
+			0,
+			DEFAULT
+		)
+	
+	</insert>
+	
+	
+	<!-- 게시글 삭제(del = 'Y') -->
+	<update id="boardDelete">
+		UPDATE "TB_BOARD"
+		SET
+			BOARD_DEL_FL = 'Y'
+		WHERE BOARD_NO = #{boardNo}
+		AND BOARD_CODE = #{boardCode}
+		AND MEMBER_NO = #{memberNo}
+	</update>
+	
+	
+	<!-- 게시글 수정 -->
+	<update id="boardUpdate">
+		UPDATE "TB_BOARD"
+		SET
+			BOARD_TITLE = #{boardTitle},
+			BOARD_CONTENT = #{boardContent}
+		WHERE BOARD_NO = #{boardNo}
+		AND BOARD_CODE = #{boardCode}
+		AND MEMBER_NO = #{memberNo}
+	</update>
+
 </mapper>

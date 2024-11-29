@@ -9,16 +9,8 @@ import edu.kh.project.member.model.dto.Member;
 
 public interface AdminService {
 
-	/** 도서 목록 조회.
-	 * @return
-	 */
-	public List<Book> selectBookList();
-
 	public Map<String, Object> selectBoardList(int boardCode, int cp);
 
-	public Map<String, Object> searchList(Map<String, Object> paramMap, int cp);
-
-	public List<Member> selectMemberList();
 
 	/** 회원 수정 버튼 클릭 시.
 	 * @param inputMember
@@ -28,12 +20,40 @@ public interface AdminService {
 
 	public int updateInfo(Member inputMember, String[] memberAddress);
 
-	public Member selectedMember(String memberId);
+	public Member selectedMember(int memberNo);
 
 	public List<Member> searchMember(Map<String, Object> paramMap);
 
 	public int updateStatus(List<String> memberIds, boolean updateY);
 
 	public Board selectOne(Map<String, Integer> map);
+
+	public Map<String, Object> boardList(int cp);
+
+	public Map<String, Object> boardSearchList(int cp, Map<String, Object> paramMap);
+
+	public int updateBoardStatus(List<String> boardList, boolean updateY);
+
+	public List<Board> searchBoard(Map<String, Object> paramMap);
+
+	public Map<String, Object> bookList(int cp);
+
+	public Map<String, Object> bookSearchList(int cp, Map<String, Object> paramMap);
+
+	public int updateBookStatus(List<String> bookList, boolean updateY);
+
+	public int insertNewBook(Map<String, Object> paramMap);
+
+	public Map<String, Object> searchBookList(Map<String, Object> paramMap, int cp);
+
+	public Map<String, Object> memberList(int cp);
+
+	public Map<String, Object> memberSearchList(int cp, Map<String, Object> paramMap);
+
+
+	public Book selectBookDetail(int bookId);
+
+
+	public int updateBook(Book book);
 
 }

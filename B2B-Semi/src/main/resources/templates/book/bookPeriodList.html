@@ -46,7 +46,8 @@
 						th:data-bookId="${monthBook.bookId}" th:data-title="${monthBook.fullTitle}"
 						th:data-coverUrl="${monthBook.coverUrl}" th:data-author="${monthBook.author}"
 						th:data-rating="${monthBook.customerReviewRank}" th:data-genres="${monthBook.genres}"
-						th:data-description="${monthBook.description}" th:data-reviewCount="${monthBook.reviewCount}">
+						th:data-description="${monthBook.description}" th:data-reviewCount="${monthBook.reviewCount}"
+						th:data-steamCount="${monthBook.steamCount}">
 							<div class="rank-badge" th:text="${iterStat.count}"></div>
 				            <img th:src="${monthBook.coverUrl}" th:alt="${monthBook.title}" class="book-cover">
 				            <div class="book-info">
@@ -80,7 +81,8 @@
 						th:data-bookId="${yearBook.bookId}" th:data-title="${yearBook.fullTitle}"
 						th:data-coverUrl="${yearBook.coverUrl}" th:data-author="${yearBook.author}"
 						th:data-rating="${yearBook.customerReviewRank}" th:data-genres="${yearBook.genres}"
-						th:data-description="${yearBook.description}" th:data-reviewCount="${yearBook.reviewCount}">
+						th:data-description="${yearBook.description}" th:data-reviewCount="${yearBook.reviewCount}"
+						th:data-steamCount="${yearBook.steamCount}">
 							<div class="rank-badge" th:text="${iterStat.count}"></div>
 				            <img th:src="${yearBook.coverUrl}" th:alt="${yearBook.title}" class="book-cover">
 				            <div class="book-info">
@@ -140,6 +142,14 @@
 								</div>
 								<div class="book-detail-genres mb-3">
 								</div>
+								<th:block th:if="${session.loginMember != null}">
+									<div class="action-buttons">
+							            <button class="action-btn secondary-btn" id="steamBtn">
+							              <i class="fas fa-heart"></i>
+							              찜하기
+							            </button>
+							       	</div>
+								</th:block>
 							</div>
 						</div>
 

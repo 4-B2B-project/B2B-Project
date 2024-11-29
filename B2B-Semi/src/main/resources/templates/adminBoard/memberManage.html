@@ -110,9 +110,7 @@
     <main class="main-content">
 
       <section class="ranking-header">
-        <h1 class="ranking-title">
-      		회원 관리
-        </h1>
+        <h1 class="ranking-title">회원 관리</h1>
       </section>
 
       <section class="ranking-header">
@@ -145,26 +143,89 @@
           </thead>
   
           <tbody id="tbody">
-  			<tr th:each="member : ${memberList}">
-				<td th:text="${member.memberId}"></td>
-				<td th:text="${member.memberNickname}"></td>
-				<td th:text="${member.enrollDate}"></td>
-				<td th:text="${member.memberDelFl ? '탈퇴' : '활성'}"></td>
-				<td>
-				    <button class="updateMemberBtn" data-member-id="${member.memberId}">회원 수정</button>
-				</td>
-				<td>
-				    <input class="checkbox" type="checkbox" value="${member.memberId}">
-				</td>
-			</tr>
+			<th:block th:if="${#lists.isEmpty(memberList)}"> <!-- 회원이 한명도 없을 때.-->
+				<tr><th colspan="7">회원이 존재하지 않습니다.</th></tr>
+			</th:block>
+			
+			<th:block th:unless="${#lists.isEmpty(memberList)}">
+				
+				<tr th:each="member, iterStat : ${memberList}" th:object="${member}">
+					<td th:text="*{memberId}">아이디</td>
+					<td th:text="*{memberNickname}">닉네임</td>
+					<td th:text="*{enrollDate}">가입일</td>
+					<td th:text="*{memberDelFl}">탈퇴 여부</td>
+					<td>
+						<button name="updateMemberBtn" th:data-member-no="*{memberNo}">회원 수정</button>
+					</td>
+					<td>
+						<input class="checkbox" type="checkbox" th:value="*{memberNo}">
+					</td>
+				</tr>
+			
+			</th:block>
 			
           </tbody>
         </table>
   
-		<div class="btn-area">
-			<button id="updateDelFlY">회원 추방</button>
-			<button id="updateDelFlN">탈퇴 복구</button>
+		<div class="btn-area" style="justify-self: right; margin-top: 15px; margin-bottom: 15px;">
+			<button id="updateDelFlY" class="btn btn-sn btn-danger">회원 추방</button>
+			<button id="updateDelFlN" class="btn btn-sn btn-primary">탈퇴 복구</button>
 		</div>
+		
+		<!-- 페이지네이션 -->
+		<nav aria-label="Page navigation" th:if="${pagination != null}">
+				    <ul class="pagination">
+				        <!-- 첫 페이지로 이동 -->
+				        <li class="page-item" th:classappend="${pagination.currentPage <= 1 || pagination.startPage == 1} ? 'disabled'">
+				            <a class="page-link py-1 px-2"
+				               th:href="${pagination.currentPage <= 1 || pagination.startPage == 1} 
+				                        ? '#' 
+				                        : @{/adminBoard/boardManage(cp=1, key=${key}, search=${search})}"
+				               th:aria-disabled="${pagination.currentPage <= 1 || pagination.startPage == 1}">&lt;&lt;</a>
+				        </li>
+
+				        <!-- 이전 페이지로 이동 -->
+				        <li class="page-item" th:classappend="${pagination.currentPage <= 1 || pagination.startPage == 1} ? 'disabled'">
+				            <a class="page-link py-1 px-2"
+				               th:href="${pagination.currentPage <= 1 || pagination.startPage == 1} 
+				                        ? '#' 
+				                        : @{/adminBoard/boardManage(cp=${pagination.prevPage}, key=${key}, search=${search})}"
+				               th:aria-disabled="${pagination.currentPage <= 1 || pagination.startPage == 1}">이전</a>
+				        </li>
+
+						<!-- 페이지 번호 -->
+						<th:block th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}"
+						           th:if="${pagination.startPage > 0 and pagination.endPage > 0}">
+						    <li class="page-item" th:classappend="${i == pagination.currentPage} ? 'active'">
+						        <a class="page-link py-1 px-2"
+						           th:href="${i == pagination.currentPage} 
+						                    ? '#' 
+						                    : @{/adminBoard/boardManage(cp=${i}, key=${key}, search=${search})}"
+						           th:text="${i}"
+						           th:aria-current="${i == pagination.currentPage} ? 'page'">현재페이지</a>
+						    </li>
+						</th:block>
+
+				        <!-- 다음 페이지로 이동 -->
+				        <li class="page-item" th:classappend="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} ? 'disabled'">
+				            <a class="page-link py-1 px-2"
+				               th:href="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} 
+				                        ? '#' 
+				                        : @{/adminBoard/boardManage(cp=${pagination.nextPage}, key=${key}, search=${search})}"
+				               th:aria-disabled="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage}">다음</a>
+				        </li>
+
+				        <!-- 마지막 페이지로 이동 -->
+				        <li class="page-item" th:classappend="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} ? 'disabled'">
+				            <a class="page-link py-1 px-2"
+				               th:href="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} 
+				                        ? '#' 
+				                        : @{/adminBoard/boardManage(cp=${pagination.maxPage}, key=${key}, search=${search})}"
+				               th:aria-disabled="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage}">&gt;&gt;</a>
+				        </li>
+				    </ul>
+				</nav>
+	
       </section>
       
     </main>

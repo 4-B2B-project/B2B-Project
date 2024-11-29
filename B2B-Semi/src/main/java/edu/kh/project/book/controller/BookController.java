@@ -8,8 +8,10 @@ import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,7 +59,7 @@ public class BookController {
 			map = service.bookSearchList(cp, paramMap);
 
 		}
-
+		
 		// 데이터 전달
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("bookList", map.get("bookList"));
@@ -71,7 +73,7 @@ public class BookController {
 
 		return "book/bookList";
 	}
-
+	
 	/**
 	 * top20 목록 조회
 	 * 
@@ -257,6 +259,50 @@ public class BookController {
 	}
 	
 	
+	/** 리뷰 수정
+	 *  수정되는 리뷰 평점으로 해당 도서의 평점도 수정되야함
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@PutMapping("updateBookReview")
+	public int updateBookReview(@RequestBody Map<String, Object> paramMap) {
+		return service.updateBookReview(paramMap);
+	}
+	
+	
+	/** 리뷰 삭제
+	 *  삭제되는 리뷰 평점으로 해당 도서의 평점도 수정되야함
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@DeleteMapping("deleteReview")
+	public int deleteReview(@RequestBody Map<String, Object> paramMap) {
+		return service.deleteReview(paramMap);
+	}
+	
+	
+	/** 찜하기
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("steamBook")
+	public int steamBook(@RequestBody int bookId,
+			@SessionAttribute(value = "loginMember", required = false) Member loginMember) {
+		return service.steamBook(bookId, loginMember.getMemberNo());
+	}
+	
+	/** 찜 여부 조회
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("isBookSteam")
+	public int isBookSteam(@RequestBody Map<String, Object> paramMap) {
+		return service.isBookSteam(paramMap);
+	}
 	
 
 }

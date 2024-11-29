@@ -1,33 +1,83 @@
 const searchBookListBtn = document.querySelector("#searchBtn"); // 도서 관리 검색창
 const tbody = document.querySelector("#tbody");
 const input = document.querySelector("#searchInput");
+const checkAll = document.querySelector("#theadCheckAll");
 
-searchBookListBtn.addEventListener("click", e => {
+searchBookListBtn.addEventListener("click", () => {
+	
+	const key = document.querySelector("#searchKey").value;
+	const query = input.value.trim();
+	
+	window.location.href = `/adminBoard/searchBook?key=${key}&search=${query}`;
+})
 
-  if(input.value.trim().length === 0) {
-    alert("검색어를 입력해주세요.");
-    e.preventDefault();
-    input.focus();
-  }
+const updateDelFlYBtn = document.querySelector("#updateDelFlY").addEventListener("click", () => updateBookStatus('삭제'));
+const updateDelFlNBtn = document.querySelector("#updateDelFlN").addEventListener("click", () => updateBookStatus('복구'));
 
-  fetch("/adminBoard/selectBookList")
-  .then(resp => resp.json())
-  .then(bookList => {
-    tbody.innerHTML = "";
+function updateBookStatus(action) {
+	
+	const checkboxes = tbody.querySelectorAll(".checkbox:checked");
+	if (checkboxes.length === 0) {
+		alert("선택된 도서가 없습니다.");
+		return;
+	}
+	
+	const bookList = Array.from(checkboxes).map(box => box.value);
+	
+	console.log(bookList);
+	
+	fetch("/adminBoard/updateBookStatus", {
+		method : "POST",
+		headers : {"Content-type" : "application/json"},
+		body : JSON.stringify({
+			bookList: bookList,
+			action: action
+		})
+		
+	})
+	.then(response => response.json())
+	.then(data => {
+		if(data.success) {
+			alert(`도서 삭제여부 상태가 ${action}으로 변경됐습니다.`);
+			location.reload();
+		}
+		else {
+			alert("상태 변경 실패:" + data.message);
+		}
+		
+		console.log("data:" + data);
+		
+	})
+	.catch(error => console.error("Error:",error));
+}
 
-    for(let book of bookList) {
-      const tr = document.createElement("tr");
-
-      const arr = ['bookId', 'title', 'author', 'createdAt', 'isDeleted'];
-
-      for(let key of arr) {
-        const td = document.createElement("td");
-
-        td.innerText = book[key];
-        tr.append(td);
-      }
-      tbody.append(tr);
-
-    }
-  })
+// 체크박스 전체 선택.
+document.querySelector("#theadCheckAll").addEventListener("change", e => {
+	const checkboxes = tbody.querySelectorAll(".checkbox");
+	checkboxes.forEach(checkbox => {
+		checkbox.checked = e.target.checked;
+	});
 });
+
+// 체크박스 전체 선택 동기화.
+tbody.addEventListener("change", e => {
+	if(e.target.classList.contains("checkbox")) {
+		const checkboxes = tbody.querySelectorAll(".checkbox");
+		const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+		document.querySelector("#theadCheckAll").checked = allChecked;
+	}
+})
+
+const updateBookBtn = document.querySelectorAll("button[name='updateBookBtn']").forEach(button => {
+	button.addEventListener("click", () => {
+		const bookId = button.getAttribute('data-book-id');
+		
+		window.location.href = `/adminBoard/updateBook?bookId=${bookId}`;
+	})
+});
+
+const addBookBtn = document.querySelector("#addBook").addEventListener("click", () => {
+	window.location.href = "/adminBoard/addBook";
+});
+
+

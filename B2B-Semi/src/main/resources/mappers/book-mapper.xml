@@ -95,7 +95,8 @@
 		    GENRES,
 		    PUB_DATE,
 		    CUSTOMER_REVIEW_RANK,
-		    REVIEWCOUNT
+		    REVIEWCOUNT,
+		    STEAMCOUNT
 		FROM 
 		(SELECT
     		BOOK_ID,
@@ -119,7 +120,12 @@
 		    	SELECT COUNT(*) 
 		    	FROM TB_STARPOINT TBS 
 		    	WHERE TBS.BOOK_ID = BOOK.BOOK_ID
-		    ) AS REVIEWCOUNT
+		    ) AS REVIEWCOUNT,
+		    (
+		    	SELECT COUNT(*) 
+		    	FROM TB_FAVORITE TBF 
+		    	WHERE TBF.BOOK_ID = BOOK.BOOK_ID
+		    ) AS STEAMCOUNT
 		FROM TB_BOOKS BOOK
 		WHERE IS_DELETED = 'N'
 		ORDER BY TITLE) BK
@@ -176,7 +182,8 @@
 		    SECOND_CATEGORY,
 		    PUB_DATE,
 		    CUSTOMER_REVIEW_RANK,
-		    REVIEWCOUNT
+		    REVIEWCOUNT,
+		    STEAMCOUNT
 		FROM 
 		(SELECT
     		BOOK_ID,
@@ -199,7 +206,12 @@
 		    	SELECT COUNT(*) 
 		    	FROM TB_STARPOINT TBS 
 		    	WHERE TBS.BOOK_ID = BOOK.BOOK_ID
-		    ) AS REVIEWCOUNT
+		    ) AS REVIEWCOUNT,
+		    (
+		    	SELECT COUNT(*) 
+		    	FROM TB_FAVORITE TBF 
+		    	WHERE TBF.BOOK_ID = BOOK.BOOK_ID
+		    ) AS STEAMCOUNT
 		FROM TB_BOOKS BOOK
 		WHERE IS_DELETED = 'N'
 		<if test='searchInput != ""'>
@@ -314,7 +326,8 @@
 		    SECOND_CATEGORY,
 		    PUB_DATE,
 		    CUSTOMER_REVIEW_RANK,
-		    REVIEWCOUNT
+		    REVIEWCOUNT,
+		    STEAMCOUNT
 		FROM 
 		    (
 		        SELECT 
@@ -338,7 +351,12 @@
 				    	SELECT COUNT(*) 
 				    	FROM TB_STARPOINT TBS 
 				    	WHERE TBS.BOOK_ID = BOOK.BOOK_ID
-				    ) AS REVIEWCOUNT
+				    ) AS REVIEWCOUNT,
+				    (
+				    	SELECT COUNT(*) 
+				    	FROM TB_FAVORITE TBF 
+				    	WHERE TBF.BOOK_ID = BOOK.BOOK_ID
+				    ) AS STEAMCOUNT
 		        FROM "TB_BOOKS" BOOK
 		        WHERE IS_DELETED = 'N'
 		        ORDER BY CUSTOMER_REVIEW_RANK DESC
@@ -421,7 +439,8 @@
 		  	SECOND_CATEGORY,
 		  	PUB_DATE,
 		  	CUSTOMER_REVIEW_RANK,
-		  	REVIEWCOUNT
+		  	REVIEWCOUNT,
+		  	STEAMCOUNT
 		FROM
 			(SELECT
 					BOOK_ID,
@@ -444,7 +463,12 @@
 				  		SELECT COUNT(*) 
 				  		FROM TB_STARPOINT TBS 
 				  		WHERE TBS.BOOK_ID = BOOK.BOOK_ID
-				  	) AS REVIEWCOUNT
+				  	) AS REVIEWCOUNT,
+				  	(
+				    	SELECT COUNT(*) 
+				    	FROM TB_FAVORITE TBF 
+				    	WHERE TBF.BOOK_ID = BOOK.BOOK_ID
+				    ) AS STEAMCOUNT
 				FROM "TB_BOOKS" BOOK
 				WHERE FIRST_CATEGORY LIKE '%' || #{category} || '%'
 				AND IS_DELETED = 'N'
@@ -469,31 +493,37 @@
 			SECOND_CATEGORY,
 			PUB_DATE,
 			CUSTOMER_REVIEW_RANK,
-			REVIEWCOUNT
+			REVIEWCOUNT,
+			STEAMCOUNT
 		FROM 
 		    (
 		        SELECT 
 		            BOOK_ID,
-								COVER_URL,
-						  	CASE 
-						     	WHEN INSTR(TITLE, '-') > 0 THEN SUBSTR(TITLE, 1, INSTR(TITLE, '-') - 1)
-						     	ELSE TITLE
-						  	END AS TITLE,
-						  	TITLE AS FULL_TITLE,
-						  	CASE 
-						      	WHEN INSTR(AUTHOR, ',') > 0 THEN SUBSTR(AUTHOR, 1, INSTR(AUTHOR, ',') - 1)
-						     	ELSE AUTHOR
-						  	END AS AUTHOR,
-						  	DESCRIPTION,
-						  	FIRST_CATEGORY,
-						  	SECOND_CATEGORY,
-						  	TO_CHAR(PUB_DATE, 'YYYY-MM-DD') AS PUB_DATE,
-						  	ROUND(CUSTOMER_REVIEW_RANK, 1) CUSTOMER_REVIEW_RANK,
-						  	(
-						  		SELECT COUNT(*) 
-						  		FROM TB_STARPOINT TBS 
-						  		WHERE TBS.BOOK_ID = BOOK.BOOK_ID
-						  	) AS REVIEWCOUNT
+					COVER_URL,
+				  	CASE 
+				     	WHEN INSTR(TITLE, '-') > 0 THEN SUBSTR(TITLE, 1, INSTR(TITLE, '-') - 1)
+				     	ELSE TITLE
+				  	END AS TITLE,
+				  	TITLE AS FULL_TITLE,
+				  	CASE 
+				      	WHEN INSTR(AUTHOR, ',') > 0 THEN SUBSTR(AUTHOR, 1, INSTR(AUTHOR, ',') - 1)
+				     	ELSE AUTHOR
+				  	END AS AUTHOR,
+				  	DESCRIPTION,
+				  	FIRST_CATEGORY,
+				  	SECOND_CATEGORY,
+				  	TO_CHAR(PUB_DATE, 'YYYY-MM-DD') AS PUB_DATE,
+				  	ROUND(CUSTOMER_REVIEW_RANK, 1) CUSTOMER_REVIEW_RANK,
+				  	(
+				  		SELECT COUNT(*) 
+				  		FROM TB_STARPOINT TBS 
+				  		WHERE TBS.BOOK_ID = BOOK.BOOK_ID
+				  	) AS REVIEWCOUNT,
+				  	(
+			    		SELECT COUNT(*) 
+			    		FROM TB_FAVORITE TBF 
+		    			WHERE TBF.BOOK_ID = BOOK.BOOK_ID
+				    ) AS STEAMCOUNT
 		        FROM "TB_BOOKS" BOOK
 		        WHERE IS_DELETED = 'N'
 		         AND PUB_DATE BETWEEN TRUNC(SYSDATE, 'MM') AND LAST_DAY(SYSDATE)
@@ -519,31 +549,37 @@
 			SECOND_CATEGORY,
 			PUB_DATE,
 			CUSTOMER_REVIEW_RANK,
-			REVIEWCOUNT
+			REVIEWCOUNT,
+			STEAMCOUNT
 		FROM 
 		    (
 		        SELECT 
 		            BOOK_ID,
-								COVER_URL,
-						  	CASE 
-						     	WHEN INSTR(TITLE, '-') > 0 THEN SUBSTR(TITLE, 1, INSTR(TITLE, '-') - 1)
-						     	ELSE TITLE
-						  	END AS TITLE,
-						  	TITLE AS FULL_TITLE,
-						  	CASE 
-						      	WHEN INSTR(AUTHOR, ',') > 0 THEN SUBSTR(AUTHOR, 1, INSTR(AUTHOR, ',') - 1)
-						     	ELSE AUTHOR
-						  	END AS AUTHOR,
-						  	DESCRIPTION,
-						  	FIRST_CATEGORY,
-						  	SECOND_CATEGORY,
-						  	TO_CHAR(PUB_DATE, 'YYYY-MM-DD') AS PUB_DATE,
-						  	ROUND(CUSTOMER_REVIEW_RANK, 1) CUSTOMER_REVIEW_RANK,
-						  	(
-						  		SELECT COUNT(*) 
-						  		FROM TB_STARPOINT TBS 
-						  		WHERE TBS.BOOK_ID = BOOK.BOOK_ID
-						  	) AS REVIEWCOUNT
+					COVER_URL,
+				  	CASE 
+				     	WHEN INSTR(TITLE, '-') > 0 THEN SUBSTR(TITLE, 1, INSTR(TITLE, '-') - 1)
+				     	ELSE TITLE
+				  	END AS TITLE,
+				  	TITLE AS FULL_TITLE,
+				  	CASE 
+				      	WHEN INSTR(AUTHOR, ',') > 0 THEN SUBSTR(AUTHOR, 1, INSTR(AUTHOR, ',') - 1)
+				     	ELSE AUTHOR
+				  	END AS AUTHOR,
+				  	DESCRIPTION,
+				  	FIRST_CATEGORY,
+				  	SECOND_CATEGORY,
+				  	TO_CHAR(PUB_DATE, 'YYYY-MM-DD') AS PUB_DATE,
+				  	ROUND(CUSTOMER_REVIEW_RANK, 1) CUSTOMER_REVIEW_RANK,
+				  	(
+				  		SELECT COUNT(*) 
+				  		FROM TB_STARPOINT TBS 
+				  		WHERE TBS.BOOK_ID = BOOK.BOOK_ID
+				  	) AS REVIEWCOUNT,
+				  	(
+			    		SELECT COUNT(*) 
+			    		FROM TB_FAVORITE TBF 
+		    			WHERE TBF.BOOK_ID = BOOK.BOOK_ID
+				    ) AS STEAMCOUNT
 		        FROM "TB_BOOKS" BOOK
 		        WHERE IS_DELETED = 'N'
 		         AND PUB_DATE BETWEEN TRUNC(SYSDATE, 'YY') AND ADD_MONTHS(TRUNC(SYSDATE, 'YY'), 12) - 1
@@ -578,35 +614,87 @@
 		    GENRES,
 		    PUB_DATE,
 		    CUSTOMER_REVIEW_RANK,
-		    REVIEWCOUNT
+		    REVIEWCOUNT,
+		    STEAMCOUNT
 		FROM 
-		(SELECT
-    		BOOK_ID,
-    		COVER_URL,
-		    CASE 
-		        WHEN INSTR(TITLE, '-') > 0 THEN SUBSTR(TITLE, 1, INSTR(TITLE, '-') - 1)
-		        ELSE TITLE
-		    END AS TITLE,
-		    TITLE AS FULL_TITLE,
-		    CASE 
-		        WHEN INSTR(AUTHOR, ',') > 0 THEN SUBSTR(AUTHOR, 1, INSTR(AUTHOR, ',') - 1)
-		        ELSE AUTHOR
-		    END AS AUTHOR,
-		    DESCRIPTION,
-		    FIRST_CATEGORY,
-		    SECOND_CATEGORY,
-		    CONCAT(FIRST_CATEGORY, CONCAT(',', SECOND_CATEGORY)) GENRES,
-		    TO_CHAR(PUB_DATE, 'YYYY-MM-DD') AS PUB_DATE,
-		    ROUND(CUSTOMER_REVIEW_RANK, 1) CUSTOMER_REVIEW_RANK,
-		    (
-		    	SELECT COUNT(*) 
-		    	FROM TB_STARPOINT TBS 
-		    	WHERE TBS.BOOK_ID = BOOK.BOOK_ID
-		    ) AS REVIEWCOUNT
-		FROM TB_BOOKS BOOK
-		WHERE IS_DELETED = 'N'
-		AND TO_CHAR(PUB_DATE, 'YYYY-MM-DD') BETWEEN #{startDay} AND #{endDay}
-		ORDER BY CUSTOMER_REVIEW_RANK DESC) BK
+			(SELECT
+	    		BOOK_ID,
+	    		COVER_URL,
+			    CASE 
+			        WHEN INSTR(TITLE, '-') > 0 THEN SUBSTR(TITLE, 1, INSTR(TITLE, '-') - 1)
+			        ELSE TITLE
+			    END AS TITLE,
+			    TITLE AS FULL_TITLE,
+			    CASE 
+			        WHEN INSTR(AUTHOR, ',') > 0 THEN SUBSTR(AUTHOR, 1, INSTR(AUTHOR, ',') - 1)
+			        ELSE AUTHOR
+			    END AS AUTHOR,
+			    DESCRIPTION,
+			    FIRST_CATEGORY,
+			    SECOND_CATEGORY,
+			    CONCAT(FIRST_CATEGORY, CONCAT(',', SECOND_CATEGORY)) GENRES,
+			    TO_CHAR(PUB_DATE, 'YYYY-MM-DD') AS PUB_DATE,
+			    ROUND(CUSTOMER_REVIEW_RANK, 1) CUSTOMER_REVIEW_RANK,
+			    (
+			    	SELECT COUNT(*) 
+			    	FROM TB_STARPOINT TBS 
+			    	WHERE TBS.BOOK_ID = BOOK.BOOK_ID
+			    ) AS REVIEWCOUNT,
+			    (
+		    		SELECT COUNT(*) 
+		    		FROM TB_FAVORITE TBF 
+	    			WHERE TBF.BOOK_ID = BOOK.BOOK_ID
+			    ) AS STEAMCOUNT
+			FROM "TB_BOOKS" BOOK
+			WHERE IS_DELETED = 'N'
+			AND TO_CHAR(PUB_DATE, 'YYYY-MM-DD') BETWEEN #{startDay} AND #{endDay}
+			ORDER BY CUSTOMER_REVIEW_RANK DESC
+		) BK
 	</select>
+	
+	
+	<!-- 리뷰 수정 -->
+	<update id="updateBookReview">
+		UPDATE "TB_STARPOINT"
+		SET
+			STAR_POINT = #{starPoint},
+			"COMMENT" = #{comment},
+			COMMENT_FIX_DATE = SYSDATE
+		WHERE BOOK_ID = #{bookId}
+		AND MEMBER_NO = #{memberNo}
+		AND COMMENT_DEL_FL = 'N'
+	</update>
+	
+	
+	<!-- 리뷰 삭제 -->
+	<delete id="deleteReview">
+		DELETE FROM "TB_STARPOINT"
+		WHERE BOOK_ID = #{bookId}
+		AND MEMBER_NO = #{memberNo}
+	</delete>
+	
+	
+	<!-- 찜 여부 확인 -->
+	<select id="selectSteamBook">
+		SELECT COUNT(*)
+		FROM "TB_FAVORITE"
+		WHERE BOOK_ID = #{bookId}
+		AND MEMBER_NO = #{memberNo}
+	</select>
+	
+	
+	<!-- 찜 삭제 -->
+	<delete id="deleteSteamBook">
+		DELETE FROM "TB_FAVORITE" 
+		WHERE BOOK_ID = #{bookId}
+		AND MEMBER_NO = #{memberNo}
+	</delete>
+	
+	
+	<!-- 찜 등록 -->
+	<insert id="insertSteamBook">
+		INSERT INTO "TB_FAVORITE"
+		VALUES(#{bookId}, #{memberNo}, DEFAULT)
+	</insert>
 
 </mapper>

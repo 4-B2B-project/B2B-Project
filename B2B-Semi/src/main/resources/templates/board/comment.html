@@ -22,18 +22,20 @@
 						<img th:if="*{profileImg}" th:src="*{profileImg}">
 	
 						<span th:text="*{memberNickname}">닉네임</span>
-						<span class="comment-date" th:text="*{commentWriteDate}">작성일</span>
+						<span class="comment-date" th:text="*{commentRegiDate}">작성일</span>
 					</p>
 	
-					<p class="comment-content" th:text="*{commentContent}">댓글 내용</p>
+					<p class="comment-content" th:text="*{commentText}">댓글 내용</p>
 	
 					<!-- 버튼 영역 -->
-					<div class="comment-btn-area">
-						<button th:onclick="|showInsertComment(*{commentNo}, this)|">답글</button>
+					<div class="comment-btn">
+						<th:block th:if="${session.loginMember != null">
+							<button class="btn btn-sm btn-info" th:onclick="|showInsertComment(*{commentNo}, this)|">답글</button>
+						</th:block>
 	
 						<th:block th:if="${session.loginMember != null and session.loginMember.memberNo == comment.memberNo}">
-							<button th:onclick="|showUpdateComment(*{commentNo}, this)|">수정</button>
-							<button th:onclick="|deleteComment(*{commentNo})|">삭제</button>
+							<button class="btn btn-sm btn-primary" th:onclick="|showUpdateComment(*{commentNo}, this)|">수정</button>
+							<button class="btn btn-sm btn-danger" th:onclick="|deleteComment(*{commentNo})|">삭제</button>
 						</th:block>
 						<!-- 로그인 회원과 댓글 작성자가 같은 경우 -->
 	

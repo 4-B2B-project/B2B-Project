@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>board Community</title>
+
+	<link rel="stylesheet" href="/css/board/boardInsert.css">
+
+	<!-- templates/common/common.html 조각으로 추가 -->
+	<th:block th:replace="~{common/common}"></th:block>
+
+</head>
+
+<body>
+	<div class="wrapper">
+		<!-- 헤더 추가 -->
+		<th:block th:replace="~{common/header}"></th:block>
+
+		<!-- 사이드 추가 -->
+		<th:block th:replace="~{sideMenu/sideMenu-board}"></th:block>
+
+		<main class="main-content">
+
+			<form action="insert" method="POST" id="boardWriteFrm">
+				<section class="ranking-header">
+					<th:block th:if="${boardCode == 1}">
+						<h1 class="ranking-title">
+							자유게시판 작성
+						</h1>
+					</th:block>
+					
+					<th:block th:if="${boardCode == 4}">
+						<h1 class="ranking-title">
+							문의게시판 작성
+						</h1>
+					</th:block>
+				</section>
+				
+				<section class="genre-section">
+					<div class="input-group">
+		                  <label for="boardTitle">제목</label>
+		                  <input name="boardTitle" class="input-field" placeholder="제목을 입력하세요">
+		              </div>
+				</section>
+	
+				<section class="genre-section" style="margin-bottom: 1rem; height: 500px;">
+					<div class="detail-content">
+						<textarea name="boardContent" class="input-textArea" placeholder="내용을 입력하세요"></textarea>
+					</div>
+				</section>
+				
+				<div style="justify-self: right; margin-bottom: 1rem;">
+					<button class="write-button" id="boardInsert" type="submit">등록</button>
+					<button class="list-button" id="communityList">목록</button>
+				</div>
+			</form>
+
+		</main>
+
+
+		<!-- 푸터 추가-->
+		<th:block th:replace="~{common/footer}"></th:block>
+
+		<script th:inline="javascript">
+			const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ "로그인한 멤버";
+			const boardCode = /*[[${boardCode}]]*/ "게시판 종류 코드번호";
+		</script>
+
+		<script src="/js/board/boardInsert.js"></script>
+
+	</div>
+
+</body>
+
+</html>

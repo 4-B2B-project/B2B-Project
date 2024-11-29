@@ -108,7 +108,8 @@
 									th:data-bookId="${book.bookId}" th:data-title="${book.fullTitle}"
 									th:data-coverUrl="${book.coverUrl}" th:data-author="${book.author}"
 									th:data-rating="${book.customerReviewRank}" th:data-genres="${book.genres}"
-									th:data-description="${book.description}" th:data-reviewCount="${book.reviewCount}">
+									th:data-description="${book.description}" th:data-reviewCount="${book.reviewCount}" 
+									th:data-steamCount="${book.steamCount}">
 									<td th:text="${book.rowNum}" style="text-align: center;">구분번호</td>
 									<td>
 										<div class="book-title"
@@ -225,6 +226,14 @@
 								</div>
 								<div class="book-detail-genres mb-3">
 								</div>
+								<th:block th:if="${session.loginMember != null}">
+									<div class="action-buttons">
+							            <button class="action-btn secondary-btn" id="steamBtn">
+							              <i class="fas fa-heart"></i>
+							              찜하기
+							            </button>
+							       	</div>
+								</th:block>
 							</div>
 						</div>
 

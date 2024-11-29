@@ -36,6 +36,8 @@ public class Book {
 	private float customerReviewRank;	// 도서 리뷰 점수
 	private int rowNum;					// rownum
 	private int reviewCount;			// 리뷰 카운트
+	private int steamCount;				// 찜 카운트
 	private int rankNum;				// 랭킹 번호
+	
 	
 }

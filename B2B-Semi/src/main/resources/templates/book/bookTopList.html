@@ -74,6 +74,14 @@
 								</div>
 								<div class="book-detail-genres mb-3">
 								</div>
+								<th:block th:if="${session.loginMember != null}">
+									<div class="action-buttons">
+							            <button class="action-btn secondary-btn" id="steamBtn">
+							              <i class="fas fa-heart"></i>
+							              찜하기
+							            </button>
+							       	</div>
+								</th:block>
 							</div>
 						</div>
 
@@ -127,6 +135,7 @@
 		<th:block th:replace="~{common/footer}"></th:block>
 
 		<script th:inline="javascript">
+			const loginMember = /*[[${session.loginMember}]]*/ "로그인한 멤버";
 			// 샘플 도서 데이터
 			const books = /*[[${bookList}]]*/ "도서 목록";
 

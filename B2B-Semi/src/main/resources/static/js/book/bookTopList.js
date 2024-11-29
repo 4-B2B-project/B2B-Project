@@ -22,7 +22,8 @@ function renderBookList() {
 					data-bookId="${book.bookId}" data-title="${book.fullTitle}"
 					data-coverUrl="${book.coverUrl}" data-author="${book.author}"
 					data-rating="${book.customerReviewRank}" data-genres="${book.genres}"
-					data-description="${book.description}" data-reviewCount="${book.reviewCount}">
+					data-description="${book.description}" data-reviewCount="${book.reviewCount}"
+					data-steamCount="${book.steamCount}">
 	                <h3 class="book-title">${book.title}
 	                </h3>
 	                <p class="book-author">${book.author}</p>
@@ -67,6 +68,7 @@ bookInfoRows.forEach(row => {
 		const bookGenres = row.getAttribute('data-genres');
 		const bookDescription = row.getAttribute('data-description');
 		const reviewCount = row.getAttribute('data-reviewCount');
+		const steamCount = row.getAttribute('data-steamCount');
 
 
 		// 모달 내 요소 업데이트
@@ -75,11 +77,15 @@ bookInfoRows.forEach(row => {
 		document.querySelector('.book-detail-author').textContent = bookAuthor;
 		document.querySelector('.book-detail-stats .stat-item:first-child span').textContent = bookRating;
 		document.querySelector('.book-detail-stats .stat-item:nth-child(2) span').textContent = reviewCount;
+		document.querySelector('.book-detail-stats .stat-item:last-child span').textContent = steamCount;
 		document.querySelector('.avgScore').textContent = "평균 " + bookRating + " : 10.0";
 		document.querySelector('.reviewCount').textContent = "총 " + reviewCount + "개의 리뷰";
 
 		// bookId 저장
 		document.querySelector('#selectBookId').value = bookId;
+		
+		// 찜 여부 조회
+		isBookSteam(bookId);
 
 
 		// 장르 업데이트
@@ -107,6 +113,75 @@ bookInfoRows.forEach(row => {
 		selectReviewList(bookId);
 	});
 });
+
+// 찜하기 구현
+const steamBtn = document.querySelector("#steamBtn");
+if(steamBtn != null) {
+	steamBtn.addEventListener("click", () => {
+		
+		const bookId = document.getElementById("selectBookId").value;
+		
+		fetch("/book/steamBook", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(bookId)
+		})
+		.then(resp => resp.json())
+		.then(result => {
+			if(result == 1) {
+				steamBtn.style.backgroundColor = "#4f46e5";
+				steamBtn.style.color = "white";
+				alert("찜 완료");
+				
+			} else if(result == 2) {
+				steamBtn.style.backgroundColor = "white";
+				steamBtn.style.color = "#4F46E5";
+				alert("찜 취소")
+				
+			} else {
+				alert("찜하기 오류 발생");
+				
+			}
+			
+		});
+		
+	});
+	
+}
+
+// 찜 여부 조회
+function isBookSteam(bookId) {
+	
+	if(loginMember != null) {
+		memberNo = loginMember.memberNo;
+		
+		obj = {
+			"memberNo" : memberNo,
+			"bookId" : bookId
+		};
+		
+		fetch("/book/isBookSteam"	, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(obj)
+		})
+		.then(resp => resp.json())
+		.then(result => {
+			console.log();
+			if(result == 1) {
+				steamBtn.style.backgroundColor = "#4f46e5";
+				steamBtn.style.color = "white";
+				
+			} else {
+				steamBtn.style.backgroundColor = "white";
+				steamBtn.style.color = "#4F46E5";
+				
+			}
+			 		
+		});
+	}
+	
+}
 
 // 댓글 리뷰 목록 조회
 function selectReviewList(bookId) {

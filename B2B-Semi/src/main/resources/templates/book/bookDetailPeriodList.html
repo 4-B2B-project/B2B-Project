@@ -81,7 +81,8 @@
 						th:data-bookId="${book.bookId}" th:data-title="${book.fullTitle}"
 						th:data-coverUrl="${book.coverUrl}" th:data-author="${book.author}"
 						th:data-rating="${book.customerReviewRank}" th:data-genres="${book.genres}"
-						th:data-description="${book.description}" th:data-reviewCount="${book.reviewCount}" th:data-pubDate="${book.pubDate}">
+						th:data-description="${book.description}" th:data-reviewCount="${book.reviewCount}" 
+						th:data-pubDate="${book.pubDate}" th:data-steamCount="${book.steamCount}">
 							<div class="rank-badge" th:text="${book.rowNum}"></div>
 				            <img th:src="${book.coverUrl}" th:alt="${book.title}" class="book-cover">
 				            <div class="book-info">
@@ -198,6 +199,14 @@
 								</div>
 								<div class="book-detail-genres mb-3">
 								</div>
+								<th:block th:if="${session.loginMember != null}">
+									<div class="action-buttons">
+							            <button class="action-btn secondary-btn" id="steamBtn">
+							              <i class="fas fa-heart"></i>
+							              찜하기
+							            </button>
+							       	</div>
+								</th:block>
 								<div class="book-detail-pubDate mb-3">
 									출판일 : 
 									<span></span>

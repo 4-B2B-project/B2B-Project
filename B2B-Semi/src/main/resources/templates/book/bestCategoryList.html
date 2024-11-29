@@ -53,7 +53,8 @@
 								th:data-bookId="${book.bookId}" th:data-title="${book.fullTitle}"
 								th:data-coverUrl="${book.coverUrl}" th:data-author="${book.author}"
 								th:data-rating="${book.customerReviewRank}" th:data-genres="${book.genres}"
-								th:data-description="${book.description}" th:data-reviewCount="${book.reviewCount}">
+								th:data-description="${book.description}" th:data-reviewCount="${book.reviewCount}" 
+								th:data-steamCount="${book.steamCount}">
 				                <h3 class="book-title" th:text="${book.title}">
 				                </h3>
 				                <p class="book-author" th:text="${book.author}"></p>
@@ -71,13 +72,12 @@
 						</div>
 					</th:block>
 				</div>
-				
 			</section>
 		</main>
 
 		<!-- 도서 상세 모달 -->
 		<div class="modal fade" id="bookDetailModal" tabindex="-1" aria-labelledby="bookDetailModalLabel"
-			aria-hidden="true">
+			aria-hidden="true" disableAutoFocus="true">
 			<div class="modal-dialog modal-lg modal-dialog-scrollable">
 				<div class="modal-content">
 					<div class="modal-header border-0">
@@ -111,6 +111,14 @@
 								</div>
 								<div class="book-detail-genres mb-3">
 								</div>
+								<th:block th:if="${session.loginMember != null}">
+									<div class="action-buttons">
+							            <button class="action-btn secondary-btn" id="steamBtn">
+							              <i class="fas fa-heart"></i>
+							              찜하기
+							            </button>
+							       	</div>
+								</th:block>
 							</div>
 						</div>
 
