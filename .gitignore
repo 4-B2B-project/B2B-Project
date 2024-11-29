@@ -9,7 +9,7 @@ MANIFEST.MF
 settings.json
 *.log
 config.properties
-
+*.sql
 driver.xml
 
 META-INF
