@@ -15,6 +15,7 @@ import lombok.ToString;
 @Builder
 public class Book {
 
+	// DB 항목
 	private int bookId;					// 도서 아이디
 	private String title;				// 도서 제목
 	private String isbn;				// 도서 국제표준번호
@@ -29,9 +30,14 @@ public class Book {
 	private String createdAt;			// 도서 등록일자
 	private String updatedAt;			// 도서 수정일자
 	
+	// DB외의 별도 추가 항목
 	private String genres;				// 도서 1,2장르 합친부분
-	private int customerReviewRank;		// 도서 리뷰 점수
+	private String fullTitle;			// 도서 전체 제목
+	private float customerReviewRank;	// 도서 리뷰 점수
 	private int rowNum;					// rownum
 	private int reviewCount;			// 리뷰 카운트
+	private int steamCount;				// 찜 카운트
+	private int rankNum;				// 랭킹 번호
+	
 	
 }

@@ -99,7 +99,7 @@
   
   <div class="wrapper">
     <!-- 헤더 추가 -->
-    <th:block th:replace="~{header/header-login-admin}"></th:block>
+    <th:block th:replace="~{common/header}"></th:block>
   
   <main>
 
@@ -110,20 +110,19 @@
 
 		<section class="ranking-header">
 		  <h1 class="ranking-title">
-		    <i class="fas fa-crown me-2" style="color: #FFD700;"></i>
-		    내 정보
+		    도서 관리
 		  </h1>
 		</section>
 		
 		<section class="ranking-header">
 			<select name="key" id="searchKey">
-				<option value="t">도서 제목</option>
-				<option value="c">내용</option>
-				<option value="tc">제목+내용</option>
-				<option value="w">작가명</option>
+				<option value="title">도서 제목</option>
+
+				<option value="name">작가명</option>
+				<option value="delfl">삭제 여부</option>
 			</select>
 			
-		  <input type="text" placeholder="검색어를 입력하세요." id="searchInput" name="search">
+		  <input type="text" placeholder="검색어를 입력하세요." id="searchInput" name="search" th:value="${search}">
 		  <button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i>검색</button>
 		</section>
 
@@ -134,17 +133,97 @@
 	        <th>번호</th>
 	        <th>도서 제목</th>
 	        <th>작가명</th>
-	        <th>등록일</th>
+	        <th>출판일</th>
 	        <th>삭제 여부</th>
 	        <th>도서 수정</th>
-	        <th><input type="checkbox" id="checkAll" name="checking"></th>
+	        <th><input type="checkbox" id="theadCheckAll" class="checkbox"></th>
 	      </thead>
 
 	      <tbody id="tbody">
-
+			<th:block th:if="${#lists.isEmpty(bookList)}">
+				<tr><th colspan="7">없는 도서입니다.</th></tr>
+			</th:block>
+			
+			<th:block th:unless="${#lists.isEmpty(bookList)}">
+				
+				<tr th:each="book, iterStat : ${bookList}" th:object="${book}">
+					<td th:text="*{rowNum}">번호</td>
+					<td th:text="*{title}">도서 제목</td>
+					<td th:text="*{author}">작가명</td>
+					<td th:text="*{pubDate}">출판일</td>
+					<td th:text="*{isDeleted}">삭제 여부</td>
+					<td>
+						<button name="updateBookBtn" th:data-book-id="*{bookId}">도서 수정</button>
+					</td>
+					<td>
+						<input class="checkbox" type="checkbox" th:value="*{bookId}">
+					</td>
+				</tr>
+			
+			</th:block>
 	      </tbody>
 	    </table>
 
+		<div class="btn-area" style="justify-self: right; margin-top: 15px; margin-bottom: 15px;">
+			<button id="addBook" class="btn btn-sn btn-info">도서 추가</button>
+			<button id="updateDelFlY" class="btn btn-sn btn-danger">도서 삭제</button>
+			<button id="updateDelFlN" class="btn btn-sn btn-primary">삭제 복구</button>
+		</div>
+		
+		<!-- 페이지네이션 -->
+		<nav aria-label="Page navigation">
+		    <ul class="pagination">
+		        <!-- 첫 페이지로 이동 -->
+		        <li class="page-item" th:classappend="${pagination.currentPage <= 1 || pagination.startPage == 1} ? 'disabled'">
+		            <a class="page-link py-1 px-2"
+		               th:href="${pagination.currentPage <= 1 || pagination.startPage == 1} 
+		                        ? '#' 
+		                        : @{/adminBoard/bookManage(cp=1, key=${key}, search=${search})}"
+		               th:aria-disabled="${pagination.currentPage <= 1 || pagination.startPage == 1}">&lt;&lt;</a>
+		        </li>
+
+		        <!-- 이전 페이지로 이동 -->
+		        <li class="page-item" th:classappend="${pagination.currentPage <= 1 || pagination.startPage == 1} ? 'disabled'">
+		            <a class="page-link py-1 px-2"
+		               th:href="${pagination.currentPage <= 1 || pagination.startPage == 1} 
+		                        ? '#' 
+		                        : @{/adminBoard/bookManage(cp=${pagination.prevPage}, key=${key}, search=${search})}"
+		               th:aria-disabled="${pagination.currentPage <= 1 || pagination.startPage == 1}">이전</a>
+		        </li>
+
+				<!-- 페이지 번호 -->
+				<th:block th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}"
+				           th:if="${pagination.startPage > 0 and pagination.endPage > 0}">
+				    <li class="page-item" th:classappend="${i == pagination.currentPage} ? 'active'">
+				        <a class="page-link py-1 px-2"
+				           th:href="${i == pagination.currentPage} 
+				                    ? '#' 
+				                    : @{/adminBoard/bookManage(cp=${i}, key=${key}, search=${search})}"
+				           th:text="${i}"
+				           th:aria-current="${i == pagination.currentPage} ? 'page'">현재페이지</a>
+				    </li>
+				</th:block>
+
+		        <!-- 다음 페이지로 이동 -->
+		        <li class="page-item" th:classappend="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} ? 'disabled'">
+		            <a class="page-link py-1 px-2"
+		               th:href="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} 
+		                        ? '#' 
+		                        : @{/adminBoard/bookManage(cp=${pagination.nextPage}, key=${key}, search=${search})}"
+		               th:aria-disabled="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage}">다음</a>
+		        </li>
+
+		        <!-- 마지막 페이지로 이동 -->
+		        <li class="page-item" th:classappend="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} ? 'disabled'">
+		            <a class="page-link py-1 px-2"
+		               th:href="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} 
+		                        ? '#' 
+		                        : @{/adminBoard/bookManage(cp=${pagination.maxPage}, key=${key}, search=${search})}"
+		               th:aria-disabled="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage}">&gt;&gt;</a>
+		        </li>
+		    </ul>
+		</nav>
+		
 	  </section>
 
       

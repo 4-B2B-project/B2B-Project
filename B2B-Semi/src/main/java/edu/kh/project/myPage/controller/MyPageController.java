@@ -11,16 +11,21 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.project.board.model.dto.Board;
+import edu.kh.project.board.model.dto.Comment;
 import edu.kh.project.book.model.dto.Book;
 import edu.kh.project.common.util.Pagination;
 import edu.kh.project.member.model.dto.Member;
@@ -43,12 +48,12 @@ public class MyPageController {
 
 	private final MyPageService service;
 
-	/**
-	 * @param loginMember : 세션에 존재하는 loginMember를 얻어와 매개변수에 대입
+	/** 내정보 화면 이동
+	 * @param loginMember
+	 * @param model
 	 * @return
 	 */
-	// 내정보 화면 이동
-	@GetMapping("info") // /myPage/info GET 방식 요청
+	@GetMapping("info") 
 	public String info(@SessionAttribute("loginMember") Member loginMember, Model model) {
 
 		System.out.println("loginMember: " + loginMember);
@@ -60,8 +65,12 @@ public class MyPageController {
 		return "myPage/myPage-info";
 	}
 
-	// 내 정보 수정 화면 이동
-	@GetMapping("editInfo") // /myPage/editInfo GET 방식 요청
+	/** 내 정보 수정 화면 이동
+	 * @param loginMember
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("editInfo") 
 	public String editInfo(@SessionAttribute("loginMember") Member loginMember, Model model) {
 
 		// 현재 로그인한 회원의 주소를 꺼내옴
@@ -69,8 +78,6 @@ public class MyPageController {
 
 		log.debug("loginMember : " + loginMember);
 
-	
-		
 		String memberAddress = loginMember.getMemberAddress();
 		// 13379^^^경기 성남시 수정구 분당수서로 1181-24^^^101호
 
@@ -87,30 +94,33 @@ public class MyPageController {
 			// 0번 1번 2번 인덱스
 
 			if (arr.length == 3) {
-	            model.addAttribute("postcode", arr[0]);
-	            model.addAttribute("address", arr[1]);
-	            model.addAttribute("detailAddress", arr[2]);
-	        } else {
-	            // 배열 길이가 부족한 경우, 처리할 메시지 또는 기본 값 설정
-	            model.addAttribute("message", "주소 형식이 잘못되었습니다.");
-	        }
+				model.addAttribute("postcode", arr[0]);
+				model.addAttribute("address", arr[1]);
+				model.addAttribute("detailAddress", arr[2]);
+			} else {
+				// 배열 길이가 부족한 경우, 처리할 메시지 또는 기본 값 설정
+				model.addAttribute("message", "주소 형식이 잘못되었습니다.");
+			}
 		}
 
-		
 		return "myPage/myPage-editInfo";
 	}
 
 	
-	
-	// 찜한 도서 목록 이동
-	@GetMapping("favBook") // /myPage/favBook GET 방식 요청
+	/** 찜한 도서 목록 이동
+	 * @param loginMember
+	 * @param model
+	 * @param ra
+	 * @return
+	 */
+	@GetMapping("favBook") 
 	public String favBook(@SessionAttribute("loginMember") Member loginMember, Model model,
-			RedirectAttributes ra) { /* @SessionAttribute("loginMember") Member loginMember */
+			RedirectAttributes ra) { 
 
-		int memberNo = loginMember.getMemberNo(); // 로그인한 회원 번호
+		int memberNo = loginMember.getMemberNo(); 
 
 		// 찜한 도서 목록 가져오기
-		List<Book> favoriteBooks = service.selectFavoriteBooks(memberNo); // memberNo
+		List<Book> favoriteBooks = service.selectFavoriteBooks(memberNo); 
 
 		// 모델에 데이터 추가
 		model.addAttribute("favoriteBooks", favoriteBooks);
@@ -126,96 +136,167 @@ public class MyPageController {
 	}
 
 	
-
-	// 내가 작성한 게시글 목록 이동
-	@GetMapping("boardList") // /myPage/boardList GET 방식 요청
-	public String boardList(/*@PathVariable("boardCode") int boardCode,*/
+	/** 내가 작성한 게시글 목록 이동
+	 * @param loginMember
+	 * @param cp
+	 * @param model
+	 * @param paramMap
+	 * @return
+	 */
+	@GetMapping("boardList") 
+	public String boardList(
 			@SessionAttribute("loginMember") Member loginMember,
-			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
-			Model model,
-			@RequestParam Map<String, Object> paramMap ) {
+			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
+			@RequestParam Map<String, Object> paramMap) {
+
 		
-		// 1. 로그인한 사용자의 회원 번호
-	    int memberNo = loginMember.getMemberNo();
-	    
-	  
-	    
-	    
-	    
-	    Map<String, Object> SearchList = null;
-		
-		
-	    List<Board> boardList = null;
-		
+		int memberNo = loginMember.getMemberNo();
+		Map<String, Object> boardList = null;
+
 		if (!paramMap.isEmpty()) {
-		    paramMap.remove("cp"); // paramMap에서 cp 제거
+			paramMap.remove("cp"); 
 		}
-		
-		
-		if(paramMap.isEmpty()) { 
+
+		if (paramMap.isEmpty()) {
 			// 검색 조건이 없을 경우
 			// 게시글 목록 조회
-			log.debug("사용자가 작성한 전체 게시글 조회 요청");
-			boardList  = service.selectBoardList(memberNo);
-			
+
+			boardList = service.selectBoardList(memberNo, cp);
+
 		} else {
 			paramMap.put("memberNo", memberNo);
 			// 검색 조건이 있을 경우
 			// 게시글 목록 검색 조회
-			 log.debug("사용자가 작성한 게시글 검색 요청, 조건: {}", paramMap);
-			 SearchList  = service.boardSearchList(cp,paramMap);
-			
+			log.debug("사용자가 작성한 게시글 검색 요청, 조건: {}", paramMap);
+			boardList = service.searchBoardList(cp, paramMap);
+
 		}
-		
-		
-	  
-	    
-		
-	    // Pagination 객체를 직접 전달
-	    //Pagination pagination = (Pagination) map.get("pagination");
-		
+
 		// 데이터 전달
-	    // model.addAttribute("pagination", pagination);
-	    model.addAttribute("boardList", boardList);
-		
-		
+		model.addAttribute("pagination", boardList.get("pagination"));
+		model.addAttribute("boardList", boardList.get("boardList"));
+
 		// 검색 데이터 전달
 		model.addAttribute("paramMap", paramMap); // 검색 조건 및 파라미터
-		
-		//log.debug("rowNum : " + map.get("boardList"));
-		
-		
+
 		log.debug("paramMap: {}", paramMap);
 		log.debug("boardList: {}", boardList);
-		
-		
-		
-		
-		
-		
+
 		return "myPage/myPage-boardList";
 	}
 
 	
-	
-	
-	
-	
-	
-	// 댓글 목록 이동
-	@GetMapping("commentList") // /myPage/commentList GET 방식 요청
-	public String commentList() {
+	/** 게시글 상세 정보 이동
+	 * @param boardNo
+	 * @param model
+	 * @param loginMember
+	 * @return
+	 */
+	@GetMapping("boardDetail")
+	public String boardDetail(@RequestParam("boardNo") int boardNo, Model model,
+			@SessionAttribute(value = "loginMember", required = false) Member loginMember) {
+
+		// 서비스 호출하여 게시글 번호에 해당하는 게시글 정보를 가져옴
+		Board boardDetail = service.selectBoardDetail(boardNo);
+
+		if (boardDetail == null) {
+			return "redirect:/myPage/boardList"; // 게시글이 없을 경우 목록으로 리다이렉트
+		}
+
+		// 모델에 게시글 정보 추가
+		model.addAttribute("boardDetail", boardDetail);
+
+		// 게시글 상세보기 페이지로 이동
+		return "myPage/myPage-boardDetail";
+	}
+
+
+	/** 댓글 목록 이동
+	 * @param loginMember
+	 * @param cp
+	 * @param model
+	 * @param paramMap
+	 * @return
+	 */
+	@GetMapping("commentList") 
+	public String commentList(@SessionAttribute("loginMember") Member loginMember,
+			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
+			@RequestParam Map<String, Object> paramMap) {
+
+		int memberNo = loginMember.getMemberNo();
+
+		Map<String, Object> commentList = null;
+
+		if (!paramMap.isEmpty()) {
+			paramMap.remove("cp");
+		}
+
+		if (paramMap.isEmpty()) {
+			// 검색 조건이 없을 경우
+			// 게시글 목록 조회
+
+			commentList = service.selectCommentList(memberNo, cp);
+
+		} else {
+			paramMap.put("memberNo", memberNo);
+			// 검색 조건이 있을 경우
+			// 게시글 목록 검색 조회
+			log.debug("사용자가 작성한 댓글 검색 요청, 조건: {}", paramMap);
+			commentList = service.commentSearchList(cp, paramMap);
+
+		}
+
+		// 데이터 전달
+		model.addAttribute("pagination", commentList.get("pagination"));
+		model.addAttribute("commentList", commentList.get("commentList"));
+		// 검색 데이터 전달
+		model.addAttribute("paramMap", paramMap); // 검색 조건 및 파라미터
+
+
+		log.debug("paramMap: {}", paramMap);
+		log.debug("commentList: {}", commentList);
+
 		return "myPage/myPage-commentList";
 	}
 
 	
 	
-	// 비밀번호 변경 이동
-	@GetMapping("changePw") // /myPage/changePw GET 방식 요청
+	
+
+	/** 게시글 상세정보 수정
+	 * @param boardNo
+	 * @param model
+	 * @param loginMember
+	 * @return
+	 */
+	@GetMapping("/{boardNo}/update")
+	public String updateBoardForm(@PathVariable("boardNo") int boardNo, Model model,
+			@SessionAttribute("loginMember") Member loginMember) {
+
+		// 게시글 상세 정보를 조회해서 수정 폼에 뿌려줌
+		Board boardDetail = service.selectBoardDetail(boardNo);
+
+		if (boardDetail == null) {
+			return "redirect:/myPage/boardList"; // 게시글이 없는 경우 목록으로 이동
+		}
+
+		model.addAttribute("boardDetail", boardDetail);
+		return "myPage/myPage-boardEdit"; // 수정 폼 페이지
+	}
+	
+	// 댓글 목록 화면 이동 및  수정
+	
+	
+	
+	
+	
+	/** 비밀번호 변경 이동
+	 * @return
+	 */
+	@GetMapping("changePw") 
 	public String changePw() {
 		return "myPage/myPage-changePw";
 	}
-	
 
 	// ---------------------------- POST -------------------------------------
 
@@ -228,10 +309,8 @@ public class MyPageController {
 	 * @return
 	 */
 	@PostMapping("info")
-	public String profileImageInfo(
-			@RequestParam("profileImg") MultipartFile profileImg,
-			@SessionAttribute("loginMember") Member loginMember,
-			RedirectAttributes ra) throws Exception {
+	public String profileImageInfo(@RequestParam("profileImg") MultipartFile profileImg,
+			@SessionAttribute("loginMember") Member loginMember, RedirectAttributes ra) throws Exception {
 
 		int result = service.profileImageInfo(profileImg, loginMember);
 
@@ -293,13 +372,11 @@ public class MyPageController {
 	 * @param loginMember : 세션에 등록된 현재 로그인한 회원 정보
 	 * @return ra : 리다이렉트 시 request scope 로 메시지 전달
 	 */
-	@PostMapping("changePw") // /myPage/changePw POST 요청 매핑
+	@PostMapping("changePw") 
 	public String changePw2(@SessionAttribute("loginMember") Member loginMember,
-			@RequestParam Map<String, Object> paramMap,
-			RedirectAttributes ra
-			) {
+			@RequestParam Map<String, Object> paramMap, RedirectAttributes ra) {
 
-		// 로그인한 회원의 번호
+		
 		int memberNo = loginMember.getMemberNo();
 
 		// 회원 비밀번호 수정
@@ -332,16 +409,21 @@ public class MyPageController {
 
 	}
 
-	// 내 정보 수정 화면 이동
+
+	/** 내 정보 수정 화면 이동
+	 * @param inputMember
+	 * @param loginMember
+	 * @param memberAddress
+	 * @param ra
+	 * @return
+	 */
 	@PostMapping("editInfo") // /myPage/changePw GET 방식 요청
-	public String editInfo(Member inputMember,
-			@SessionAttribute("loginMember") Member loginMember,
-			@RequestParam("memberAddress") String[] memberAddress,
-			RedirectAttributes ra
+	public String editInfo(Member inputMember, @SessionAttribute("loginMember") Member loginMember,
+			@RequestParam("memberAddress") String[] memberAddress, RedirectAttributes ra
 
 	) {
 
-		// inputMember에 현재 로그인한 회원의 번호를 꺼내옴
+		
 		inputMember.setMemberNo(loginMember.getMemberNo());
 
 		// 회원 정보 수정 서비스
@@ -369,14 +451,12 @@ public class MyPageController {
 			loginMember.setMemberNickname(inputMember.getMemberNickname()); // 닉네임
 
 			loginMember.setMemberTel(inputMember.getMemberTel()); // 전화번호
-			
+
 			loginMember.setMemberBookCategory(inputMember.getMemberBookCategory()); // 선호 장르
 
 			loginMember.setMemberAddress(inputMember.getMemberAddress()); // 주소
-			
-			
+
 			message = "회원 정보 수정 성공!";
-			
 
 		} else { // 수정 실패
 			message = "회원 정보 수정 실패";
@@ -386,6 +466,73 @@ public class MyPageController {
 		ra.addFlashAttribute("message", message);
 
 		return "redirect:info";
+
+	}
+
+	
+	/** 게시글 상세 정보 수정
+	 * @param boardNo
+	 * @param inputBoard
+	 * @param loginMember
+	 * @return
+	 */
+	@PostMapping("/{boardNo}/update")
+	@ResponseBody // 비동기 요청에 응답하기 위해 JSON 형태로 반환
+	public Map<String, Object> boardUpdate(
+			@PathVariable("boardNo") int boardNo, 
+			@RequestBody Board inputBoard,
+			@SessionAttribute("loginMember") Member loginMember) {
+
+		// 1. 커맨드 객체(inputBoard)에 ,boardNo, memberNo 세팅
+
+		inputBoard.setBoardNo(boardNo);
+		inputBoard.setMemberNo(loginMember.getMemberNo());
+		// inputBoard => (제목, 내용, boardNo, memberNo)
+
+		// 2. 게시글 수정 서비스 호출 후 결과 반환 받기
+		int result = service.boardUpdate(inputBoard);
+
+		// 3. 서비스 결과에 따라 JSON 형태의 응답 생성
+		Map<String, Object> response = new HashMap<>();
+		response.put("success", result > 0);
+		response.put("message", result > 0 ? "게시글이 수정되었습니다" : "수정 실패");
+
+		return response;
+	}
+
+
+	/** 게시글 상세 정보 삭제
+	 * @param boardNo
+	 * @param loginMember
+	 * @param ra
+	 * @return
+	 * 
+	 * 서버 리소스를 변경하거나 삭제하는 작업은 HTTP 표준에서 GET 방식이
+	// 아닌 POST, PUT, DELETE 같은 메서드로 처리하도록 권장
+	 */
+	@RequestMapping(value ="/{boardNo}/delete", method = RequestMethod.POST ) 
+	@ResponseBody // 비동기 요청에 응답하기 위해 JSON 형태로 반환
+	public Map<String, Object> boardDelete(
+						@PathVariable("boardNo") int boardNo,
+						@SessionAttribute("loginMember") Member loginMember, RedirectAttributes ra) {
+
+		
+		Map<String, Integer> map = new HashMap<>();
+		
+		map.put("boardNo", boardNo);
+		map.put("memberNo", loginMember.getMemberNo());
+
+		int result = service.boardDelete(map);
+
+		
+
+		 // JSON 응답 생성
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("success", result > 0);
+	    response.put("message", result > 0 ? "게시글이 삭제되었습니다." : "게시글 삭제에 실패했습니다.");
+
+	    return response;
+
 	}
 
 }

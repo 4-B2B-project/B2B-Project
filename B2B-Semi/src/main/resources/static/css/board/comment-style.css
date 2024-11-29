@@ -3,23 +3,29 @@
 	display: flex;
 	min-height: 85px;
 	justify-content: center;
-	
 	margin: 30px 0;
 }
 
 .comment-write-area > textarea{
-	flex-basis: 75%;
+	flex-basis: 92%;
     margin-right: 10px;
 	resize: none;
 }
 
 .comment-write-area > button{
-	flex-basis: 7%;
+	flex-basis: 8%;
     height: 85px;
-
 	font-weight: bold;
     border: 0;
-    background-color: #455ba8;
+	background-color: #4F46E5;
+	filter: brightness(175%);
+    color: white;
+    cursor: pointer;
+}
+
+.comment-write-area > button:hover{
+	background-color: #4F46E5;
+	filter: brightness(100%);
     color: white;
     cursor: pointer;
 }
@@ -61,17 +67,14 @@
     height: 30px;
 	margin-left: 10px;
 
-    font-weight: bold;
     border: 0;
-    background-color: #455ba8;
     color : white;
 
     cursor: pointer;
 }
 
 .comment-btn-area button:hover{
-    background-color: white;
-    color : #455ba8;
+    color : white;
     border: 2px solid #455ba8;
 }
 
@@ -92,17 +95,6 @@
 	position: relative;
 }
 
-/* 
-.child-comment:before {
-	content: "\f0a4";
-	font-family: "FontAwesome";
-	
-	position : absolute;
-	left : 0;
-	top : 35px;
-} */
-
-
 /* 답글 */
 .commentInsertContent{
 	width: 100%;
@@ -110,8 +102,6 @@
     resize: none;
     margin-top : 20px;
 }
-
-
 
 /* 댓글 내용 */
 .comment-content{

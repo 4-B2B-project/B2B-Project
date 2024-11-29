@@ -24,7 +24,7 @@ public class Member {
 	private String memberAddress;
 	private String profileImg;
 	private String enrollDate;
-	private String memberDelFl;
+	private Boolean memberDelFl;
 	private int memberAuth;
 	private String memberBookCategory;
 

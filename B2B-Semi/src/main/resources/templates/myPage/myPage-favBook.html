@@ -11,72 +11,6 @@
 
   <link rel="stylesheet" href="/css/myPage/myPage-favBook.css"> <!-- 이 경로가 맞다.-->
 
-  <style>
-    /* 기본 전체 설정 시작 */
-    .wrapper {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    /* 기본 전체 설정 끝 */
-
-    /* Main Content Styles */
-    .main-content {
-      margin-left: var(--sidebar-width);
-      min-height: 75vh;
-      padding: 2rem;
-      flex-grow: 1;
-    }
-
-    /* 타이틀 시작 */
-    .ranking-header {
-      background: white;
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      margin-bottom: 2rem;
-    }
-
-    .ranking-title {
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: var(--dark-text);
-      margin-bottom: 1.5rem;
-    }
-
-    /* 타이틀 끝 */
-
-
-    /* 부제목 시작 */
-    .genre-section {
-      background: white;
-      border-radius: 15px;
-      padding: 2rem;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      margin-bottom: 2rem;
-    }
-
-    .genre-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-      padding-bottom: 1rem;
-      border-bottom: 2px solid var(--light-bg);
-    }
-
-    .genre-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--dark-text);
-    }
-
-    /* 부제목 끝 */
-
-    
-  </style>
-
 </head>
 
 <body>
@@ -102,14 +36,20 @@
       <section class="genre-section">
         <div class="genre-header">
           <div class="book-grid">
+
             <!-- Book Card 형식 -->
             <div th:if="${#lists.isEmpty(favoriteBooks)}">
               <p>찜한 도서가 없습니다.</p>
             </div>
 
-            <div th:each="book, iterStat : ${favoriteBooks}" class="book-card">
+            <div th:each="book, iterStat : ${favoriteBooks}" class="book-card bookInfo" th:data-bookId="${book.bookId}"
+              th:data-title="${book.title}" th:data-author="${book.author}" th:data-coverUrl="${book.coverUrl}"
+              th:data-rating="${book.customerReviewRank}" th:data-genres="${book.genres != null ? book.genres : ''}" 
+              th:data-description="${book.description}" th:data-reviewCount="${book.reviewCount}"
+              onclick="showBookDetailModal(this)">
 
-              <div class="rank-badge" th:text="${iterStat.index + 1}"></div> <!-- 랭크 뱃지 iterstat으로 순서대로-->
+              <div class="rank-badge" th:text="${iterStat.index + 1}"></div>
+              <!-- 랭크 뱃지 iterstat으로 순서대로-->
               <img th:src="${book.coverUrl}" alt="Book Cover" class="book-cover">
 
               <div class="book-info">
@@ -119,7 +59,6 @@
                   <div class="stat-item">
                     <i class="fa-solid fa-pen-nib"></i>
                     <span th:text="${book.author}">저자</span>
-
                   </div>
                 </div>
 
@@ -128,10 +67,25 @@
                     <span class="star-icon">★</span>
                     <span th:text="${book.customerReviewRank}">평점</span>
                   </div>
+
+                  <div class="stat-item">
+                    <i class="fas fa-comment text-primary"></i>
+                    <span ></span>
+                  </div>
+
+                  <div class="stat-item">
+                    <i class="fas fa-heart text-danger"></i>
+                    <span></span>
+                  </div>
+
                 </div>
 
-              </div>
+               
 
+
+
+
+              </div>
             </div>
 
           </div>
@@ -139,15 +93,116 @@
         </div>
       </section>
 
-
     </main>
+
+    <!-- 도서 상세 모달 -->
+    <div class="modal fade" id="bookDetailModal" tabindex="-1" aria-labelledby="bookDetailModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h5 class="modal-title" id="bookDetailModalLabel">도서 상세정보</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <!-- 책 기본 정보 -->
+            <div class="book-detail-header d-flex gap-4 mb-4">
+              <input type="hidden" id="selectBookId" />
+              <img src="" alt="Book cover" class="book-detail-cover">
+              <div class="book-detail-info">
+                <h2 class="book-detail-title mb-2"></h2>
+                <p class="book-detail-author mb-3">
+                  <i class="fas fa-pen-nib me-2"></i>
+                  <span></span>
+                </p>
+                <div class="book-detail-stats mb-3">
+                  <div class="stat-item">
+                    <i class="fas fa-star text-warning"></i>
+                    <span></span>
+                  </div>
+                  <div class="stat-item">
+                    <i class="fas fa-comment text-primary"></i>
+                    <span></span>
+                  </div>
+                  <div class="stat-item">
+                    <i class="fas fa-heart text-danger"></i>
+                    <span></span>
+                  </div>
+                </div>
+                <div class="book-detail-genres mb-3">
+                </div>
+              </div>
+            </div>
+
+            <!-- 책 소개 -->
+            <div class="book-synopsis mb-4">
+              <h3 class="section-title">작품 소개</h3>
+              <p class="book-synopsis-text">
+              </p>
+            </div>
+
+            <!-- 독자 리뷰 섹션 -->
+            <div class="reader-reviews mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="section-title mb-0">독자 리뷰</h3>
+                <div class="review-stats">
+                  <span class="me-3">
+                    <i class="fas fa-star text-warning"></i>
+                    <span class="avgScore"></span>
+                  </span>
+                  <span>
+                    <i class="fas fa-comment text-primary"></i>
+                    <span class="reviewCount"></span>
+                  </span>
+                </div>
+              </div>
+
+              <!-- 리뷰 작성 폼 -->
+              <th:block th:if="${session.loginMember != null}">
+                <div class="review-form mb-4">
+                  <div class="d-flex gap-2 align-items-center mb-3">
+                    <div class="rating-select">
+                      <span class="star-rating" data-rating="5"></span>
+                      <span class="star-rating" data-rating="4"></span>
+                      <span class="star-rating" data-rating="3"></span>
+                      <span class="star-rating" data-rating="2"></span>
+                      <span class="star-rating" data-rating="1"></span>
+                    </div>
+                    <span class="selected-rating">0.0</span>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <textarea class="form-control" id="reviewContent" style="height: 100px"></textarea>
+                    <label for="reviewContent">리뷰를 작성해주세요</label>
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <button class="btn btn-primary px-4" id="submitReview">
+                      리뷰 등록
+                    </button>
+                  </div>
+                </div>
+              </th:block>
+
+              <!-- 리뷰 목록 -->
+              <div class="review-list">
+                <!-- 리뷰 아이템 -->
+                <!-- 추가 리뷰 아이템들... -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- 푸터 추가-->
     <th:block th:replace="~{common/footer}"></th:block>
 
   </div>
 
-  <script src="/js/myPage/myPage.js"></script>
+  <script th:inline="javascript">
+    const loginMember = /*[[${session.loginMember}]]*/ "로그인한 멤버";
+  </script>
+
+  <script src="/js/myPage/myPage-favBook.js"></script>
 </body>
 
 </html>

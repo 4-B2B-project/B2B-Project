@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.web.multipart.MultipartFile;
 
 import edu.kh.project.board.model.dto.Board;
+import edu.kh.project.board.model.dto.Comment;
 import edu.kh.project.book.model.dto.Book;
 import edu.kh.project.member.model.dto.Member;
 
@@ -46,16 +47,60 @@ public interface MyPageService {
 	 * @param cp
 	 * @return
 	 */
-	List<Board> selectBoardList(int memberNo);
+	Map<String, Object> selectBoardList(int memberNo, int cp);
 
 	
-
 	/** 게시글 목록 검색 조회
 	 * @param cp
 	 * @param paramMap
 	 * @return
 	 */
-	Map<String, Object> boardSearchList(int cp, Map<String, Object> paramMap);
+	Map<String, Object> searchBoardList(int cp, Map<String, Object> paramMap);
+
+
+	
+	/** 댓글 목록 조회
+	 * @param memberNo
+	 * @return
+	 */
+	Map<String, Object> selectCommentList(int memberNo, int cp);
+
+	
+	/** 댓글 목록 검색 조회
+	 * @param cp
+	 * @param paramMap
+	 * @return
+	 */
+	Map<String, Object> commentSearchList(int cp, Map<String, Object> paramMap);
+
+	
+	
+	/** 게시글 상세정보 조회
+	 * @param boardNo
+	 * @return
+	 */
+	Board selectBoardDetail(int boardNo);
+
+	
+	
+	/** 게시글 상세정보 수정
+	 * @param inputBoard
+	 * @param deleteOrderList
+	 * @return
+	 */
+	int boardUpdate(Board inputBoard);
+
+	/** 게시글 삭제
+	 * @param map
+	 * @return
+	 */
+	int boardDelete(Map<String, Integer> map);
+
+	
+	
+	
+	
+	
 	
 
 	

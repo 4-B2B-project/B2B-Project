@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>내 정보</title>
+
+  <!-- 공용 css/js 추가 -->
+  <th:block th:replace="~{common/common}"></th:block>
+
+  <link rel="stylesheet" href="/css/myPage/myPage-boardDetail.css">
+
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <!-- 헤더 추가 -->
+    <th:block th:replace="~{common/header}"></th:block>
+
+    <!-- 사이드 추가 -->
+    <th:block th:replace="~{sideMenu/sideMenu-myPage}"></th:block>
+
+    <main class="main-content">
+      <section class="board-detail-header">
+        <!-- 게시글 제목 또는 존재하지 않음을 표시 -->
+        <h1 id="boardTitleSection" th:text="${boardDetail != null} ? ${boardDetail.boardTitle} : '게시글이 존재하지 않습니다.' ">제목</h1>
+        
+      </section>
+
+      <!-- 제목 폼 (처음에는 숨겨진 상태) -->
+      <section id="editTitleForm" style="display: none;">
+        <form id="titleUpdateForm">
+          <input type="hidden" name="boardNo" th:value="${boardDetail.boardNo}" />
+          <label for="boardTitle">제목:</label>
+          <input type="text" id="boardTitleInput" name="boardTitle" th:value="${boardDetail.boardTitle}" required />
+        </form>
+      </section>
+
+      <section class="board-detail-info" th:if="${boardDetail != null}">
+        <table class="board-info-table">
+          <tbody>
+            <tr>
+              <th>작성자</th>
+              <td th:text="${boardDetail.memberNickname}">작성자</td>
+
+            </tr>
+            <tr>
+              <th>조회수</th>
+              <td th:text="${boardDetail.readCount}">조회수</td>
+              <th>작성일</th>
+              <td th:text="${boardDetail.boardUpdateDate}">작성일</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="board-detail-content" id="boardContentSection" th:if="${boardDetail != null}">
+        <p th:text="${boardDetail.boardContent}">게시글 내용</p>
+      </section>
+
+      <!-- 내용 수정 폼 (처음에는 숨겨진 상태) -->
+      <section id="editContentForm" style="display: none;">
+        <form id="contentUpdateForm">
+          <input type="hidden" name="boardNo" th:value="${boardDetail.boardNo}" />
+          <label for="boardContent">내용:</label>
+          <textarea id="boardContentInput" name="boardContent" required
+            th:text="${boardDetail.boardContent}"></textarea>
+          <button type="button" id="submitContentEdit">수정 완료</button>
+        </form>
+      </section>
+
+
+      <div class="buttons" th:if="${boardDetail != null}">
+        <button id="editButton">수정</button>
+
+        <button id="deleteButton">삭제</button>
+      </div>
+    </main>
+
+    <!-- 푸터 추가-->
+    <th:block th:replace="~{common/footer}"></th:block>
+
+  </div>
+
+  <script src="/js/myPage/myPage-boardDetail.js"></script>
+</body>
+
+</html>

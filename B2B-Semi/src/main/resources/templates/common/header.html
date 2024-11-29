@@ -15,8 +15,8 @@
 			<div class="top-nav ms-auto d-none d-lg-flex">
 				<a href="/" class="nav-link">홈</a>
 				<a href="/book/bookList" class="nav-link">도서목록</a>
-				<a href="#" class="nav-link">랭킹</a>
-				<a href="#" class="nav-link">커뮤니티</a>
+				<a href="/book/topList" class="nav-link">랭킹</a>
+				<a href="/board/community/1" class="nav-link">커뮤니티</a>
 				<th:block th:unless="${session.loginMember != null}">
 					<a href="/member/submit" class="nav-link sign-btn ms-3">회원가입</a>
 					<a href="/member/login" class="nav-link login-btn ms-3">로그인</a> <!-- 로그인 되면 user123으로 변경-->

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import edu.kh.project.board.model.dto.Board;
+import edu.kh.project.board.model.dto.Comment;
 import edu.kh.project.book.model.dto.Book;
 import edu.kh.project.common.util.Pagination;
 import edu.kh.project.common.util.Utility;
@@ -164,53 +165,148 @@ public class MyPageServiceImpl implements MyPageService {
 		return result;
 	}
 
-	
 	// 게시글 목록 조회
-		@Override
-		public List<Board> selectBoardList(int memberNo) {
-			// 1. 작성자의 전체 게시글 조회
-			/*int listCount = mapper.getBoardListCount(memberNo);
+	@Override
+	public Map<String, Object> selectBoardList(int memberNo, int cp) {
+		// 1. 작성자의 전체 게시글 조회
+		int listCount = mapper.getBoardListCount(memberNo);
 
-			// 2. 페이징 처리
-			Pagination pagination = new Pagination(cp, listCount);
-			System.out.println(pagination); // 콘솔에 pagination 객체가 제대로 생성되었는지 확인
+		// 2. 페이징 처리
+		Pagination pagination = new Pagination(cp, listCount);
+		// System.out.println(pagination); // 콘솔에 pagination 객체가 제대로 생성되었는지 확인
 
-			// 3. RowBounds 객체 생성 (offset, limit)
-			int limit = pagination.getLimit();
-			int offset = (cp - 1) * limit;
-			RowBounds rowBounds = new RowBounds(offset, limit);
+		// 3. RowBounds 객체 생성 (offset, limit)
+		int limit = pagination.getLimit();
+		int offset = (cp - 1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
 
-			// 4. 전체 게시글 목록 조회
-			List<Board> boardList = mapper.selectAllBoardList(memberNo, startRow, endRow);
+		// 4. 전체 게시글 목록 조회
+		// List<Board> boardList = mapper.selectAllBoardList(memberNo,
+		// pagination.getStartPage(), pagination.getLimit());
+		List<Board> boardList = mapper.selectAllBoardList(memberNo, rowBounds);
 
-			// 5. boardCode를 활용하여 구분값 추가 처리
-			for (Board board : boardList) {
-				String category = getCategoryByBoardCode(board.getBoardCode());
-				board.setBoardTitle("[" + category + "] " + board.getBoardTitle());
-			}
+		// 5. 목록 조회 결과 + Pagination 객체를 Map으로 묶음
+		Map<String, Object> map = new HashMap<>();
+		map.put("pagination", pagination);
+		map.put("boardList", boardList);
 
-			// 5. 목록 조회 결과 + Pagination 객체를 Map으로 묶음
-			Map<String, Object> map = new HashMap<>();
-			map.put("pagination", pagination);
-			map.put("boardList", boardList);
+		return map;
 
-			return map;*/
-			 return mapper.selectAllBoardList(memberNo);
-		}
-	
-	
-
+	}
 
 	// 게시글 목록 검색 조회
 	@Override
-	public Map<String, Object> boardSearchList(int cp, Map<String, Object> paramMap) {
+	public Map<String, Object> searchBoardList(int cp, Map<String, Object> paramMap) {
 
-		return mapper.searchBoardList(cp,paramMap);
+		// paramMap (searchType, searchInput, memberNo)
+
+		// 검색된 게시글의 총 개수를 조회
+		int listCount = mapper.getSearchBoardListCount(paramMap);
+
+		Pagination pagination = new Pagination(cp, listCount);
+
+		// 페이지네이션 계산
+		int limit = pagination.getLimit(); // 10개
+		int offset = (cp - 1) * limit; //
+		RowBounds rowBounds = new RowBounds(offset, limit);
+
+		// 게시글 목록 조회
+		List<Board> boardList = mapper.searchBoardList(paramMap, rowBounds);
+
+		// 결과 맵에 담기
+		Map<String, Object> map = new HashMap<>();
+		map.put("pagination", pagination);
+		map.put("boardList", boardList);
+
+		return map;
+	}
+
+	// 댓글 목록 조회
+	@Override
+	public Map<String, Object> selectCommentList(int memberNo, int cp) {
+
+		// 1. 작성자의 전체 게시글 조회
+		int listCount = mapper.getCommentListCount(memberNo);
+
+		// 2. 페이징 처리
+		Pagination pagination = new Pagination(cp, listCount);
+		// System.out.println(pagination); // 콘솔에 pagination 객체가 제대로 생성되었는지 확인
+
+		// 3. RowBounds 객체 생성 (offset, limit)
+		int limit = pagination.getLimit();
+		int offset = (cp - 1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+
+		// 4. 전체 게시글 목록 조회
+		// pagination.getStartPage(), pagination.getLimit());
+		List<Comment> commentList = mapper.selectAllCommentList(memberNo, rowBounds);
+
+		// 5. 목록 조회 결과 + Pagination 객체를 Map으로 묶음
+		Map<String, Object> map = new HashMap<>();
+		map.put("pagination", pagination);
+		map.put("commentList", commentList);
+		
+		log.debug("현재 페이지(cp): {}", cp);
+		
+		log.debug("RowBounds offset: {}, limit: {}", offset, limit);
+
+		return map;
+
+	}
+
+	// 댓글 목록 검색 조회
+	@Override
+	public Map<String, Object> commentSearchList(int cp, Map<String, Object> paramMap) {
+		// paramMap (searchType, searchInput, memberNo)
+
+		// 검색된 게시글의 총 개수를 조회
+		int listCount = mapper.getSearchCommentListCount(paramMap);
+
+		Pagination pagination = new Pagination(cp, listCount);
+
+		// 페이지네이션 계산
+		int limit = pagination.getLimit(); // 10개
+		int offset = (cp - 1) * limit; //
+		RowBounds rowBounds = new RowBounds(offset, limit);
+
+		// 게시글 목록 조회
+		List<Comment> commentList = mapper.searchCommentList(paramMap, rowBounds);
+
+		// 결과 맵에 담기
+		Map<String, Object> map = new HashMap<>();
+		map.put("pagination", pagination);
+		map.put("commentList", commentList);
+
+		return map;
+	}
+
+	// 게시글 상세정보 조회
+	@Override
+	public Board selectBoardDetail(int boardNo) {
+
+		return mapper.selectBoardDetail(boardNo);
 	}
 
 	
+	// 게시글 상세정보 수정
+	@Override
+	public int boardUpdate(Board inputBoard) {
+		// 1. 게시글 부분(제목/내용) 수정
+		int result = mapper.boardUpdate(inputBoard);
+
+		// 수정 실패 시 바로 리턴
+		if (result == 0)
+			return 0;
+
+
+		return result;
+	}
+
 	
-	
-	
+	// 게시글 삭제
+	@Override
+	public int boardDelete(Map<String, Integer> map) {
+		return mapper.boardDelete(map);
+	}
 
 }

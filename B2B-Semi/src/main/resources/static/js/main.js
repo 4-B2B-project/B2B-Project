@@ -97,3 +97,14 @@ if(srchBookList != null) {
 	});
 	
 } 
+
+
+const genreCard = document.querySelectorAll(".genre-card");
+
+genreCard.forEach(row => {
+	row.addEventListener("click", e => {
+		const category = e.target.innerText;
+		location.href = `/book/bestCategoryList?category=${encodeURIComponent(category)}`;
+		
+	});
+});

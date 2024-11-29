@@ -25,7 +25,6 @@
 
 			<section class="ranking-header">
 				<h1 class="ranking-title">
-					<i class="fas fa-crown me-2" style="color: #FFD700;"></i>
 					도서 목록
 				</h1>
 			</section>
@@ -77,37 +76,22 @@
 							<tr>
 								<th style="width: 8%;">
 									구분
-									<span class="sort-icon">
-										<i class="fas fa-sort"></i>
-									</span>
 								</th>
 
 								<th style="width: 35%;">
 									제목 (평점)
-									<span class="sort-icon">
-										<i class="fas fa-sort"></i>
-									</span>
 								</th>
 
 								<th style="width: 25%;">
 									작가
-									<span class="sort-icon">
-										<i class="fas fa-sort"></i>
-									</span>
 								</th>
 
 								<th style="width: 20%;">
 									장르
-									<span class="sort-icon">
-										<i class="fas fa-sort"></i>
-									</span>
 								</th>
 
 								<th style="width: 12%;">
 									출판일
-									<span class="sort-icon">
-										<i class="fas fa-sort"></i>
-									</span>
 								</th>
 							</tr>
 						</thead>
@@ -121,10 +105,11 @@
 							<th:block th:unless="${#lists.isEmpty(bookList)}">
 
 								<tr th:each="book, iterStat : ${bookList}" th:object="${book}" class="bookInfo"
-									th:data-bookId="${book.bookId}" th:data-title="${book.title}"
+									th:data-bookId="${book.bookId}" th:data-title="${book.fullTitle}"
 									th:data-coverUrl="${book.coverUrl}" th:data-author="${book.author}"
 									th:data-rating="${book.customerReviewRank}" th:data-genres="${book.genres}"
-									th:data-description="${book.description}" th:data-reviewCount="${book.reviewCount}">
+									th:data-description="${book.description}" th:data-reviewCount="${book.reviewCount}" 
+									th:data-steamCount="${book.steamCount}">
 									<td th:text="${book.rowNum}" style="text-align: center;">구분번호</td>
 									<td>
 										<div class="book-title"
@@ -147,102 +132,62 @@
 							</th:block>
 						</tbody>
 					</table>
+					
 					<nav aria-label="Page navigation">
-						<ul class="pagination" th:unless="${paramMap}" th:object="${pagination}">
+					    <ul class="pagination">
+					        <!-- 첫 페이지로 이동 -->
+					        <li class="page-item" th:classappend="${pagination.currentPage <= 1 || pagination.startPage == 1} ? 'disabled'">
+					            <a class="page-link py-1 px-2"
+					               th:href="${pagination.currentPage <= 1 || pagination.startPage == 1} 
+					                        ? '#' 
+					                        : @{/book/bookList(cp=1, searchType=${searchType}, searchInput=${searchInput}, genreFilter=${genreFilter}, ratingFilter=${ratingFilter})}"
+					               th:aria-disabled="${pagination.currentPage <= 1 || pagination.startPage == 1}">&lt;&lt;</a>
+					        </li>
 
-							<!-- 첫 페이지로 이동 -->
-							<li class="page-item" th:classappend="*{currentPage <= 1 || startPage == 1} ? 'disabled'">
-								<a class="page-link py-1 px-2"
-									th:href="*{currentPage <= 1 || startPage == 1} ? '#' : @{/book/bookList(cp=1)}"
-									th:aria-disabled="*{currentPage <= 1 || startPage == 1}">&lt;&lt;</a>
-							</li>
-
-							<!-- 이전 페이지로 이동 -->
-							<li class="page-item" th:classappend="*{currentPage <= 1 || startPage == 1} ? 'disabled'">
-								<a class="page-link py-1 px-2"
-									th:href="*{currentPage <= 1 || startPage == 1} ? '#' : @{/book/bookList(cp=*{prevPage})}"
-									th:aria-disabled="*{currentPage <= 1 || startPage == 1}">이전</a>
-							</li>
-
-							<!-- 페이지 번호 -->
-							<th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
-								<li class="page-item" th:classappend="${i == pagination.currentPage} ? 'active'">
-									<a class="page-link py-1 px-2"
-										th:href="${i == pagination.currentPage} ? '#' : @{/book/bookList(cp=${i})}"
-										th:text="${i}"
-										th:aria-current="${i == pagination.currentPage} ? 'page'">현재페이지</a>
-								</li>
-							</th:block>
-
-							<!-- 다음 페이지로 이동 -->
-							<li class="page-item"
-								th:classappend="*{currentPage >= maxPage || endPage == maxPage} ? 'disabled'">
-								<a class="page-link py-1 px-2"
-									th:href="*{currentPage >= maxPage || endPage == maxPage} ? '#' : @{/book/bookList(cp=*{nextPage})}"
-									th:aria-disabled="*{currentPage >= maxPage || endPage == maxPage}">다음</a>
-							</li>
-
-							<!-- 마지막 페이지로 이동 -->
-							<li class="page-item"
-								th:classappend="*{currentPage >= maxPage || endPage == maxPage} ? 'disabled'">
-								<a class="page-link py-1 px-2"
-									th:href="*{currentPage >= maxPage || endPage == maxPage} ? '#' : @{/book/bookList(cp=*{maxPage})}"
-									th:aria-disabled="*{currentPage >= maxPage || endPage == maxPage}">&gt;&gt;</a>
-							</li>
-
-						</ul>
-
-						<ul class="pagination" th:if="${paramMap}" th:object="${pagination}">
-
-							<!-- 첫 페이지로 이동 -->
-							<li class="page-item" th:classappend="*{currentPage <= 1 || startPage == 1} ? 'disabled'">
-								<a class="page-link py-1 px-2"
-									th:href="*{currentPage <= 1 || startPage == 1} ? '#' : @{/book/bookList(cp=1)}"
-									th:aria-disabled="*{currentPage <= 1 || startPage == 1}">&lt;&lt;</a>
-							</li>
-
-							<!-- 이전 페이지로 이동 -->
-							<li class="page-item" th:classappend="*{currentPage <= 1 || startPage == 1} ? 'disabled'">
-								<a class="page-link py-1 px-2"
-									th:href="*{currentPage <= 1 || startPage == 1} ? '#' : @{/book/bookList(cp=*{prevPage})}"
-									th:aria-disabled="*{currentPage <= 1 || startPage == 1}">이전</a>
-							</li>
+					        <!-- 이전 페이지로 이동 -->
+					        <li class="page-item" th:classappend="${pagination.currentPage <= 1 || pagination.startPage == 1} ? 'disabled'">
+					            <a class="page-link py-1 px-2"
+					               th:href="${pagination.currentPage <= 1 || pagination.startPage == 1} 
+					                        ? '#' 
+					                        : @{/book/bookList(cp=${pagination.prevPage}, searchType=${searchType}, searchInput=${searchInput}, genreFilter=${genreFilter}, ratingFilter=${ratingFilter})}"
+					               th:aria-disabled="${pagination.currentPage <= 1 || pagination.startPage == 1}">이전</a>
+					        </li>
 
 							<!-- 페이지 번호 -->
-							<th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
-								<li class="page-item" th:classappend="${i == pagination.currentPage} ? 'active'">
-									<a class="page-link py-1 px-2"
-										th:href="${i == pagination.currentPage} 
+							<th:block th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}"
+							           th:if="${pagination.startPage > 0 and pagination.endPage > 0}">
+							    <li class="page-item" th:classappend="${i == pagination.currentPage} ? 'active'">
+							        <a class="page-link py-1 px-2"
+							           th:href="${i == pagination.currentPage} 
 							                    ? '#' 
 							                    : @{/book/bookList(cp=${i}, searchType=${searchType}, searchInput=${searchInput}, genreFilter=${genreFilter}, ratingFilter=${ratingFilter})}"
-										th:text="${i}"
-										th:aria-current="${i == pagination.currentPage} ? 'page'">현재페이지</a>
-								</li>
+							           th:text="${i}"
+							           th:aria-current="${i == pagination.currentPage} ? 'page'">현재페이지</a>
+							    </li>
 							</th:block>
 
+					        <!-- 다음 페이지로 이동 -->
+					        <li class="page-item" th:classappend="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} ? 'disabled'">
+					            <a class="page-link py-1 px-2"
+					               th:href="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} 
+					                        ? '#' 
+					                        : @{/book/bookList(cp=${pagination.nextPage}, searchType=${searchType}, searchInput=${searchInput}, genreFilter=${genreFilter}, ratingFilter=${ratingFilter})}"
+					               th:aria-disabled="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage}">다음</a>
+					        </li>
 
-							<!-- 다음 페이지로 이동 -->
-							<li class="page-item"
-								th:classappend="*{currentPage >= maxPage || endPage == maxPage} ? 'disabled'">
-								<a class="page-link py-1 px-2"
-									th:href="*{currentPage >= maxPage || endPage == maxPage} ? '#' : @{/book/bookList(cp=*{nextPage})}"
-									th:aria-disabled="*{currentPage >= maxPage || endPage == maxPage}">다음</a>
-							</li>
-
-							<!-- 마지막 페이지로 이동 -->
-							<li class="page-item"
-								th:classappend="*{currentPage >= maxPage || endPage == maxPage} ? 'disabled'">
-								<a class="page-link py-1 px-2"
-									th:href="*{currentPage >= maxPage || endPage == maxPage} ? '#' : @{/book/bookList(cp=*{maxPage})}"
-									th:aria-disabled="*{currentPage >= maxPage || endPage == maxPage}">&gt;&gt;</a>
-							</li>
-
-						</ul>
-
-
+					        <!-- 마지막 페이지로 이동 -->
+					        <li class="page-item" th:classappend="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} ? 'disabled'">
+					            <a class="page-link py-1 px-2"
+					               th:href="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} 
+					                        ? '#' 
+					                        : @{/book/bookList(cp=${pagination.maxPage}, searchType=${searchType}, searchInput=${searchInput}, genreFilter=${genreFilter}, ratingFilter=${ratingFilter})}"
+					               th:aria-disabled="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage}">&gt;&gt;</a>
+					        </li>
+					    </ul>
 					</nav>
-
+					
 				</div>
+			</section>
 		</main>
 
 		<!-- 도서 상세 모달 -->
@@ -281,6 +226,14 @@
 								</div>
 								<div class="book-detail-genres mb-3">
 								</div>
+								<th:block th:if="${session.loginMember != null}">
+									<div class="action-buttons">
+							            <button class="action-btn secondary-btn" id="steamBtn">
+							              <i class="fas fa-heart"></i>
+							              찜하기
+							            </button>
+							       	</div>
+								</th:block>
 							</div>
 						</div>
 
@@ -335,18 +288,18 @@
 
 							<!-- 리뷰 필터 -->
 							<!--<div class="review-filters mb-3">
-								<div class="btn-group" role="group">
-									<button type="button" class="btn btn-outline-primary active">최신순</button>
-									<button type="button" class="btn btn-outline-primary">평점순</button>
-									<button type="button" class="btn btn-outline-primary">인기순</button>
-								</div>
-							</div>
-							-->
+										<div class="btn-group" role="group">
+											<button type="button" class="btn btn-outline-primary active">최신순</button>
+											<button type="button" class="btn btn-outline-primary">평점순</button>
+											<button type="button" class="btn btn-outline-primary">인기순</button>
+										</div>
+									</div>
+									-->
 
 							<!-- 리뷰 목록 -->
 							<div class="review-list">
 								<!-- 리뷰 아이템 -->
-								
+
 								<!-- 추가 리뷰 아이템들... -->
 							</div>
 						</div>
@@ -355,15 +308,16 @@
 			</div>
 		</div>
 
+
 		<!-- 푸터 추가-->
 		<th:block th:replace="~{common/footer}"></th:block>
-		
+
 		<script th:inline="javascript">
-			const loginMember = /*[[${session.loginMember}]]*/ "로그인한 멤버 번호";
+			const loginMember = /*[[${session.loginMember}]]*/ "로그인한 멤버";
 		</script>
 
 		<script src="/js/book/bookList.js"></script>
-		
+
 
 	</div>
 

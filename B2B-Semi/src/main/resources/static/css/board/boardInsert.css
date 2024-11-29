@@ -1,0 +1,142 @@
+/* 기본 전체 설정 시작 */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+:root {
+	--primary-color: #4f46e5;
+	--primary-hover: #4338ca;
+	--background: #ffffff;
+	--text-primary: #1f2937;
+	--text-secondary: #4b5563;
+	--card-background: #ffffff;
+}
+
+body {
+	font-family: 'Segoe UI', 'Arial', sans-serif;
+	background-color: #F9FAFB;
+}
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+/* 기본 전체 설정 끝 */
+
+.input-group label {
+  display: block;
+  color: var(--text-secondary);
+  align-content: center;
+  font-size: 1.5rem;
+  position: relative;
+  width: 5%;
+}
+
+.input-field {
+  width: 95%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: #f9fafb;
+}
+
+.input-textArea {
+  width: 100%;
+  height: 450px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: #f9fafb;
+}
+
+
+/* Main Content Styles */
+.main-content {
+	margin-left: var(--sidebar-width);
+	min-height: 75vh;
+	padding: 2rem;
+	flex-grow: 1;
+}
+
+
+/* 타이틀 시작 */
+.ranking-header {
+	background: white;
+	padding: 1rem;
+	border-radius: 15px;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+	margin-bottom: 2rem;
+}
+
+.ranking-title {
+	font-size: 2.2rem;
+	font-weight: 700;
+	color: var(--dark-text);
+}
+
+/* 타이틀 끝 */
+
+
+/* 부제목 시작 */
+.genre-section {
+	background: white;
+	border-radius: 15px;
+	padding: 1rem;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+	margin-bottom: 2rem;
+}
+
+.genre-writer {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.genre-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 2rem;
+	padding-bottom: 1rem;
+	border-bottom: 2px solid var(--light-bg);
+}
+
+.genre-title {
+	font-size: 1.8rem;
+	font-weight: 700;
+	color: var(--dark-text);
+}
+
+/* 부제목 끝 */
+
+
+.list-button {
+	padding: 0.25rem 1rem;
+	background-color: #4F46E5;
+	filter: brightness(175%);
+	color: white;
+	border-radius: 8px;
+	text-decoration: none;
+	border: 0;
+}
+
+.write-button {
+	padding: 0.25rem 1rem;
+	background-color: #4F46E5;
+	filter: brightness(100%);
+	color: white;
+	border-radius: 8px;
+	text-decoration: none;
+	border: 0;
+}

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Book Community</title>
+
+	<link rel="stylesheet" href="/css/book/bookTopList.css">
+
+	<!-- templates/common/common.html 조각으로 추가 -->
+	<th:block th:replace="~{common/common}"></th:block>
+
+</head>
+
+<body>
+	<div class="wrapper">
+		<!-- 헤더 추가 -->
+		<th:block th:replace="~{common/header}"></th:block>
+
+		<!-- 사이드 추가 -->
+		<th:block th:replace="~{sideMenu/sideMenu-book}"></th:block>
+
+		<main class="main-content">
+
+			<section class="ranking-header">
+				<h1 class="ranking-title">
+					<i class="fas fa-crown me-2" style="color: #FFD700;"></i>
+					실시간 TOP20
+				</h1>
+			</section>
+
+			<section class="genre-section">
+				<div class="book-list" id="bookList">
+					<!-- 도서 목록이 여기에 동적으로 추가됨 -->
+
+				</div>
+			</section>
+		</main>
+
+		<!-- 도서 상세 모달 -->
+		<div class="modal fade" id="bookDetailModal" tabindex="-1" aria-labelledby="bookDetailModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-scrollable">
+				<div class="modal-content">
+					<div class="modal-header border-0">
+						<h5 class="modal-title" id="bookDetailModalLabel">도서 상세정보</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<!-- 책 기본 정보 -->
+						<div class="book-detail-header d-flex gap-4 mb-4">
+							<input type="hidden" id="selectBookId" />
+							<img src="" alt="Book cover" class="book-detail-cover">
+							<div class="book-detail-info">
+								<h2 class="book-detail-title mb-2"></h2>
+								<p class="book-detail-author mb-3">
+									<i class="fas fa-pen-nib me-2"></i>
+
+								</p>
+								<div class="book-detail-stats mb-3">
+									<div class="stat-item">
+										<i class="fas fa-star text-warning"></i>
+										<span></span>
+									</div>
+									<div class="stat-item">
+										<i class="fas fa-comment text-primary"></i>
+										<span></span>
+									</div>
+									<div class="stat-item">
+										<i class="fas fa-heart text-danger"></i>
+										<span></span>
+									</div>
+								</div>
+								<div class="book-detail-genres mb-3">
+								</div>
+								<th:block th:if="${session.loginMember != null}">
+									<div class="action-buttons">
+							            <button class="action-btn secondary-btn" id="steamBtn">
+							              <i class="fas fa-heart"></i>
+							              찜하기
+							            </button>
+							       	</div>
+								</th:block>
+							</div>
+						</div>
+
+						<!-- 책 소개 -->
+						<div class="book-synopsis mb-4">
+							<h3 class="section-title">작품 소개</h3>
+							<p class="book-synopsis-text">
+							</p>
+						</div>
+
+						<!-- 독자 리뷰 섹션 -->
+						<div class="reader-reviews mb-4">
+							<div class="d-flex justify-content-between align-items-center mb-4">
+								<h3 class="section-title mb-0">독자 리뷰</h3>
+								<div class="review-stats">
+									<span class="me-3">
+										<i class="fas fa-star text-warning"></i>
+										<span class="avgScore"></span>
+									</span>
+									<span>
+										<i class="fas fa-comment text-primary"></i>
+										<span class="reviewCount"></span>
+									</span>
+								</div>
+							</div>
+
+							<!-- 리뷰 필터 -->
+							<!--<div class="review-filters mb-3">
+												<div class="btn-group" role="group">
+													<button type="button" class="btn btn-outline-primary active">최신순</button>
+													<button type="button" class="btn btn-outline-primary">평점순</button>
+													<button type="button" class="btn btn-outline-primary">인기순</button>
+												</div>
+											</div>
+											-->
+
+							<!-- 리뷰 목록 -->
+							<div class="review-list">
+								<!-- 리뷰 아이템 -->
+
+								<!-- 추가 리뷰 아이템들... -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- 푸터 추가-->
+		<th:block th:replace="~{common/footer}"></th:block>
+
+		<script th:inline="javascript">
+			const loginMember = /*[[${session.loginMember}]]*/ "로그인한 멤버";
+			// 샘플 도서 데이터
+			const books = /*[[${bookList}]]*/ "도서 목록";
+
+		</script>
+
+		<script src="/js/book/bookTopList.js"></script>
+
+	</div>
+
+</body>
+
+</html>

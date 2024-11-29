@@ -31,7 +31,7 @@
       </section>
 
       <section class="genre-section">
-        <form th:action="@{/boardList}" method="get" id="boardSearch">
+        <form th:action="@{/myPage/boardList}" method="get" id="boardSearch">
           <div class="search-section">
             <div class="search-wrapper">
 
@@ -91,7 +91,7 @@
 
               </tr>
             </thead>
-            <tbody id="postList">
+            <tbody id="boardList">
               <th:block th:if="${#lists.isEmpty(boardList)}">
                 <tr>
                   <td colspan="4" style="text-align: center;">게시글이 존재하지 않습니다.</td>
@@ -100,30 +100,92 @@
 
               <!-- 게시글 목록이 있을 때 -->
               <th:block th:unless="${#lists.isEmpty(boardList)}">
-                <tr th:each="post : ${boardList}">
+                <tr th:each="board : ${boardList}">
                   <!-- 게시글 구분 -->
-                  <td th:text="${post.boardNo}">게시글 번호</td>
+                  <td>
+                    <span th:switch="${board.boardCode}">
+                      <span th:case="1" class="board-label board-label-1">자유</span>
+                      <span th:case="2" class="board-label board-label-2">추천</span>
+                      <span th:case="3" class="board-label board-label-3">공지</span>
+                      <span th:case="4" class="board-label board-label-4">문의</span>
+                      <span th:case="*" class="board-label">알 수 없음</span> <!-- 기본 값 -->
+                    </span>
+                  </td>
 
                   <!-- 게시글 제목 -->
                   <td>
-                    <div class="post-title" th:data-full-text="${post.boardTitle}"
+                    <div class="board-title" th:data-full-text="${board.boardTitle}"
                       onmousemove="showTooltip(event, this)">
-                      <a th:href="@{/post/detail(id=${post.boardNo})}" th:text="${post.boardTitle}">게시글 제목</a>
+                      <a th:href="@{/myPage/boardDetail(boardNo=${board.boardNo})}" th:text="${board.boardTitle}">게시글 제목</a>
                     </div>
                   </td>
 
                   <!-- 작성자 -->
-                  <td th:text="${post.memberNickname}">작성자</td>
+                  <td th:text="${board.memberNickname}">작성자</td>
 
                   <!-- 작성일 -->
-                  <td th:text="${post.boardWriteDate}">작성일</td>
+                  <td th:text="${board.boardUpdateDate}">작성일</td>
                 </tr>
               </th:block>
             </tbody>
           </table>
 
+          <!--페이지 네이션-->
+          <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <!-- 첫 페이지로 이동 -->
+                <li class="page-item" th:classappend="${pagination.currentPage <= 1 || pagination.startPage == 1} ? 'disabled'">
+                    <a class="page-link py-1 px-2"
+                       th:href="${pagination.currentPage <= 1 || pagination.startPage == 1} 
+                                ? '#' 
+                                : @{/myPage/boardList(cp=1, searchType=${searchType}, searchInput=${searchInput})}"
+                       th:aria-disabled="${pagination.currentPage <= 1 || pagination.startPage == 1}">&lt;&lt;</a>
+                </li>
 
-         
+                <!-- 이전 페이지로 이동 -->
+                <li class="page-item" th:classappend="${pagination.currentPage <= 1 || pagination.startPage == 1} ? 'disabled'">
+                    <a class="page-link py-1 px-2"
+                       th:href="${pagination.currentPage <= 1 || pagination.startPage == 1} 
+                                ? '#' 
+                                : @{/myPage/boardList(cp=${pagination.prevPage}, searchType=${searchType}, searchInput=${searchInput})}"
+                       th:aria-disabled="${pagination.currentPage <= 1 || pagination.startPage == 1}">이전</a>
+                </li>
+
+            <!-- 페이지 번호 -->
+            <th:block th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}"
+                       th:if="${pagination.startPage > 0 and pagination.endPage > 0}">
+                <li class="page-item" th:classappend="${i == pagination.currentPage} ? 'active'">
+                    <a class="page-link py-1 px-2"
+                       th:href="${i == pagination.currentPage} 
+                                ? '#' 
+                                : @{/myPage/boardList(cp=${i}, searchType=${searchType}, searchInput=${searchInput})}"
+                       th:text="${i}"
+                       th:aria-current="${i == pagination.currentPage} ? 'page'">현재페이지</a>
+                </li>
+            </th:block>
+
+                <!-- 다음 페이지로 이동 -->
+                <li class="page-item" th:classappend="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} ? 'disabled'">
+                    <a class="page-link py-1 px-2"
+                       th:href="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} 
+                                ? '#' 
+                                : @{/myPage/boardList(cp=${pagination.nextPage}, searchType=${searchType}, searchInput=${searchInput})}"
+                       th:aria-disabled="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage}">다음</a>
+                </li>
+
+                <!-- 마지막 페이지로 이동 -->
+                <li class="page-item" th:classappend="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} ? 'disabled'">
+                    <a class="page-link py-1 px-2"
+                       th:href="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} 
+                                ? '#' 
+                                : @{/myPage/boardList(cp=${pagination.maxPage}, searchType=${searchType}, searchInput=${searchInput})}"
+                       th:aria-disabled="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage}">&gt;&gt;</a>
+                </li>
+            </ul>
+        </nav>
+        
+
+
         </div>
       </section>
 

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Book Community</title>
+
+	<link rel="stylesheet" href="/css/book/bookCategoryList.css">
+
+	<!-- templates/common/common.html 조각으로 추가 -->
+	<th:block th:replace="~{common/common}"></th:block>
+
+</head>
+
+<body>
+	<div class="wrapper">
+		<!-- 헤더 추가 -->
+		<th:block th:replace="~{common/header}"></th:block>
+
+		<!-- 사이드 추가 -->
+		<th:block th:replace="~{sideMenu/sideMenu-book}"></th:block>
+
+		<main class="main-content">
+
+			<section class="ranking-header">
+				<h1 class="ranking-title">
+					장르별 랭킹 목록
+				</h1>
+			</section>
+
+			<section class="genre-section">
+			    <th:block th:unless="${#lists.isEmpty(bookList)}">
+			        <th:block th:each="subGroups : ${bookList}">
+			            <div class="swiper">
+			                <!-- 각 그룹의 첫 번째 책의 category를 표시 -->
+			                <h1 class="ranking-title" th:text="${subGroups[0][0].firstCategory}">장르별 도서</h1>
+
+			                <div class="swiper-wrapper">
+			                    <!-- 각 그룹에서 5개씩 책을 출력 -->
+			                    <th:block th:each="group : ${subGroups}">
+			                        <div class="swiper-slide">
+			                            <div class="genre-slide">
+			                                <div class="books-grid">
+			                                    <!-- 각 책을 출력 -->
+			                                    <th:block th:each="book : ${group}">
+			                                        <div class="book-card">
+														<!-- 책 순번 -->
+														<div class="rank-badge" th:text="${book.rankNum}"></div>
+			                                            <img th:src="${book.coverUrl}" alt="Book cover" class="book-cover">
+			                                            <div class="book-info">
+			                                                <div class="book-title" th:text="${book.title}" th:data-full-title="${book.title}"></div>
+			                                                <div class="book-author" th:text="${book.author}" th:data-full-author="${book.author}"></div>
+			                                                <div class="book-stats">
+			                                                    <span class="stat-item">평점: <span th:text="${book.customerReviewRank}"></span></span>
+			                                                    <span class="stat-item">리뷰: <span th:text="${book.reviewCount}"></span></span>
+			                                                </div>
+			                                            </div>
+			                                        </div>
+			                                    </th:block>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </th:block>
+			                </div>
+
+			                <!-- Swiper Pagination (페이지네이션) -->
+			                <div class="swiper-pagination"></div>
+			                <!-- Swiper 이전 버튼 -->
+			                <div class="swiper-button-prev"></div>
+			                <!-- Swiper 다음 버튼 -->
+			                <div class="swiper-button-next"></div>
+			            </div>
+			        </th:block>
+			    </th:block>
+			</section>
+
+		</main>
+
+		<!-- 푸터 추가-->
+		<th:block th:replace="~{common/footer}"></th:block>
+
+
+		<script th:inline="javascript">
+			const loginMember = /*[[${session.loginMember}]]*/ "로그인한 멤버";
+			const swiper = new Swiper('.swiper', {
+				slidesPerView: 1,
+				spaceBetween: 30,
+				loop: true,
+				pagination: {
+					el: '.swiper-pagination',
+					clickable: true,
+				},
+				navigation: {
+					nextEl: '.swiper-button-next',
+					prevEl: '.swiper-button-prev',
+				},
+				autoplay: {
+					delay: 5000,
+					disableOnInteraction: false,
+				}
+			});
+		</script>
+
+
+	</div>
+
+</body>
+
+</html>

@@ -199,23 +199,36 @@ body {
 	word-break: break-word;
 }
 
+/*---- 페이지 네이션 -----*/
 .pagination {
+	display: flex;
 	justify-content: center;
 	margin: 0;
 	gap: 10px;
 	/* 버튼 사이의 간격 */
+	list-style: none;
+	/* 기본 리스트 스타일 제거 */
+	padding: 0;
 }
 
 .pagination .page-link {
+	display: inline-block;
 	min-width: 30px;
 	/* 버튼의 최소 너비 */
 	text-align: center;
 	border-radius: 4px;
 	/* 모서리 둥글게 */
-	margin: 0;
-	/* 기본 마진 제거 */
+	padding: 5px 10px;
+	color: #007bff;
+	text-decoration: none;
+	border: 1px solid #ddd;
 }
 
+.pagination .page-link:hover {
+	background-color: #f0f0f0;
+}
+
+/* 비활성화된 버튼 */
 .pagination .disabled .page-link {
 	color: #fff;
 	/* 텍스트 색상을 흰색으로 변경 */
@@ -227,6 +240,7 @@ body {
 	opacity: 0.65;
 }
 
+/* 활성화된 버튼 */
 .pagination .active .page-link {
 	z-index: 3;
 	color: #fff;
@@ -234,11 +248,14 @@ body {
 	border-color: #007bff;
 }
 
+/* 포커스된 버튼 */
 .pagination .page-link:focus {
 	z-index: 2;
 	outline: 0;
-	box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+	box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
+
+
 
 /* 모달 스타일 */
 .modal-dialog-scrollable .modal-content {
@@ -373,4 +390,38 @@ body {
 	background-color: white;
 	border-radius: 6px;
 	overflow: hidden;
+}
+
+
+/* 게시판 종류 라벨 */
+.board-label {
+	display: inline-block;
+	padding: 5px 10px;
+	border-radius: 8px;
+	background-color: #f0f3f7; /* 배경 색상 (회색톤) */
+	color: #4a5568; /* 텍스트 색상 (짙은 회색) */
+	font-weight: bold; /* 굵게 */
+	text-align: center;
+	margin: 5px 0; /* 상하 여백 */
+	width: 60px; /* 고정된 너비 */
+}
+
+.board-label-1 {
+	background-color: #d4e9f7; /* 자유 게시판 배경색 (연한 파란색) */
+	color: #2b6cb0; /* 자유 게시판 텍스트 색상 */
+}
+
+.board-label-2 {
+	background-color: #e6fffa; /* 추천 게시판 배경색 (연한 청록색) */
+	color: #319795; /* 추천 게시판 텍스트 색상 */
+}
+
+.board-label-3 {
+	background-color: #fefcbf; /* 공지 게시판 배경색 (연한 노란색) */
+	color: #d69e2e; /* 공지 게시판 텍스트 색상 */
+}
+
+.board-label-4 {
+	background-color: #f7d7d9; /* 문의 게시판 배경색 (연한 분홍색) */
+	color: #c53030; /* 문의 게시판 텍스트 색상 */
 }

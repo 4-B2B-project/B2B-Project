@@ -1,0 +1,410 @@
+/* 기본 전체 설정 시작 */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+:root {
+	--primary-color: #4f46e5;
+	--primary-hover: #4338ca;
+	--background: #ffffff;
+	--text-primary: #1f2937;
+	--text-secondary: #4b5563;
+	--card-background: #ffffff;
+}
+
+body {
+	font-family: 'Segoe UI', 'Arial', sans-serif;
+	background-color: #F9FAFB;
+}
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+/* 기본 전체 설정 끝 */
+
+
+/* Main Content Styles */
+.main-content {
+	margin-left: var(--sidebar-width);
+	min-height: 75vh;
+	padding: 2rem;
+	flex-grow: 1;
+}
+
+
+/* 타이틀 시작 */
+.ranking-header {
+	background: white;
+	padding: 1rem;
+	border-radius: 15px;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+	margin-bottom: 2rem;
+}
+
+.ranking-title {
+	font-size: 2.2rem;
+	font-weight: 700;
+	color: var(--dark-text);
+}
+
+/* 타이틀 끝 */
+
+
+/* 부제목 시작 */
+.genre-section {
+	background: white;
+	border-radius: 15px;
+	padding: 2rem;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+	margin-bottom: 2rem;
+}
+
+.genre-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 2rem;
+	padding-bottom: 1rem;
+	border-bottom: 2px solid var(--light-bg);
+}
+
+.genre-title {
+	font-size: 1.8rem;
+	font-weight: 700;
+	color: var(--dark-text);
+}
+
+/* 부제목 끝 */
+
+/* 검색 섹션 스타일 */
+.search-section .form-select,
+.search-section .form-control {
+	padding: 0.625rem 1rem;
+	border: 1px solid #e5e7eb;
+	border-radius: 8px;
+	font-size: 0.95rem;
+	transition: all 0.2s ease-in-out;
+}
+
+.search-section .form-select:focus,
+.search-section .form-control:focus {
+	border-color: #4f46e5;
+	box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+	outline: none;
+}
+
+.search-section .input-group {
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.search-section .input-group .form-select {
+	width: 90px !important;
+	/* 제목 탭 너비 축소 */
+	margin-right: 20px;
+	flex: 0 0 auto;
+}
+
+.search-button {
+	background-color: #4f46e5;
+	color: white;
+	border: none;
+	padding: 0.625rem 1.5rem;
+	border-radius: 8px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: background-color 0.2s ease-in-out;
+	width: auto;
+	min-width: 110px;
+}
+
+.search-button:hover {
+	background-color: #4338ca;
+}
+
+.search-button i {
+	margin-right: 0.5rem;
+}
+
+/* 검색 섹션 끝 */
+
+
+/* 필터 셀렉트 박스 크기 조정 */
+.filter-select {
+	width: 180px !important;
+}
+
+.search-wrapper {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+	.search-wrapper {
+		flex-direction: column;
+	}
+
+	.search-section .input-group,
+	.filter-select,
+	.search-button {
+		width: 100% !important;
+	}
+}
+
+.table thead th {
+	background-color: #4F46E5;
+	color: white;
+	padding: 1rem;
+	font-weight: 500;
+	border-bottom: none;
+	white-space: nowrap;
+	cursor: pointer;
+	vertical-align: middle;
+	border: 1px solid;
+}
+
+/* 첫번째 th만 왼쪽 상단 모서리 둥글게 */
+.table thead th:first-child {
+	border-top-left-radius: 8px;
+}
+
+/* 마지막 th만 오른쪽 상단 모서리 둥글게 */
+.table thead th:last-child {
+	border-top-right-radius: 8px;
+}
+
+.table tbody tr td {
+	padding: 1.25rem;
+}
+
+.rating {
+	color: #ffc107;
+}
+
+.book-title,
+.book-author {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: block;
+	max-width: 450px;
+	word-break: break-word;
+}
+
+.pagination {
+	justify-content: center;
+	margin: 0;
+	gap: 10px;
+	/* 버튼 사이의 간격 */
+}
+
+.pagination .page-link {
+	min-width: 30px;
+	/* 버튼의 최소 너비 */
+	text-align: center;
+	border-radius: 4px;
+	/* 모서리 둥글게 */
+	margin: 0;
+	/* 기본 마진 제거 */
+}
+
+.pagination .disabled .page-link {
+	color: #fff;
+	/* 텍스트 색상을 흰색으로 변경 */
+	pointer-events: none;
+	background-color: #6c757d;
+	/* 회색 배경으로 변경 */
+	border-color: #6c757d;
+	cursor: not-allowed;
+	opacity: 0.65;
+}
+
+.pagination .active .page-link {
+	z-index: 3;
+	color: #fff;
+	background-color: #007bff;
+	border-color: #007bff;
+}
+
+.pagination .page-link:focus {
+	z-index: 2;
+	outline: 0;
+	box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+}
+
+/* 모달 스타일 */
+.modal-dialog-scrollable .modal-content {
+	border-radius: 15px;
+}
+
+.book-detail-cover {
+	width: 200px;
+	height: 280px;
+	object-fit: cover;
+	border-radius: 10px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.book-detail-title {
+	font-size: 2rem;
+	font-weight: 700;
+	color: var(--dark-text);
+}
+
+.book-detail-stats {
+	display: flex;
+	gap: 1.5rem;
+}
+
+.section-title {
+	font-size: 1.5rem;
+	font-weight: 600;
+	color: var(--dark-text);
+	margin-bottom: 1rem;
+	padding-bottom: 0.5rem;
+	border-bottom: 2px solid var(--light-bg);
+}
+
+.review-item {
+	background-color: var(--light-bg);
+	padding: 1.5rem;
+	border-radius: 10px;
+	margin-bottom: 1rem;
+}
+
+.reviewer-avatar {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	margin-right: 1rem;
+}
+
+.reviewer-name {
+	font-weight: 500;
+	color: var(--dark-text);
+}
+
+.review-text {
+	margin-top: 1rem;
+	color: var(--secondary-color);
+}
+
+/* 리뷰 섹션 스타일 */
+.rating-select {
+	display: inline-flex;
+	flex-direction: row-reverse;
+	font-size: 24px;
+}
+
+.star-rating {
+	position: relative;
+	color: #ddd;
+	cursor: pointer;
+	padding: 0 5px;
+}
+
+.star-rating:before {
+	content: "★";
+}
+
+.star-rating.half:after {
+	content: "★";
+	position: absolute;
+	left: 5px;
+	width: 36%;
+	overflow: hidden;
+	color: #FFD700;
+}
+
+.star-rating.full {
+	color: #FFD700;
+}
+
+.selected-rating {
+	margin-left: 10px;
+	font-size: 18px;
+}
+
+
+.review-item {
+	background-color: white;
+	border: 1px solid var(--light-bg);
+}
+
+.review-date {
+	font-size: 0.9rem;
+}
+
+.review-footer {
+	padding-top: 1rem;
+	border-top: 1px solid var(--light-bg);
+}
+
+.review-comments {
+	background-color: var(--light-bg);
+	padding: 1rem;
+	border-radius: 8px;
+}
+
+.comment-item {
+	background-color: white;
+	padding: 0.75rem;
+	border-radius: 6px;
+	margin-bottom: 0.75rem;
+}
+
+.comment-date {
+	font-size: 0.85rem;
+}
+
+.comment-options .btn {
+	padding: 0 0.5rem;
+}
+
+.comment-form .input-group {
+	background-color: white;
+	border-radius: 6px;
+	overflow: hidden;
+}
+
+
+/* 게시판 종류 라벨 */
+.board-label {
+	display: inline-block;
+	padding: 5px 10px;
+	border-radius: 8px;
+	background-color: #f0f3f7; /* 배경 색상 (회색톤) */
+	color: #4a5568; /* 텍스트 색상 (짙은 회색) */
+	font-weight: bold; /* 굵게 */
+	text-align: center;
+	margin: 5px 0; /* 상하 여백 */
+	width: 60px; /* 고정된 너비 */
+}
+
+.board-label-1 {
+	background-color: #d4e9f7; /* 자유 게시판 배경색 (연한 파란색) */
+	color: #2b6cb0; /* 자유 게시판 텍스트 색상 */
+}
+
+.board-label-2 {
+	background-color: #e6fffa; /* 추천 게시판 배경색 (연한 청록색) */
+	color: #319795; /* 추천 게시판 텍스트 색상 */
+}
+
+.board-label-3 {
+	background-color: #fefcbf; /* 공지 게시판 배경색 (연한 노란색) */
+	color: #d69e2e; /* 공지 게시판 텍스트 색상 */
+}
+
+.board-label-4 {
+	background-color: #f7d7d9; /* 문의 게시판 배경색 (연한 분홍색) */
+	color: #c53030; /* 문의 게시판 텍스트 색상 */
+}

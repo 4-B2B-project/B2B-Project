@@ -159,6 +159,7 @@ body {
 	}
 }
 
+/* 테이블 내용 */
 .table thead th {
 	background-color: #4F46E5;
 	color: white;
@@ -166,7 +167,6 @@ body {
 	font-weight: 500;
 	border-bottom: none;
 	white-space: nowrap;
-	cursor: pointer;
 	vertical-align: middle;
 	border: 1px solid;
 }
@@ -199,6 +199,10 @@ body {
 	word-break: break-word;
 }
 
+/* 테이블 내용 끝 */
+
+
+/* 페이지 네이션 */
 .pagination {
 	justify-content: center;
 	margin: 0;
@@ -208,20 +212,15 @@ body {
 
 .pagination .page-link {
 	min-width: 30px;
-	/* 버튼의 최소 너비 */
 	text-align: center;
 	border-radius: 4px;
-	/* 모서리 둥글게 */
 	margin: 0;
-	/* 기본 마진 제거 */
 }
 
 .pagination .disabled .page-link {
 	color: #fff;
-	/* 텍스트 색상을 흰색으로 변경 */
 	pointer-events: none;
 	background-color: #6c757d;
-	/* 회색 배경으로 변경 */
 	border-color: #6c757d;
 	cursor: not-allowed;
 	opacity: 0.65;
@@ -239,6 +238,8 @@ body {
 	outline: 0;
 	box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
 }
+
+/* 페이지 네이션 끝 */
 
 /* 모달 스타일 */
 .modal-dialog-scrollable .modal-content {
@@ -273,6 +274,22 @@ body {
 	border-bottom: 2px solid var(--light-bg);
 }
 
+.secondary-btn {
+    background-color: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.action-btn {
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
 .review-item {
 	background-color: var(--light-bg);
 	padding: 1.5rem;
@@ -303,6 +320,10 @@ body {
 	flex-direction: row-reverse;
 	font-size: 24px;
 }
+
+.review-buttons {
+	justify-self: right;
+}	
 
 .star-rating {
 	position: relative;
@@ -374,3 +395,5 @@ body {
 	border-radius: 6px;
 	overflow: hidden;
 }
+
+/* 모달 스타일 끝 */

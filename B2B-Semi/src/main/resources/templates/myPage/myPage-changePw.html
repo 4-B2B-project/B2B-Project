@@ -9,157 +9,7 @@
   <!-- 공용 css/js 추가 -->
   <th:block th:replace="~{common/common}"></th:block>
 
-  <style>
-    /* 기본 전체 설정 시작 */
-    
-    .wrapper {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    /* 기본 전체 설정 끝 */
-
-
-    /* Main Content Styles */
-    .main-content {
-      margin-left: var(--sidebar-width);
-      min-height: 75vh;
-      padding: 2rem;
-      flex-grow: 1;
-    }
-
-
-    /* 타이틀 시작 */
-    .ranking-header {
-      background: white;
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      margin-bottom: 2rem;
-    }
-
-    .ranking-title {
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: var(--dark-text);
-      margin-bottom: 1.5rem;
-    }
-
-    /* 타이틀 끝 */
-
-
-    /* 부제목 시작 */
-    .genre-section {
-      background: white;
-      border-radius: 15px;
-      padding: 2rem;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      margin-bottom: 2rem;
-    }
-
-    .genre-header {
-      display: flex;
-
-      justify-content: space-evenly; /* 양쪽 끝에 요소 배치 */
-      align-items: center; /* 폼과 제목을 위쪽 기준으로 정렬 */
-
-
-      
-      /* 가로 중앙 정렬 */
-      /* 폼과 제목을 위쪽 기준으로 정렬 */
-      padding-bottom: 1rem;
-      border-bottom: 2px solid var(--light-bg);
-      gap: 2rem;
-      /* 요소 간 간격 */
-    }
-
-
-
-    .genre-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--dark-text);
-    }
-
-
-
-    .myPage-subject {
-      font-size: 2.0rem;
-      font-weight: 700;
-      color: var(--text-secondary);
-      margin-bottom: 1.5rem;
-
-    }
-
-
-
-    .myPage-row {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 1.5rem;
-    }
-
-    .myPage-row label {
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      margin-bottom: 0.5rem;
-    }
-
-    .myPage-row input {
-      padding: 0.75rem 1rem;
-      border: 1px solid #D1D5DB;
-      border-radius: 0.5rem;
-      font-size: 1rem;
-      color: var(--text-primary);
-    }
-
-    .myPage-submit {
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 0.75rem 5rem;
-      border-radius: 0.5rem;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .myPage-submit:hover {
-      background-color: var(--primary-hover);
-    }
-
-
-
-    .changePw-form {
-      display: flex;
-      flex-direction: column;
-      /* 폼 내부 항목을 세로 정렬 */
-      gap: 1rem;
-      /* 항목 간 간격 */
-      width: 100%;
-      /* 폼 너비를 100%로 확장 */
-      max-width: 400px;
-      /* 최대 너비 제한 */
-      margin: 0 auto;
-      /* 수평 중앙 정렬 */
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-    /* 부제목 끝 */
-  </style>
+  <link rel="stylesheet" href="/css/myPage/myPage-changePw.css">
 </head>
 
 <body>
@@ -205,6 +55,8 @@
               <div class="myPage-row">
                 <label>새 비밀번호</label>
                 <input type="password" name="newPw" id="newPw" maxlength="30">
+
+                
               </div>
 
               <div class="myPage-row">
@@ -228,7 +80,7 @@
 
 
 
-    <script src="/js/myPage/myPage.js"></script>
+    <script src="/js/myPage/myPage-changePw.js"></script>
   </body>
 
 </html>

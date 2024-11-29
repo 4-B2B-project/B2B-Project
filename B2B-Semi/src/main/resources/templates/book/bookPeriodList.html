@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Book Community</title>
+
+	<link rel="stylesheet" href="/css/book/bookPeriodList.css">
+
+	<!-- templates/common/common.html 조각으로 추가 -->
+	<th:block th:replace="~{common/common}"></th:block>
+
+</head>
+
+<body>
+	<div class="wrapper">
+		<!-- 헤더 추가 -->
+		<th:block th:replace="~{common/header}"></th:block>
+
+		<!-- 사이드 추가 -->
+		<th:block th:replace="~{sideMenu/sideMenu-book}"></th:block>
+
+		<main class="main-content">
+
+			<section class="ranking-header">
+				<h1 class="ranking-title">
+					<i class="fas fa-crown me-2" style="color: #FFD700;"></i>
+					기간별 실시간 랭킹
+				</h1>
+			</section>
+
+			<section class="genre-section">
+				
+				<div class="book-list" id="bookList">
+					<div class="ranking-nav">
+				        <div class="ranking-nav-wrapper">
+				            <button class="ranking-tab active" data-ranking-type="monthly">
+				                <span class="ranking-icon">🏆</span>
+				                월간 랭킹 Top10
+				            </button>
+				        </div>
+				    </div>
+					<th:block th:unless="${#lists.isEmpty(monthBookList)}">
+						<div class="book-card" th:each="monthBook, iterStat : ${monthBookList}" th:object="${monthBookList}" 
+						th:data-bookId="${monthBook.bookId}" th:data-title="${monthBook.fullTitle}"
+						th:data-coverUrl="${monthBook.coverUrl}" th:data-author="${monthBook.author}"
+						th:data-rating="${monthBook.customerReviewRank}" th:data-genres="${monthBook.genres}"
+						th:data-description="${monthBook.description}" th:data-reviewCount="${monthBook.reviewCount}"
+						th:data-steamCount="${monthBook.steamCount}">
+							<div class="rank-badge" th:text="${iterStat.count}"></div>
+				            <img th:src="${monthBook.coverUrl}" th:alt="${monthBook.title}" class="book-cover">
+				            <div class="book-info">
+				                <h3 class="book-title" th:text="${monthBook.title}"></h3>
+				                <p class="book-author" th:text="${monthBook.author}"></p>
+				                <div class="book-stats">
+				                    <div class="stat-item">
+				                        <span class="stat-value" th:text="${monthBook.customerReviewRank}"></span>
+				                        <span class="stat-label">평점</span>
+				                    </div>
+				                    <div class="stat-item">
+				                        <span class="stat-value" th:text="${monthBook.reviewCount}"></span>
+				                        <span class="stat-label">리뷰</span>
+				                    </div>
+				                </div>
+				            </div>
+						</div>
+					</th:block>
+				</div>
+				<div class="book-list" id="bookList">
+					<div class="ranking-nav">
+				        <div class="ranking-nav-wrapper">
+							<button class="ranking-tab active" data-ranking-type="yearly">
+					            <span class="ranking-icon">🌟</span>
+					            연간 랭킹 Top10
+					        </button>
+				        </div>
+				    </div>
+					<th:block th:unless="${#lists.isEmpty(yearBookList)}">
+						<div class="book-card" th:each="yearBook, iterStat : ${yearBookList}" th:object="${yearBookList}" 
+						th:data-bookId="${yearBook.bookId}" th:data-title="${yearBook.fullTitle}"
+						th:data-coverUrl="${yearBook.coverUrl}" th:data-author="${yearBook.author}"
+						th:data-rating="${yearBook.customerReviewRank}" th:data-genres="${yearBook.genres}"
+						th:data-description="${yearBook.description}" th:data-reviewCount="${yearBook.reviewCount}"
+						th:data-steamCount="${yearBook.steamCount}">
+							<div class="rank-badge" th:text="${iterStat.count}"></div>
+				            <img th:src="${yearBook.coverUrl}" th:alt="${yearBook.title}" class="book-cover">
+				            <div class="book-info">
+				                <h3 class="book-title" th:text="${yearBook.title}"></h3>
+				                <p class="book-author" th:text="${yearBook.author}"></p>
+				                <div class="book-stats">
+				                    <div class="stat-item">
+				                        <span class="stat-value" th:text="${yearBook.customerReviewRank}"></span>
+				                        <span class="stat-label">평점</span>
+				                    </div>
+				                    <div class="stat-item">
+				                        <span class="stat-value" th:text="${yearBook.reviewCount}"></span>
+				                        <span class="stat-label">리뷰</span>
+				                    </div>
+				                </div>
+				            </div>
+						</div>
+					</th:block>
+				</div>
+			</section>
+			
+		</main>
+
+		<!-- 도서 상세 모달 -->
+		<div class="modal fade" id="bookDetailModal" tabindex="-1" aria-labelledby="bookDetailModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-scrollable">
+				<div class="modal-content">
+					<div class="modal-header border-0">
+						<h5 class="modal-title" id="bookDetailModalLabel">도서 상세정보</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<!-- 책 기본 정보 -->
+						<div class="book-detail-header d-flex gap-4 mb-4">
+							<input type="hidden" id="selectBookId" />
+							<img src="" alt="Book cover" class="book-detail-cover">
+							<div class="book-detail-info">
+								<h2 class="book-detail-title mb-2"></h2>
+								<p class="book-detail-author mb-3">
+									<i class="fas fa-pen-nib me-2"></i>
+
+								</p>
+								<div class="book-detail-stats mb-3">
+									<div class="stat-item">
+										<i class="fas fa-star text-warning"></i>
+										<span></span>
+									</div>
+									<div class="stat-item">
+										<i class="fas fa-comment text-primary"></i>
+										<span></span>
+									</div>
+									<div class="stat-item">
+										<i class="fas fa-heart text-danger"></i>
+										<span></span>
+									</div>
+								</div>
+								<div class="book-detail-genres mb-3">
+								</div>
+								<th:block th:if="${session.loginMember != null}">
+									<div class="action-buttons">
+							            <button class="action-btn secondary-btn" id="steamBtn">
+							              <i class="fas fa-heart"></i>
+							              찜하기
+							            </button>
+							       	</div>
+								</th:block>
+							</div>
+						</div>
+
+						<!-- 책 소개 -->
+						<div class="book-synopsis mb-4">
+							<h3 class="section-title">작품 소개</h3>
+							<p class="book-synopsis-text">
+							</p>
+						</div>
+
+						<!-- 독자 리뷰 섹션 -->
+						<div class="reader-reviews mb-4">
+							<div class="d-flex justify-content-between align-items-center mb-4">
+								<h3 class="section-title mb-0">독자 리뷰</h3>
+								<div class="review-stats">
+									<span class="me-3">
+										<i class="fas fa-star text-warning"></i>
+										<span class="avgScore"></span>
+									</span>
+									<span>
+										<i class="fas fa-comment text-primary"></i>
+										<span class="reviewCount"></span>
+									</span>
+								</div>
+							</div>
+							
+							<!-- 리뷰 작성 폼 -->
+							<th:block th:if="${session.loginMember != null}">
+								<div class="review-form mb-4">
+									<div class="d-flex gap-2 align-items-center mb-3">
+										<div class="rating-select">
+											<span class="star-rating" data-rating="5"></span>
+											<span class="star-rating" data-rating="4"></span>
+											<span class="star-rating" data-rating="3"></span>
+											<span class="star-rating" data-rating="2"></span>
+											<span class="star-rating" data-rating="1"></span>
+										</div>
+										<span class="selected-rating">0.0</span>
+									</div>
+									<div class="form-floating mb-3">
+										<textarea class="form-control" id="reviewContent"
+											style="height: 100px"></textarea>
+										<label for="reviewContent">리뷰를 작성해주세요</label>
+									</div>
+									<div class="d-flex justify-content-between align-items-center">
+										<button class="btn btn-primary px-4" id="submitReview">
+											리뷰 등록
+										</button>
+									</div>
+								</div>
+							</th:block>
+
+							<!-- 리뷰 필터 -->
+							<!--<div class="review-filters mb-3">
+												<div class="btn-group" role="group">
+													<button type="button" class="btn btn-outline-primary active">최신순</button>
+													<button type="button" class="btn btn-outline-primary">평점순</button>
+													<button type="button" class="btn btn-outline-primary">인기순</button>
+												</div>
+											</div>
+											-->
+
+							<!-- 리뷰 목록 -->
+							<div class="review-list">
+								<!-- 리뷰 아이템 -->
+
+								<!-- 추가 리뷰 아이템들... -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- 푸터 추가-->
+		<th:block th:replace="~{common/footer}"></th:block>
+
+		<script th:inline="javascript">
+			const loginMember = /*[[${session.loginMember}]]*/ "로그인한 멤버";
+		</script>
+
+		<script src="/js/book/bookPeriodList.js"></script>
+
+	</div>
+
+</body>
+
+</html>
