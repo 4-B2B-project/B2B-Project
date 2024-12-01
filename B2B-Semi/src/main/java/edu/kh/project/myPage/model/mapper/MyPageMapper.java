@@ -156,6 +156,13 @@ public interface MyPageMapper {
 	int boardDelete(Map<String, Integer> map);
 
 
+	/** 댓글 상세 정보 조회
+	 * @param boardNo
+	 * @return
+	 */
+	Comment selectCommentDetail(int commentNo);
+
+
 
 
 	

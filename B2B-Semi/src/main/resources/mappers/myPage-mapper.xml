@@ -178,8 +178,8 @@
 	<resultMap id="CommentResultMap"
 		type="edu.kh.project.board.model.dto.Comment">
 		<id property="commentNo" column="COMMENT_NO" />
-		<result property="commentContent" column="COMMENT_TEXT" />
-		<result property="commentWriteDate" column="COMMENT_REGI_DATE" />
+		<result property="commentContent" column="COMMENT_CONTENT" />
+		<result property="commentWriteDate" column="COMMENT_WRITE_DATE" />
 		<result property="commentDelFl" column="COMMENT_DEL_FL" />
 		<result property="parentCommentNo" column="PARENT_COMMENT_NO" />
 		<result property="boardNo" column="BOARD_NO" />
@@ -203,9 +203,9 @@
 	<select id="selectAllCommentList" resultMap="CommentResultMap">
 		SELECT
 		c.COMMENT_NO,
-		c.COMMENT_TEXT,
+		c.COMMENT_CONTENT,
 		c.COMMENT_DEL_FL,
-		c.COMMENT_REGI_DATE,
+		c.COMMENT_WRITE_DATE,
 		c.MEMBER_NO,
 		c.BOARD_NO,
 		m.MEMBER_NICKNAME,
@@ -232,7 +232,7 @@
 			AND
 			<choose>
 				<when test="searchType == 'content'">
-					c.COMMENT_TEXT LIKE '%' || #{searchInput} || '%'
+					c.COMMENT_CONTENT LIKE '%' || #{searchInput} || '%'
 				</when>
 				<when test="searchType == 'nickname'">
 					c.MEMBER_NICKNAME LIKE '%' || #{searchInput} || '%'
@@ -253,9 +253,9 @@
 	<select id="searchCommentList" parameterType="map" resultMap="CommentResultMap">
 		SELECT
 		c.COMMENT_NO,
-		c.COMMENT_TEXT,
+		c.COMMENT_CONTENT,
 		c.COMMENT_DEL_FL,
-		c.COMMENT_REGI_DATE,
+		c.COMMENT_WRITE_DATE,
 		c.PARENT_COMMENT_NO,
 		c.MEMBER_NO,
 		c.BOARD_NO,
@@ -269,7 +269,7 @@
 			AND
 			<choose>
 				<when test="searchType == 'content'">
-					c.COMMENT_TEXT LIKE '%' || #{searchInput} || '%'
+					c.COMMENT_CONTENT LIKE '%' || #{searchInput} || '%'
 				</when>
 				<when test="searchType == 'nickname'">
 					c.MEMBER_NICKNAME LIKE '%' || #{searchInput} || '%'
@@ -346,6 +346,23 @@
 	</update>
 
 
+	<!-- 댓글 상세 조회 -->
+	<select id="selectCommentDetail" parameterType="int" resultType="Comment">
+	    SELECT
+	        c.COMMENT_NO,
+	        c.COMMENT_CONTENT,
+	        c.COMMENT_WRITE_DATE,
+	        c.COMMENT_DEL_FL,
+	        c.PARENT_COMMENT_NO,
+	        c.BOARD_NO,
+	        c.MEMBER_NO,
+	        m.MEMBER_NICKNAME AS MEMBER_NICKNAME,
+	        m.PROFILE_IMG
+	    FROM TB_COMMENT c
+	    JOIN TB_MEMBER m ON c.MEMBER_NO = m.MEMBER_NO
+	    WHERE c.COMMENT_NO = #{commentNo}
+	</select>
+	
 
 
 

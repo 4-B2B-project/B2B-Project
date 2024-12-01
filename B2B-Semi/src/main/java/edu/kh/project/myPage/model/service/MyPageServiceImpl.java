@@ -309,4 +309,12 @@ public class MyPageServiceImpl implements MyPageService {
 		return mapper.boardDelete(map);
 	}
 
+	
+	// 댓글 상세정보 조회
+	@Override
+	public Comment selectCommentDetail(int commentNo) {
+		
+		return mapper.selectCommentDetail(commentNo);
+	}
+
 }
