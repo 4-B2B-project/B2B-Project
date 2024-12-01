@@ -10,7 +10,7 @@ settings.json
 *.log
 *.sql
 config.properties
-
+*.sql
 driver.xml
 
 META-INF
