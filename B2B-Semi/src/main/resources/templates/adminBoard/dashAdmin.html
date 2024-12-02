@@ -121,13 +121,13 @@
 	      <div class="profile-container">
 	        <div class="profile-header">
 	          <div class="profile-image">
-	            <img src="placeholder.jpg" alt="Profile">
+	            <img th:with="user=#{user.default.image}" th:src="${session.loginMember.profileImg ?: user}" id="profileImg">
 	          </div>
 	          <div class="profile-info">
 	            <h1 class="profile-name">관리자</h1>
 	            <p class="profile-bio">관리자계정입니다.</p>
 	          </div>
-	          <a href="/myPage/editInfo" class="editInfoBtn">
+	          <a href="/adminBoard/editInfo" class="editInfoBtn">
 	            내 정보 수정
 	          </a>
 

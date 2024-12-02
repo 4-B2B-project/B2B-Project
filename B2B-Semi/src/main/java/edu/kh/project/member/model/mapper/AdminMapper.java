@@ -68,5 +68,11 @@ public interface AdminMapper {
 
 	int updateBook(Book book);
 
+	Board boardDetail(int boardNo);
+
+	int boardUpdate(Map<String, Object> paramMap);
+
+	int boardDelete(Map<String, Object> paramMap);
+
 
 }

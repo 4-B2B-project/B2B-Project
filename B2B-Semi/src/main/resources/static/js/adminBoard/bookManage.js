@@ -77,7 +77,7 @@ const updateBookBtn = document.querySelectorAll("button[name='updateBookBtn']").
 });
 
 const addBookBtn = document.querySelector("#addBook").addEventListener("click", () => {
-	window.location.href = "/adminBoard/addBook";
+	window.location.href = "/insertBook/addBook";
 });
 
 

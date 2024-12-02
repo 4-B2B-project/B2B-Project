@@ -17,8 +17,6 @@ public interface AdminService {
 
 	public int updateStatus(List<String> memberIds, boolean updateY);
 
-	public Board selectOne(Map<String, Integer> map);
-
 	public Map<String, Object> boardList(int cp);
 
 	public Map<String, Object> boardSearchList(int cp, Map<String, Object> paramMap);
@@ -33,8 +31,6 @@ public interface AdminService {
 
 	public int updateBookStatus(List<String> bookList, boolean updateY);
 
-	public int insertNewBook(Map<String, Object> paramMap);
-
 	public Map<String, Object> searchBookList(Map<String, Object> paramMap, int cp);
 
 	public Map<String, Object> memberList(int cp);
@@ -46,5 +42,11 @@ public interface AdminService {
 
 
 	public int updateBook(Book book);
+
+	public Board boardDetail(int boardNo);
+
+	public int boardUpdate(Map<String, Object> paramMap);
+
+	public int boardDelete(Map<String, Object> paramMap);
 
 }
