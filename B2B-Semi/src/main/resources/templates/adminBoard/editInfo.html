@@ -181,93 +181,10 @@
   <!-- 다음 주소 API 추가 -->
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <!-- js 추가 -->
-  <script src="/js/myPage/myPage-editInfo.js"></script>
+  <script src="/js/adminBoard/adminInfo.js"></script>
   
 
 </body>
 
 </html>
-
-
-
-
-<!-- 완성본
-
-<section class="genre-section">
-          <div class="genre-header">
-
-            <div class="profile-container">
-              <div class="profile-image-container">
-                <img src="placeholder.jpg" alt="프로필 이미지" class="profile-image">
-              </div>
-
-              <form>
-                <div action="info" method="POST" name="myPageFrm" id="updateInfo">
-                  <label for="nickname">이름</label>
-                  <input type="text" id="nickname" class="form-control" value="그길동">
-                </div>
-
-                <div class="myPage-row">
-                  <label>닉네임</label>
       
-                  <input type="text" name="memberNickname" 
-                    maxlength="10" id="memberNickname"
-                    th:value="${session.loginMember.memberNickname}"
-                    >
-      
-                    <input type="hidden" id="currentNickname" th:value="${session.loginMember.memberNickname}">
-                </div>
-
-                <div class="myPage-row">
-                  <label>전화번호</label>
-                  <input type="text" name="memberTel" 
-                    maxlength="11" id="memberTel"
-                    th:value="${session.loginMember.memberTel}" >
-                </div>
-
-                <div class="myPage-row">
-                  <label>이메일</label>
-                  <input type="email" id="email" th:value="${session.loginMember.memberEmail}">
-                </div>
-
-              
-                <div class="myPage-row info-title">
-                  <span>주소</span>
-                </div>
-      
-                <div class="myPage-row info-address">
-                  <input type="text" name="memberAddress"
-                    placeholder="우편번호" id="postcode"
-                    th:value="${postcode}"
-                    >
-                  
-                  <button type="button" id="searchAddress">검색</button>
-                </div>
-      
-                <div class="myPage-row info-address">
-                  <input type="text" name="memberAddress"
-                    placeholder="도로명/지번 주소" id="address"
-                    th:value="${address}"
-                    >
-                </div>
-      
-                <div class="myPage-row info-address">
-                  <input type="text" name="memberAddress"
-                    placeholder="상세 주소" id="detailAddress"
-                    th:value="${detailAddress}"
-                    >
-                </div>
-
-                <div class="button-group">
-                  <button type="submit" class="myPage-submit">수정하기</button>
-                  <button type="button" class="myPage-submit-cancel">수정 취소</button>
-                </div>
-              </form>
-            </div>
-
-
-
-
-          </div>
-        </section>
-        -->

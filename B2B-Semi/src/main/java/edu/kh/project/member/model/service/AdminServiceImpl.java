@@ -22,6 +22,23 @@ public class AdminServiceImpl implements AdminService{
 
 	private final AdminMapper mapper;
 	
+	// 관리자 정보 수정.
+	@Override
+	public int editInfo(Member inputMember, String[] memberAddress) {
+
+		if (inputMember.getMemberAddress().equals(",,")) {
+			
+			inputMember.setMemberAddress(null);
+		}
+		else {
+			
+			String address = String.join("^^^", memberAddress);
+			inputMember.setMemberAddress(address);
+		}
+		
+		return mapper.editInfo(inputMember);
+	}
+	
 	// 회원 목록 조회. (검색 x)
 	@Override
 	public Map<String, Object> memberList(int cp) {

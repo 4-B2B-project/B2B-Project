@@ -43,11 +43,57 @@ public class AdminController {
 
 	// 관리자 정보 수정 페이지
 	@GetMapping("editInfo")
-	public String adminEditInfo() {
+	public String adminEditInfo(@SessionAttribute("loginMember") Member loginMember, Model model) {
+		
+		String memberAddress = loginMember.getMemberAddress();
+		
+		if (memberAddress != null) {
+			String[] arr = memberAddress.split("\\^\\^\\^");
+			
+			if (arr.length == 3) {
+				model.addAttribute("postdcode", arr[0]);
+				model.addAttribute("address", arr[1]);
+				model.addAttribute("detailAddress", arr[2]);
+			}
+			else {
+				model.addAttribute("message", "주소 형식이 잘못 되었습니다.");
+			}
+		}
 		
 		return "adminBoard/editInfo";
 	}
 	
+	// 관리자 정보 수정.
+	@PostMapping("editInfo")
+	public String editAdminInfo(Member inputMember, @SessionAttribute("loginMember") Member loginMember,
+			@RequestParam("memberAddress") String[] memberAddress, RedirectAttributes ra) {
+		
+		inputMember.setMemberNo(loginMember.getMemberNo());
+		
+		int result = Adservice.editInfo(inputMember, memberAddress);
+		
+		String message = null;
+		
+		if (result > 0) {
+			loginMember.setMemberNo(inputMember.getMemberNo());
+			loginMember.setMemberId(inputMember.getMemberId());
+			loginMember.setMemberNickname(inputMember.getMemberNickname());
+			loginMember.setMemberTel(inputMember.getMemberTel());
+			loginMember.setMemberBookCategory(inputMember.getMemberBookCategory());
+			loginMember.setMemberAddress(inputMember.getMemberAddress());
+			
+			message = "정보가 수정되었습니다.";
+			
+		}
+		
+		else {
+			message = "수정에 실패했습니다.";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:editInfo";
+	}
 	
 	// 회원 관리 페이지
 	@GetMapping("memberManage")
@@ -334,7 +380,7 @@ public class AdminController {
 	}
 	
 	// 게시글 수정 버튼.
-	@PostMapping("editBoardDetail/{boardNo:[0-9]+}/update")
+	@PostMapping("boardDetail/{boardNo:[0-9]+}/update")
 	public String boardUpdate(@PathVariable ("boardNo") int boardNo, 
 			@RequestParam Map<String, Object> paramMap,
 			@SessionAttribute("loginMember") Member loginMember,
@@ -355,7 +401,7 @@ public class AdminController {
 			message = "수정 완료.";
 		}
 		else {
-			path = "boardDetail";
+			path = "/adminBoard/boardDetail";
 			message = "수정 실패.";
 		}
 		
@@ -366,7 +412,7 @@ public class AdminController {
 	}
 	
 	// 게시글 삭제 버튼.
-	@PostMapping("editBoardDetail/{boardNo:[0-9]+}/delete")
+	@PostMapping("boardDetail/{boardNo:[0-9]+}/delete")
 	public String boardDelete(@PathVariable("boardNo") int boardNo,
 			@RequestParam Map<String, Object> paramMap,
 			@SessionAttribute("loginMember") Member loginMember,

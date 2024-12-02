@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 폼 객체 만들기
         const form = document.createElement("form");
-        form.action = `/adminBoard/editBoardDetail/${boardNo}/update`;
+        form.action = `/adminBoard/boardDetail/${boardNo}/update`;
         form.method = "POST";
 
         // 제목 값 세팅
@@ -129,14 +129,7 @@ const goToListBtn = document.querySelector("#communityList");
 
 goToListBtn.addEventListener("click", () => {
 
-	let path = location.pathname.split("/");
-	path[2] = "boardManage";
-
-	// 새로운 경로 조합
-	const newUrl = path.join("/") + location.search;
-
-	console.log(newUrl);
-	location.href = newUrl;
+	window.location.href = "/adminBoard/boardManage";
 });
 
 const deleteBtn = document.querySelector("#deleteBtn");
@@ -151,7 +144,7 @@ if (deleteBtn != null) {
 
 		// form태그 생성
 		const form = document.createElement("form");
-		form.action = `/adminBoard/editBoardDetail/${boardNo}/delete`;
+		form.action = `/adminBoard/boardDetail/${boardNo}/delete`;
 		form.method = "POST";
 
 		// cp값을 저장할 input 생성

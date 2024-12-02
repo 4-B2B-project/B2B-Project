@@ -49,4 +49,6 @@ public interface AdminService {
 
 	public int boardDelete(Map<String, Object> paramMap);
 
+	public int editInfo(Member inputMember, String[] memberAddress);
+
 }

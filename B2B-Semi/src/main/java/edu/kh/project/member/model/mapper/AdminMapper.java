@@ -74,5 +74,7 @@ public interface AdminMapper {
 
 	int boardDelete(Map<String, Object> paramMap);
 
+	int editInfo(Member inputMember);
+
 
 }
