@@ -1,151 +1,195 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // 버튼과 폼 요소 가져오기
-  const editButton = document.getElementById("editButton");
-  const submitContentEditButton = document.getElementById("submitContentEdit");
-  const boardTitleSection = document.getElementById("boardTitleSection");
-  const originalContentSection = document.getElementById("boardContentSection");
-  const editTitleForm = document.getElementById("editTitleForm");
-  const editContentForm = document.getElementById("editContentForm");
-  const boardTitleInput = document.getElementById("boardTitleInput");
-  const boardContentInput = document.getElementById("boardContentInput");
-  const boardUpdateDateSection = document.querySelector('td[th\\:text="${boardDetail.boardUpdateDate}"]');
- 
-  // 수정 버튼 클릭 시 제목과 내용 폼 표시
-  if (editButton) {
-    editButton.addEventListener("click", function () {
-      // 기존 제목과 내용 숨기기
-      boardTitleSection.style.display = "none";
-      originalContentSection.style.display = "none";
+document.addEventListener('DOMContentLoaded', () => {
+	// 사용할 태그들 변수 선언
+    const editBtn = document.querySelector("#editBtn");
+    const saveBtn = document.querySelector("#saveBtn");
+    const cancelBtn = document.querySelector("#cancelBtn");
+    const boardTitleDisplay = document.querySelector("#boardTitleDisplay");
+    const boardTitleEdit = document.querySelector("#boardTitleEdit");
+    const boardContentDisplay = document.querySelector("#boardContentDisplay");
+    const boardContentEdit = document.querySelector("#boardContentEdit");
 
-      // 수정 폼 보이기
-      editTitleForm.style.display = "block";
-      editContentForm.style.display = "block";
+    // 수정 버튼 클릭시
+    editBtn.addEventListener("click", () => {
+        // 기존 태그 숨기기
+        boardTitleDisplay.style.display = 'none';
+        boardContentDisplay.style.display = 'none';
 
-      // 수정, 삭제 버튼 숨기기
-      editButton.style.display = "none";
+        // 수정 태그 보여주기
+        boardTitleEdit.style.display = 'inline';
+        boardContentEdit.style.display = 'block';
+
+        //토글 버튼 스타일
+        editBtn.style.display = 'none';
+        deleteBtn.style.display = 'none';
+        saveBtn.style.display = 'inline-block';
+        cancelBtn.style.display = 'inline-block';
     });
-  }
 
-  // 수정 완료 버튼 클릭 시 비동기 요청으로 데이터 전송
-  if (submitContentEditButton) {
-    submitContentEditButton.addEventListener("click", function () {
-      const boardNo = document.querySelector("input[name='boardNo']").value;
-      const boardTitle = boardTitleInput.value;
-      const updatedContent = boardContentInput.value;
+    // 취소 버튼 클릭스
+    cancelBtn.addEventListener("click", () => {
+        // 기존의 값으로 세팅
+        boardTitleEdit.value = boardTitleDisplay.textContent;
+        boardContentEdit.value = boardContentDisplay.textContent;
 
-      // 비동기 요청 (AJAX)
-      fetch("/myPage/" + boardNo + "/update", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          boardNo: boardNo,
-          boardTitle: boardTitle,
-          boardContent: updatedContent,
-        }),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("서버 응답에 문제가 발생했습니다.");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          if (data.success) {
-            alert("게시글이 성공적으로 수정되었습니다.");
-            
-            // 수정된 내용을 화면에 반영
-            boardTitleSection.textContent = boardTitle;
-            originalContentSection.querySelector("p").textContent = updatedContent;
+        // 수정 태그 숨기기
+        boardTitleEdit.style.display = 'none';
+        boardContentEdit.style.display = 'none';
 
-            // 수정된 작성일 화면에 반영
-            if (data.boardUpdateDate) {
-              boardUpdateDateSection.textContent = data.boardUpdateDate;
-            }
+        // 기존 태그 보여주기
+        boardTitleDisplay.style.display = 'inline';
+        boardContentDisplay.style.display = 'block';
 
-            // 수정 폼 숨기고, 원래 내용을 다시 표시
-            editTitleForm.style.display = "none";
-            editContentForm.style.display = "none";
-            boardTitleSection.style.display = "block";
-            originalContentSection.style.display = "block";
-
-            // 수정, 삭제 버튼 보이기
-            editButton.style.display = "inline-block";
-          } else {
-            alert("게시글 수정에 실패했습니다. 다시 시도해주세요.");
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          alert("오류가 발생했습니다. 다시 시도해주세요.");
-        });
+        // 토글 버튼 스타일
+        editBtn.style.display = 'inline-block';
+        deleteBtn.style.display = 'inline-block';
+        saveBtn.style.display = 'none';
+        cancelBtn.style.display = 'none';
     });
-  }
+
+    // 수정 버튼 클릭시 
+    saveBtn.addEventListener("click", () => {
+        const newTitle = boardTitleEdit.value.trim();
+        const newContent = boardContentEdit.value.trim();
+
+        if (newTitle === "") {
+            alert("제목을 입력해주세요.");
+            return;
+        }
+
+        if (newContent === "") {
+            alert("내용을 입력해주세요.");
+            return;
+        }
+
+        // 폼 객체체 만들기
+        const form = document.createElement("form");
+        form.action = `/myPage/boardDetail/edit/${boardNo}`;
+        form.method = "POST";
+
+        // 제목 값 세팅
+        const titleInput = document.createElement("input");
+        titleInput.type = "hidden";
+        titleInput.name = "boardTitle";
+        titleInput.value = newTitle;
+
+		// 내용 값 세팅
+        const contentInput = document.createElement("input");
+        contentInput.type = "hidden";
+        contentInput.name = "boardContent";
+        contentInput.value = newContent;
+
+        // 검색값 세팅
+        const params = new URLSearchParams(location.search);
+        const cp = params.get("cp");
+        const searchType = params.get("searchType");
+        const searchInput = params.get("searchInput");
+
+		// 페이징
+        if (cp) {
+            const cpInput = document.createElement("input");
+            cpInput.type = "hidden";
+            cpInput.name = "cp";
+            cpInput.value = cp;
+            form.append(cpInput);
+        }
+
+		// 검색조건
+        if (searchType) {
+            const searchTypeInput = document.createElement("input");
+            searchTypeInput.type = "hidden";
+            searchTypeInput.name = "searchType";
+            searchTypeInput.value = searchType;
+            form.append(searchTypeInput);
+        }
+
+		// 검색값
+        if (searchInput) {
+            const searchInputElement = document.createElement("input");
+            searchInputElement.type = "hidden";
+            searchInputElement.name = "searchInput";
+            searchInputElement.value = encodeURIComponent(searchInput);
+            form.append(searchInputElement);
+        }
+
+        // form에 붙이기
+        form.append(titleInput);
+        form.append(contentInput);
+
+        // 화면에 form태그 추가하고 실행
+        document.querySelector("body").append(form);
+        form.submit();
+    });
 });
 
-
-
-//------------------------------------------------------------------------
-/* 삭제 버튼 */
-/* 삭제(POST) */
-const deleteButton = document.querySelector("#deleteButton");
-
-if(deleteButton != null){
-  deleteButton.addEventListener("click", () => {
-
-    if( !confirm("삭제 하시겠습니까?") ) {
-      alert("취소됨")
-      return;
-    }
-
-    // 게시글 번호 가져오기
-    const boardNo = document.querySelector("input[name='boardNo']").value;
-
-    // 비동기 요청
-    fetch(`/myPage/${boardNo}/delete`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("삭제 실패");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      if (data.success) {
-        alert("게시글이 성공적으로 삭제되었습니다.");
-        // 목록 페이지로 이동
-        location.href = "/myPage/boardList";
-      } else {
-        alert("게시글 삭제에 실패했습니다.");
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      alert("오류가 발생했습니다.");
-    });
-  });
-}
-
-
-// ---------------------------------------------------
-
 /* 목록으로 돌아가는 버튼 */
-const goToListBtn = document.querySelector("#goToListBtn");
+const goToListBtn = document.querySelector("#boardList");
 
 goToListBtn.addEventListener("click", () => {
 
-  // 상세조회 : /board/1/2011?cp=1
-  // 목록     : /board/1?cp=1
+	let path = location.pathname.split("/");
+	path[2] = "boardList";
 
-  let url = location.pathname;
-  url = url.substring(0, url.lastIndexOf("/"));
+	// 새로운 경로 조합
+	const newUrl = path.join("/") + location.search;
 
-  location.href = url + location.search;
-                        // 쿼리스트링
+	console.log(newUrl);
+	location.href = newUrl;
 });
 
+const deleteBtn = document.querySelector("#deleteBtn");
+
+if (deleteBtn != null) {
+	deleteBtn.addEventListener("click", () => {
+
+		if (!confirm("삭제 하시겠습니까?")) {
+			alert("취소됨")
+			return;
+		}
+
+    const url = `/myPage/boardDetail/delete/${boardNo}`;
+  
+
+		// form태그 생성
+		const form = document.createElement("form");
+		form.action = url;
+		form.method = "POST";
+
+		// cp값을 저장할 input 생성
+		const cpInput = document.createElement("input");
+		cpInput.type = "hidden";
+		cpInput.name = "cp";
+		
+		// 검색조건 저장할 input 생성
+		const srchtype = document.createElement("input");
+		srchtype.type = "hidden";
+		srchtype.name = "searchType";
+		
+		// 검색 값 저장할 input 생성
+		const srchInput = document.createElement("input");
+		srchInput.type = "hidden";
+		srchInput.name = "searchInput";
+
+		// 쿼리스트링에서 검색조건 값 가져오기
+		const params = new URLSearchParams(location.search)
+		const type = params.get("searchType");
+		srchtype.value = type;
+		
+		// 쿼리스트링에서 검색 값 가져오기
+		const inp = params.get("searchInput");
+		const encodedSearchInput = encodeURIComponent(inp);
+		srchInput.value = encodedSearchInput;
+		
+		// 페이징값 넣기
+		const cp = params.get("cp");
+		cpInput.value = cp;
+
+		form.append(srchtype);
+		form.append(srchInput);
+		form.append(cpInput);
+
+		// 화면에 form태그를 추가한 후 제출하기
+		document.querySelector("body").append(form);
+		form.submit();
+
+	});
+}

@@ -42,21 +42,6 @@ public class MyPageServiceImpl implements MyPageService {
 	@Value("${my.profile.folder-path}")
 	private String profileFolderPath; // C:/uploadFiles/profile/
 
-	private String getCategoryByBoardCode(int boardCode) {
-		switch (boardCode) {
-		case 1:
-			return "자유";
-		case 2:
-			return "추천";
-		case 3:
-			return "공지";
-		case 4:
-			return "문의";
-		default:
-			return "기타";
-		}
-	}
-
 	// 회원정보 수정
 	@Override
 	public int editInfo(Member inputMember, String[] memberAddress) {
@@ -245,9 +230,9 @@ public class MyPageServiceImpl implements MyPageService {
 		Map<String, Object> map = new HashMap<>();
 		map.put("pagination", pagination);
 		map.put("commentList", commentList);
-		
+
 		log.debug("현재 페이지(cp): {}", cp);
-		
+
 		log.debug("RowBounds offset: {}, limit: {}", offset, limit);
 
 		return map;
@@ -287,7 +272,6 @@ public class MyPageServiceImpl implements MyPageService {
 		return mapper.selectBoardDetail(boardNo);
 	}
 
-	
 	// 게시글 상세정보 수정
 	@Override
 	public int boardUpdate(Board inputBoard) {
@@ -298,15 +282,31 @@ public class MyPageServiceImpl implements MyPageService {
 		if (result == 0)
 			return 0;
 
-
 		return result;
 	}
 
-	
 	// 게시글 삭제
 	@Override
 	public int boardDelete(Map<String, Integer> map) {
 		return mapper.boardDelete(map);
+	}
+
+	// 댓글 상세정보 조회
+	@Override
+	public Comment selectCommentDetail(int commentNo) {
+
+		return mapper.selectCommentDetail(commentNo);
+	}
+
+	// 댓글,답글 등록
+	@Override
+	public int replyInsert(Comment comment) {
+
+		if (comment.getCommentContent() == null || comment.getCommentContent().trim().isEmpty()) {
+			throw new IllegalArgumentException("댓글 내용은 반드시 입력해야 합니다.");
+		}
+
+		return mapper.replyInsert(comment);
 	}
 
 }

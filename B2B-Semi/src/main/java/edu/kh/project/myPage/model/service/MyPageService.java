@@ -98,6 +98,22 @@ public interface MyPageService {
 
 	
 	
+	/** 댓글 상세정보 조회
+	 * @param boardNo
+	 * @return
+	 */
+	Comment selectCommentDetail(int commentNo);
+
+	
+	/**  댓글,답글 등록
+	 * @param comment
+	 * @return
+	 */
+	int replyInsert(Comment comment);
+
+	
+	
+	
 	
 	
 	
