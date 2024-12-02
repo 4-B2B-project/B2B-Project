@@ -1,4 +1,4 @@
-const searchBoardListBtn = document.querySelector("#searchBtn"); // 도서 관리 검색창
+const searchBoardListBtn = document.querySelector("#searchBtn");
 const tbody = document.querySelector("#tbody");
 const input = document.querySelector("#searchInput");
 const checkAll = document.querySelector("#theadCheckAll");
@@ -68,3 +68,19 @@ tbody.addEventListener("change", e => {
 		document.querySelector("#theadCheckAll").checked = allChecked;
 	}
 })
+
+// 게시글 수정 페이지 이동.
+const updateBoardBtn = document.querySelectorAll("button[class='updateBoardBtn']").forEach(button => {
+	button.addEventListener("click", () => {
+		
+		const boardNo = button.getAttribute('data-board-id');
+		console.log(boardNo);
+		window.location.href = `/adminBoard/boardDetail/${boardNo}`;
+				
+	})
+});
+
+
+
+
+

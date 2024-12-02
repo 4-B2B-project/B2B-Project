@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>게시글 상세</title>
+
+	<link rel="stylesheet" href="/css/adminBoard/boardDetail.css">
+	<link rel="stylesheet" href="/css/board/comment-style.css">
+
+	<!-- templates/common/common.html 조각으로 추가 -->
+	<th:block th:replace="~{common/common}"></th:block>
+
+</head>
+
+<body>
+	<div class="wrapper" th:object="${board}">
+		<!-- 헤더 추가 -->
+		<th:block th:replace="~{common/header}"></th:block>
+
+		<!-- 사이드 추가 -->
+		<th:block th:replace="~{sideMenu/sideMenu-admin}"></th:block>
+
+		<main class="main-content">
+
+			<section class="ranking-header">
+				<h1 class="ranking-title">
+					제목 :
+					<span id="boardTitleDisplay" th:text="*{boardTitle}"></span>
+					<input type="text" id="boardTitleEdit" class="input-field" style="display:none;" th:value="*{boardTitle}">
+				</h1>
+			</section>
+
+			<section class="genre-writer">
+				<div class="detail-row">
+					<!-- 작성자 정보 -->
+					<div class="writer-detail">
+						<div class="writer-label">작성자</div>
+						<div class="writer-value" th:text="*{memberNickname}">작성자이름</div>
+					</div>
+				</div>
+			</section>
+				
+			
+			<section class="genre-writer">
+				<!-- 조회수, 작성일자 -->
+				<div class="detail-row">
+					<div class="detail-label">조회수</div>
+					<div class="detail-value" th:text="*{readCount}">조회수값</div>
+					<div class="detail-label">작성일자</div>
+					<div class="detail-value" th:text="*{boardWriteDate}">작성일자값</div>
+				</div>
+			</section>
+			
+			<section class="genre-section" style="margin-bottom: 1rem; height: 500px;">
+				<div class="detail-content">
+					<span id="boardContentDisplay" th:text="*{boardContent}"></span>
+					<textarea id="boardContentEdit" class="input-textArea" style="display:none;" th:text="*{boardContent}"></textarea>
+				</div>
+			</section>
+			
+			<div style="justify-self: right; margin-bottom: 1rem;">
+				<th:block th:if="${session.loginMember != null}">
+					<th:block th:if="${session.loginMember.memberNo == board.memberNo || session.loginMember.memberAuth == 2}">
+	                    <button class="edit-button" id="editBtn">수정</button>
+	                    <button class="delete-button" id="deleteBtn">삭제</button>
+	                    <button class="save-button" id="saveBtn" style="display:none;">저장</button>
+	                    <button class="cancel-button" id="cancelBtn" style="display:none;">취소</button>
+	                </th:block>
+				</th:block>
+				<button class="list-button" id="communityList">목록</button>
+			</div>
+
+			<section class="genre-section">
+				<th:block th:replace="~{board/comment}"></th:block>
+			</section>
+
+		</main>
+
+
+		<!-- 푸터 추가-->
+		<th:block th:replace="~{common/footer}"></th:block>
+
+		<script th:inline="javascript">
+			const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ "로그인한 멤버";
+			
+			const boardNo = /*[[${board.boardNo}]]*/ "게시글 번호";
+		</script>
+
+		<script src="/js/adminBoard/boardDetail.js"></script>
+		<script src="/js/adminBoard/boardComment.js"></script>
+
+
+	</div>
+
+</body>
+
+</html>

@@ -188,13 +188,6 @@ public class AdminServiceImpl implements AdminService{
 		return mapper.updateBook(book);
 	}
 	
-	// 도서 추가.
-	@Override
-	public int insertNewBook(Map<String, Object> paramMap) {
-
-		return mapper.insertNewBook(paramMap);
-	}
-	
 	// 게시판 관리 조회. (검색 x)
 	@Override
 	public Map<String, Object> boardList(int cp) {
@@ -247,9 +240,9 @@ public class AdminServiceImpl implements AdminService{
 	
 	// 게시글 상세 조회.
 	@Override
-	public Board selectOne(Map<String, Integer> map) {
+	public Board boardDetail(int boardNo) {
 
-		return mapper.selectOne(map);
+		return mapper.boardDetail(boardNo);
 	}
 	
 	// 게시글 삭제/삭제 복구.

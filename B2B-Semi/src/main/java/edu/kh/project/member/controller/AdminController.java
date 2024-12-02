@@ -33,11 +33,20 @@ public class AdminController {
 
 	private final AdminService Adservice;
 	
+	
 	@GetMapping("dashAdmin")
 	public String dashAdmin() {
 		return "adminBoard/dashAdmin";
 	}
 
+	// 관리자 정보 수정 페이지
+	@GetMapping("editInfo")
+	public String adminEditInfo() {
+		
+		return "adminBoard/editInfo";
+	}
+	
+	
 	// 회원 관리 페이지
 	@GetMapping("memberManage")
 	public String memberManage(Model model, @RequestParam(value="cp", required=false, defaultValue = "1") int cp, @RequestParam Map<String, Object> paramMap) {
@@ -270,13 +279,6 @@ public class AdminController {
 		return "redirect:/adminBoard/bookManage";
 	}
 	
-	// 도서 추가 페이지.
-	@GetMapping("addBook")
-	public String addBook() {
-		
-		return "/adminBoard/insertBook";
-	}
-	
 	// 게시글 관리 페이지.
 	@GetMapping("boardManage")
 	public String boardManage(Model model, @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
@@ -315,26 +317,18 @@ public class AdminController {
 	}
 	
 	// 게시글 상세.
-	@GetMapping("{boardCode:[0-9]+}/{boardNo:[0-9]+}")
-	public String boardDetail(@PathVariable("boardCode") int boardCode, @PathVariable("boardNo") int boardNo, Model model, RedirectAttributes ra, HttpServletRequest req, HttpServletResponse resp) {
+	@GetMapping("boardDetail/{boardNo:[0-9]+}")
+	public String boardDetail(@PathVariable("boardNo") int boardNo, Model model, RedirectAttributes ra) {
 		
-		Map<String, Integer> map = new HashMap<>();
-		map.put("boardCode", boardCode);
-		map.put("boardNo", boardNo);
-		
-		Board board = Adservice.selectOne(map);
-		
-		String path = null;
+		Board board = Adservice.boardDetail(boardNo);
 		
 		if(board == null) {
-			path = "redirect:/adminBoard/boardManage" + boardCode;
 			ra.addFlashAttribute("message", "게시글이 존재하지 않습니다.");
+			return "redirect:/adminBoard/boardManage";
 		}
-		path = "adminBoard/boardManage";
 		
 		model.addAttribute("board", board);
-		
-		return path;
+		return "adminBoard/boardDetail";
 	}
 	
 	// 게시글 삭제 / 삭제 복구.

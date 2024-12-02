@@ -68,5 +68,7 @@ public interface AdminMapper {
 
 	int updateBook(Book book);
 
+	Board boardDetail(int boardNo);
+
 
 }
