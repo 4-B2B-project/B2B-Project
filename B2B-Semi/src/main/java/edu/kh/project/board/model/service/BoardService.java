@@ -9,20 +9,20 @@ public interface BoardService {
 
 	List<Map<String, Object>> selectBoardTypeList();
 
-	/** 자유게시판 게시글 조회
+	/** 게시판 게시글 조회
 	 * @param cp
 	 * @return
 	 */
-	Map<String, Object> communityList(int cp);
+	Map<String, Object> communityList(int cp, int boardCode);
 
-	/** 자유게시판 검색 게시글 조회
+	/** 게시판 검색 게시글 조회
 	 * @param cp
 	 * @param paramMap
 	 * @return
 	 */
 	Map<String, Object> communitySearchList(int cp, Map<String, Object> paramMap);
 
-	/** 자유게시판 글 상세 조회
+	/** 게시판 글 상세 조회
 	 * @param board
 	 * @return
 	 */
@@ -45,5 +45,11 @@ public interface BoardService {
 	 * @return
 	 */
 	int boardUpdate(Map<String, Object> paramMap);
+
+	/** 조회수 1증가 서비스
+	 * @param boardNo
+	 * @return
+	 */
+	int updateReadCount(int boardNo);
 
 }

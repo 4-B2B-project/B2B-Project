@@ -14,13 +14,13 @@ public interface BoardMapper {
 	/** 자유게시판 글 개수 조회
 	 * @return
 	 */
-	int communityCount();
+	int communityCount(int boardCode);
 
 	/** 자유게시판 글 목록 조회
 	 * @param rowBounds
 	 * @return
 	 */
-	List<Board> communityList(RowBounds rowBounds);
+	List<Board> communityList(RowBounds rowBounds, int boardCode);
 
 	/** 자유게시판 글 검색 개수 조회
 	 * @return
@@ -56,5 +56,17 @@ public interface BoardMapper {
 	 * @return
 	 */
 	int boardUpdate(Map<String, Object> paramMap);
+
+	/** 조회수 1증가 
+	 * @param boardNo
+	 * @return
+	 */
+	int updateReadCount(int boardNo);
+
+	/** 현재 조회수 조회
+	 * @param boardNo
+	 * @return
+	 */
+	int selectReadCount(int boardNo);
 
 }

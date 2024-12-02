@@ -24,10 +24,19 @@
 		<main class="main-content">
 
 			<form action="insert" method="POST" id="boardWriteFrm">
+				
+				<input type="hidden" name="secretCheck" value="N"/>
+				
 				<section class="ranking-header">
 					<th:block th:if="${boardCode == 1}">
 						<h1 class="ranking-title">
 							자유게시판 작성
+						</h1>
+					</th:block>
+					
+					<th:block th:if="${boardCode == 3}">
+						<h1 class="ranking-title">
+							공지사항 작성
 						</h1>
 					</th:block>
 					
@@ -44,6 +53,15 @@
 		                  <input name="boardTitle" class="input-field" placeholder="제목을 입력하세요">
 		              </div>
 				</section>
+				
+				<th:block th:if="${boardCode == 4}">
+					<section class="genre-section-check">
+						<select name="selector" class="form-select">
+						    <option value="N">No</option>
+						    <option value="Y">Yes</option>
+						</select>
+					</section>
+				</th:block>
 	
 				<section class="genre-section" style="margin-bottom: 1rem; height: 500px;">
 					<div class="detail-content">

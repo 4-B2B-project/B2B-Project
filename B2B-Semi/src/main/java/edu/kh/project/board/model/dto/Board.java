@@ -38,10 +38,10 @@ public class Board {
 	private String searchType;			// 검색 조건
 	private String searchInput;			// 검색어
 	
-	// 특정 게시글 이미지 목록
-	
-	
 	// 특정 게시글에 작성된 댓글 목록
 	private List<Comment> commentList;
+	
+	// 댓글 개수
+	private int commentCount;
 	
 }

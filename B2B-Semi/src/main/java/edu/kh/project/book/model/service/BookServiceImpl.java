@@ -157,8 +157,6 @@ public class BookServiceImpl implements BookService{
 	                .coverUrl((String) item.get("cover")) // 커버 이미지 URL
 	                .firstCategory(firstCategory) // 1차 카테고리
 	                .secondCategory(secondCategory) // 2차 카테고리
-	                .updatedAt((String) item.get("updatedAt")) // 업데이트 시간
-	                .customerReviewRank((Integer) item.get("customerReviewRank")) // 리뷰 점수
 	                .build();
 	    	
 
