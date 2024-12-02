@@ -6,9 +6,17 @@ const isbn = document.querySelector("#isbnData");
 
 // 검색 버튼 클릭시
 searchBtn.addEventListener("click", () => {
+	
+	const inputDate = searchInput.value;
+	
+	if(inputDate == '') {
+		alert("검색어를 입력해주세요.");
+		searchInput.focus();
+		return;
+	}
 
 	const obj = {
-		bookTitle: searchInput.value
+		bookTitle: inputDate
 	}
 
 	// 검색 도서 목록 API 조회
