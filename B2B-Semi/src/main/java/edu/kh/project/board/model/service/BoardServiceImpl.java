@@ -30,11 +30,11 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	
-	// 자유게시판 글 목록 조회
+	// 게시판 글 목록 조회
 	@Override
-	public Map<String, Object> communityList(int cp) {
-		// 도서 목록 개수 조회
-		int boardCount = mapper.communityCount();
+	public Map<String, Object> communityList(int cp, int boardCode) {
+		// 게시글 목록 개수 조회
+		int boardCount = mapper.communityCount(boardCode);
 		
 		// 페이지네이션 진행
 		Pagination pagination = new Pagination(cp, boardCount);
@@ -44,7 +44,7 @@ public class BoardServiceImpl implements BoardService{
 		
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		List<Board> boardList = mapper.communityList(rowBounds); 
+		List<Board> boardList = mapper.communityList(rowBounds, boardCode); 
 		
 		Map<String, Object> map = new HashMap<>();
 		
@@ -105,5 +105,22 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public int boardUpdate(Map<String, Object> paramMap) {
 		return mapper.boardUpdate(paramMap);
+	}
+
+
+	// 조회수 1 증가 서비스
+	@Override
+	public int updateReadCount(int boardNo) {
+		
+		// 조회수 1증가
+		int result = mapper.updateReadCount(boardNo);
+		
+		if(result > 0) {
+			return mapper.selectReadCount(boardNo);
+		}
+		
+		// 실패한 경우 -1 반환
+		return -1;
+		
 	}
 }

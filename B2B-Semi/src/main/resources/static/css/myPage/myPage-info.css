@@ -1,3 +1,65 @@
+ /* 기본 전체 설정 시작 */
+ .wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+/* 기본 전체 설정 끝 */
+
+/* Main Content Styles */
+.main-content {
+  margin-left: var(--sidebar-width);
+  min-height: 75vh;
+  padding: 2rem;
+  flex-grow: 1;
+}
+
+/* 타이틀 시작 */
+.ranking-header {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+.ranking-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--dark-text);
+  margin-bottom: 1.5rem;
+}
+
+/* 타이틀 끝 */
+
+
+/* 부제목 시작 */
+.genre-section {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+.genre-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--light-bg);
+}
+
+.genre-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--dark-text);
+}
+
+/* 부제목 끝 */
+
+
 /* 메인 컨텐츠 css*/
 .profile-container {
   max-width: 600px;

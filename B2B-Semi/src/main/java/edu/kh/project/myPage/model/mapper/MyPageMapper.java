@@ -163,6 +163,13 @@ public interface MyPageMapper {
 	Comment selectCommentDetail(int commentNo);
 
 
+	/** 댓글,답글 등록
+	 * @param comment
+	 * @return
+	 */
+	int replyInsert(Comment comment);
+
+
 
 
 	

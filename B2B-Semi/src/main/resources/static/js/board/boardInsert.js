@@ -20,7 +20,13 @@ goToListBtn.addEventListener("click", () => {
 document.querySelector("#boardWriteFrm").addEventListener("submit", e => {
 	const boardTitle = document.querySelector("[name='boardTitle']");
 	const boardContent = document.querySelector("[name='boardContent']");
-
+	const secretCheck = document.querySelector("[name='secretCheck']");
+	const selector = document.querySelector("[name='selector']");
+	
+	if(selector != null) {
+		secretCheck.value = selector.value;
+	}
+	
 	// 유효성 검사
 	if (boardTitle.value.trim().length === 0) {
 		alert("제목을 작성해 주세요");
@@ -36,5 +42,6 @@ document.querySelector("#boardWriteFrm").addEventListener("submit", e => {
 		e.preventDefault();
 		return;
 	}
+	
 
 });

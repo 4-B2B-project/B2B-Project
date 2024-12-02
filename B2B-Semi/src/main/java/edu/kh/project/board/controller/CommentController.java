@@ -30,6 +30,7 @@ public class CommentController {
 	 */
 	@GetMapping("")
 	public List<Comment> select(@RequestParam("boardNo") int boardNo) {
+		log.debug("service.commentList(boardNo)" + service.commentList(boardNo));
 		return service.commentList(boardNo);
 	}
 	

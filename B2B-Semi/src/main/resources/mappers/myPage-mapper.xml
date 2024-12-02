@@ -33,12 +33,13 @@
     <result property="description" column="DESCRIPTION"/>
     <result property="firstCategory" column="FIRST_CATEGORY"/>
     <result property="secondCategory" column="SECOND_CATEGORY"/>
-    
-     <result property="genres" column="{firstCategory=FIRST_CATEGORY,secondCategory=SECOND_CATEGORY}" javaType="String" jdbcType="VARCHAR" />
+    <result property="genres" column="{firstCategory=FIRST_CATEGORY,secondCategory=SECOND_CATEGORY}" javaType="String" jdbcType="VARCHAR" />
+    <result property="reviewCount" column="REVIEWCOUNT"/>
+    <result property="steamCount" column="STEAMCOUNT"/>
 	</resultMap>
 
 	<!-- 찜한 도서 목록 조회 -->
-	<select id="selectFavoriteBooks" >
+	<select id="selectFavoriteBooks" parameterType="Book">
 		SELECT 
 		b.BOOK_ID,
 		b.TITLE,
@@ -46,8 +47,18 @@
 		b.COVER_URL,
 		b.CUSTOMER_REVIEW_RANK,
 		b.DESCRIPTION,
-	    CONCAT(FIRST_CATEGORY, CONCAT(',', SECOND_CATEGORY)) GENRES
-       
+	    CONCAT(FIRST_CATEGORY, CONCAT(',', SECOND_CATEGORY)) GENRES,
+	     (
+            SELECT COUNT(*) 
+            FROM TB_STARPOINT TBS 
+            WHERE TBS.BOOK_ID = b.BOOK_ID
+        ) AS REVIEWCOUNT,  <!-- 리뷰 개수 -->
+        (
+            SELECT COUNT(*) 
+            FROM TB_FAVORITE TBF 
+            WHERE TBF.BOOK_ID = b.BOOK_ID
+        ) AS STEAMCOUNT  <!-- 하트 개수 -->
+	   
 		FROM TB_FAVORITE f
 		JOIN TB_BOOKS b ON f.BOOK_ID =
 		b.BOOK_ID
@@ -361,6 +372,30 @@
 	    JOIN TB_MEMBER m ON c.MEMBER_NO = m.MEMBER_NO
 	    WHERE c.COMMENT_NO = #{commentNo}
 	</select>
+	
+	<!-- 댓글,답글 등록 -->
+	<insert id="replyInsert">
+		INSERT INTO "TB_COMMENT"
+		VALUES(
+			SEQ_COMMENT_NO.NEXTVAL, 
+			#{commentContent}, 
+			DEFAULT, 
+			DEFAULT, 
+			
+			<!-- 자식 댓글 --> 
+			<if test="parentCommentNo != 0">
+				#{parentCommentNo},
+			</if>
+			
+			<!-- 부모 댓글 -->
+			<if test="parentCommentNo == 0">
+				NULL,
+			</if>
+			#{memberNo},
+			#{boardNo} 
+		)
+	</insert>
+
 	
 
 

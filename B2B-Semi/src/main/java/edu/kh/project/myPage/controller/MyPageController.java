@@ -126,10 +126,9 @@ public class MyPageController {
 		model.addAttribute("favoriteBooks", favoriteBooks);
 
 		if (favoriteBooks == null || favoriteBooks.isEmpty()) {
-			model.addAttribute("favoriteBooks", favoriteBooks); // 빈 리스트도 전달 (뷰에서 처리 가능)
-			model.addAttribute("message", "찜한 도서가 없습니다."); // 메시지 추가
+		    model.addAttribute("message", "찜한 도서가 없습니다.");
 		} else {
-			model.addAttribute("favoriteBooks", favoriteBooks);
+		    model.addAttribute("favoriteBooks", favoriteBooks);
 		}
 
 		return "myPage/myPage-favBook";
@@ -285,6 +284,7 @@ public class MyPageController {
 	        return "redirect:/myPage/commentList"; // 게시글이 없을 경우 목록으로 리다이렉트
 	    }
 	    model.addAttribute("board", boardDetail);
+	    model.addAttribute("commentList", boardDetail.getCommentList());
 
 		// 게시글 상세보기 페이지로 이동
 		return "myPage/myPage-commentDetail";
@@ -406,7 +406,7 @@ public class MyPageController {
 	 * @return ra : 리다이렉트 시 request scope 로 메시지 전달
 	 */
 	@PostMapping("changePw") 
-	public String changePw2(@SessionAttribute("loginMember") Member loginMember,
+	public String changePw(@SessionAttribute("loginMember") Member loginMember,
 			@RequestParam Map<String, Object> paramMap, RedirectAttributes ra) {
 
 		
@@ -510,7 +510,6 @@ public class MyPageController {
 	 * @return
 	 */
 	@PostMapping("boardDetail/edit/{boardNo}")
-	
 	public String boardUpdate(
 			@PathVariable("boardNo") int boardNo, 
 			@ModelAttribute Board inputBoard,
@@ -572,5 +571,59 @@ public class MyPageController {
 	    // 게시글 목록으로 리다이렉트
 	    return "redirect:/myPage/boardList";
 	}
+	
+	
+	@PostMapping("comment")
+	@ResponseBody
+	public int insertComment(@RequestBody Comment comment,
+	                         @SessionAttribute("loginMember") Member loginMember) {
+	    // 유효성 검사 추가
+	    if (comment.getCommentContent() == null || comment.getCommentContent().trim().isEmpty()) {
+	        throw new IllegalArgumentException("댓글 내용은 반드시 입력해야 합니다.");
+	    }
+
+	    comment.setMemberNo(loginMember.getMemberNo());
+
+	    return service.replyInsert(comment);
+	}
+	
+	
+	/** 댓글,답글 등록
+	 * @param comment
+	 * @param loginMember
+	 * @param ra
+	 * @return
+	 */
+	@PostMapping("commentDetail")
+	public String insertComment(
+								@PathVariable("boardNo") int boardNo,
+								@ModelAttribute Comment comment,
+	                            @SessionAttribute("loginMember") Member loginMember,
+	                            RedirectAttributes ra) {
+		
+		 // 유효성 검사
+	    if (comment.getCommentContent() == null || comment.getCommentContent().trim().isEmpty()) {
+	        ra.addFlashAttribute("message", "댓글 내용을 입력해 주세요.");
+	        return "redirect:/myPage/commentDetail?boardNo=" + comment.getBoardNo();
+	    }
+		
+	    // 댓글 작성자 정보 세팅
+	    comment.setMemberNo(loginMember.getMemberNo());
+
+	    // 댓글 작성 서비스 호출
+	    int result = service.replyInsert(comment);
+
+	    if (result > 0) {
+	        ra.addFlashAttribute("message", "댓글이 등록되었습니다.");
+	    } else {
+	        ra.addFlashAttribute("message", "댓글 등록에 실패했습니다.");
+	    }
+
+	    // 댓글 작성 후 다시 해당 게시글 상세 페이지로 리다이렉트
+	    return "redirect:/myPage/commentDetail?boardNo=" + comment.getBoardNo();
+	}
+	
+	
+	
 
 }

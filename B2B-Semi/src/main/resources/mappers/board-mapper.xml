@@ -3,16 +3,16 @@
 <mapper namespace="edu.kh.project.board.model.mapper.BoardMapper">
 
 
-	<!-- 자유게시판 글 개수 조회 -->
+	<!-- 게시판 글 개수 조회 -->
 	<select id="communityCount">
 		SELECT COUNT(*)
 		FROM "TB_BOARD"
 		WHERE BOARD_DEL_FL = 'N'
-		AND BOARD_CODE = 1
+		AND BOARD_CODE = #{boardCode}
 	</select>
 	
 	
-	<!-- 자유게시판 글 목록 조회 -->
+	<!-- 게시판 글 목록 조회 -->
 	<select id="communityList">
 		SELECT 
 			ROWNUM ROW_NUM,
@@ -25,7 +25,9 @@
 			BOARD_DEL_FL,
 			MEMBER_NO,
 			MEMBER_NICKNAME,
-			BOARD_CODE
+			COMMENT_COUNT,
+			BOARD_CODE,
+			SECRET_CHECK
 		FROM
 			(SELECT 
 				BOARD_NO,
@@ -41,20 +43,26 @@
 					FROM "TB_MEMBER" MEM
 					WHERE MEM.MEMBER_NO = BOA.MEMBER_NO
 				) AS MEMBER_NICKNAME,
-				BOARD_CODE
+				(
+					SELECT COUNT(*)
+					FROM "TB_COMMENT" TBC
+					WHERE TBC.BOARD_NO = BOA.BOARD_NO
+				) AS COMMENT_COUNT,
+				BOARD_CODE,
+				SECRET_CHECK
 			FROM "TB_BOARD" BOA
 			WHERE BOARD_DEL_FL = 'N'
-			AND BOARD_CODE = 1
-			ORDER BY BOARD_NO) BOARD
+			AND BOARD_CODE = #{boardCode}
+			ORDER BY BOARD_WRITE_DATE DESC, BOARD_NO DESC) BOARD
 	</select>
 	
 	
-	<!-- 자유게시판 검색 글 개수 조회 -->
+	<!-- 게시판 검색 글 개수 조회 -->
 	<select id="communitySearchCount">
 		SELECT COUNT(*)
 		FROM "TB_BOARD" BOARD
 		WHERE BOARD_DEL_FL = 'N'
-		AND BOARD_CODE = 1
+		AND BOARD_CODE = #{boardCode}
 		<choose>
 			<when test='searchType == "title"'>
 				AND BOARD_TITLE LIKE '%' || #{searchInput} || '%'
@@ -73,7 +81,7 @@
 	</select>
 	
 	
-	<!-- 자유게시판 검색 글 목록 조회 -->
+	<!-- 게시판 검색 글 목록 조회 -->
 	<select id="communitySearchList">
 		SELECT 
 			ROWNUM ROW_NUM,
@@ -86,7 +94,9 @@
 			BOARD_DEL_FL,
 			MEMBER_NO,
 			MEMBER_NICKNAME,
-			BOARD_CODE
+			COMMENT_COUNT,
+			BOARD_CODE,
+			SECRET_CHECK
 		FROM
 			(SELECT 
 				BOARD_NO,
@@ -102,11 +112,17 @@
 					FROM "TB_MEMBER" MEM
 					WHERE MEM.MEMBER_NO = BOA.MEMBER_NO
 				) AS MEMBER_NICKNAME,
-				BOARD_CODE
+				(
+					SELECT COUNT(*)
+					FROM "TB_COMMENT" TBC
+					WHERE TBC.BOARD_NO = BOA.BOARD_NO
+				) AS COMMENT_COUNT,
+				BOARD_CODE,
+				SECRET_CHECK
 			FROM "TB_BOARD" BOA
 			WHERE BOARD_DEL_FL = 'N'
-			AND BOARD_CODE = 1
-			ORDER BY BOARD_NO) BOARD
+			AND BOARD_CODE = #{boardCode}
+			ORDER BY BOARD_WRITE_DATE DESC, BOARD_NO DESC) BOARD
 		WHERE 1=1
 		<choose>
 			<when test='searchType == "title"'>
@@ -122,7 +138,7 @@
 	</select>
 
 
-	<!-- 자유게시판 글 상세 조회 -->
+	<!-- 게시판 글 상세 조회 -->
 	<select id="detailCommunity">
 		SELECT 
 			BOARD_NO,
@@ -165,7 +181,7 @@
 			#{boardCode},
 			NULL,
 			0,
-			DEFAULT
+			#{secretCheck}
 		)
 	
 	</insert>
@@ -192,5 +208,22 @@
 		AND BOARD_CODE = #{boardCode}
 		AND MEMBER_NO = #{memberNo}
 	</update>
+	
+	
+	<!-- 조회수 1증가 -->
+	<update id="updateReadCount">
+		UPDATE "TB_BOARD"
+		SET
+			READ_COUNT = READ_COUNT + 1
+		WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	
+	<!-- 현재 조회수 조회 -->
+	<select id="selectReadCount">
+		SELECT READ_COUNT
+		FROM "TB_BOARD"
+		WHERE BOARD_NO = #{boardNo}
+	</select>
 
 </mapper>

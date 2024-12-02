@@ -45,8 +45,10 @@
             <div th:each="book, iterStat : ${favoriteBooks}" class="book-card bookInfo" th:data-bookId="${book.bookId}"
               th:data-title="${book.title}" th:data-author="${book.author}" th:data-coverUrl="${book.coverUrl}"
               th:data-rating="${book.customerReviewRank}" th:data-genres="${book.genres != null ? book.genres : ''}"
-              th:data-description="${book.description}" th:data-reviewCount="${book.reviewCount}"
-              th:data-steamCount="${book.steamCount}">
+              th:data-description="${book.description}"
+              th:data-reviewCount="${book.reviewCount != null ? book.reviewCount : 0}"
+              th:data-steamCount="${book.steamCount != null ? book.steamCount : 0}">
+
 
               <div class="rank-badge" th:text="${iterStat.index + 1}"></div>
               <!-- 랭크 뱃지 iterstat으로 순서대로-->
@@ -62,6 +64,15 @@
                   </div>
                 </div>
 
+                <!-- 장르 출력 -->
+                <div class="book-genres" th:if="${book.genres != null}">
+                  <div class="genre-item" th:each="genre : ${#strings.arraySplit(book.genres, ',')}" th:text="${genre}"></div>
+              </div>
+              
+
+
+
+
                 <div class="book-stats">
                   <div class="stat-item">
                     <i class="fas fa-star text-warning"></i>
@@ -70,12 +81,17 @@
 
                   <div class="stat-item">
                     <i class="fas fa-comment text-primary"></i>
-                    <span th:text="${book.reviewCount != null ? book.reviewCount : 0}">리뷰</span>
+                    <span th:text="${book != null and book.reviewCount != null ? book.reviewCount : 0}">리뷰</span>
+
+
                   </div>
-                  
+
                   <div class="stat-item">
                     <i class="fas fa-heart text-danger"></i>
-                    <span th:text="${book.steamCount != null ? book.steamCount : 0}">하트</span>
+                    <span th:text="${book != null and book.steamCount != null ? book.steamCount : 0}">하트</span>
+
+
+
                   </div>
 
                 </div>
@@ -122,11 +138,12 @@
                   </div>
                   <div class="stat-item">
                     <i class="fas fa-comment text-primary"></i>
-                    <span></span>
+                    <span th:text="${book != null and book.reviewCount != null ? book.reviewCount : 0}">리뷰</span>
+
                   </div>
                   <div class="stat-item">
                     <i class="fas fa-heart text-danger"></i>
-                    <span></span>
+                    <span th:text="${book != null and book.steamCount != null ? book.steamCount : 0}">하트</span>
                   </div>
                 </div>
                 <div class="book-detail-genres mb-3">

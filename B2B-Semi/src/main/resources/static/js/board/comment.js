@@ -42,7 +42,7 @@ const selectCommentList = () => {
 					// 날짜(작성일)
 					const commentDate = document.createElement("span");
 					commentDate.classList.add("comment-date");
-					commentDate.innerText = comment.commentRegiDate;
+					commentDate.innerText = comment.commentWriteDate;
 
 					// 작성자 영역(commentWriter)에 프로필, 닉네임, 날짜 추가
 					commentWriter.append(profileImg, nickname, commentDate);
@@ -53,7 +53,7 @@ const selectCommentList = () => {
 					// 댓글 내용 
 					const content = document.createElement("p");
 					content.classList.add("comment-content");
-					content.innerText = comment.commentText;
+					content.innerText = comment.commentContent;
 
 					commentRow.append(content);
 
@@ -145,7 +145,7 @@ addContent.addEventListener("click", e => {
 
 	// ajax를 이용해 댓글 등록 요청
 	const data = {
-		"commentText": commentContent.value,
+		"commentContent": commentContent.value,
 		"boardNo": boardNo,
 		"memberNo": loginMemberNo
 	};
@@ -247,7 +247,7 @@ const insertChildComment = (parentCommentNo, btn) => {
 
 	// ajax를 이용해 댓글 등록 요청
 	const data = {
-		"commentText": textarea.value,
+		"commentContent": textarea.value,
 		"boardNo": boardNo,
 		"memberNo": loginMemberNo,  // 또는 Session 회원 번호 이용도 가능
 		"parentCommentNo": parentCommentNo // 부모 댓글 번호
@@ -408,7 +408,7 @@ const updateComment = (commentNo, btn) => {
 	// 댓글 수정 (ajax)
 	const data = {
 		"commentNo": commentNo,
-		"commentText": textarea.value
+		"commentContent": textarea.value
 	}
 
 	fetch("/comment", {
