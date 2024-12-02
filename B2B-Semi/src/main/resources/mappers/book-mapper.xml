@@ -33,6 +33,14 @@
 		]]>
 	</select>
 	
+	
+	<!-- 도서 상세 조회 -->
+	<select id="srchBook">
+		SELECT COUNT(*)
+		FROM "TB_BOOKS"
+		WHERE ISBN = #{isbn}
+	</select>
+	
 
 	<!-- 다중 Book 객체 삽입 -->
     <insert id="insertBook" parameterType="Book">
@@ -67,7 +75,7 @@
             DEFAULT,
             DEFAULT,
             #{updatedAt},
-            #{customerReviewRank}
+            0
         )
     </insert>
 
