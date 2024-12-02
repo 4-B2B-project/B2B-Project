@@ -57,24 +57,19 @@
         </div>
       </section>
 
-      <!-- 제목 폼 (처음에는 숨겨진 상태) -->
-      <section id="editTitleForm" style="display: none;">
-        <form id="titleUpdateForm">
-          <input type="hidden" name="boardNo" th:value="${board?.boardNo}" />
-          <label for="boardTitle">제목:</label>
-          <input type="text" id="boardTitleInput" name="boardTitle" th:value="${board?.boardTitle}" required />
-        </form>
-      </section>
+      <div style="justify-self: right; margin-bottom: 1rem;">
+				<th:block th:if="${session.loginMember != null}">
+					<th:block th:if="${session.loginMember.memberNo == board.memberNo}">
+	                    <button class="edit-button" id="editBtn">수정</button>
+	                    <button class="delete-button" id="deleteBtn">삭제</button>
+	                    <button class="save-button" id="saveBtn" style="display:none;">저장</button>
+	                    <button class="cancel-button" id="cancelBtn" style="display:none;">취소</button>
+	                </th:block>
+				</th:block>
+				<button class="list-button" id="communityList">목록</button>
+			</div>
 
-      <!-- 내용 수정 폼 (처음에는 숨겨진 상태) -->
-      <section id="editContentForm" style="display: none;">
-        <form id="contentUpdateForm">
-          <input type="hidden" name="boardNo" th:value="${board?.boardNo}" />
-          <label for="boardContent">내용:</label>
-          <textarea id="boardContentInput" name="boardContent" required th:text="${board?.boardContent}"></textarea>
-          <button type="button" id="submitContentEdit">수정 완료</button>
-        </form>
-      </section>
+    
 
     </main>
 

@@ -315,6 +315,7 @@ public class MyPageController {
 		return "myPage/myPage-boardEdit"; // 수정 폼 페이지
 	}
 	
+	
 	// 댓글 목록 화면 이동 및  수정
 	
 	
