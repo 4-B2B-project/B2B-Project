@@ -126,10 +126,9 @@ public class MyPageController {
 		model.addAttribute("favoriteBooks", favoriteBooks);
 
 		if (favoriteBooks == null || favoriteBooks.isEmpty()) {
-			model.addAttribute("favoriteBooks", favoriteBooks); // 빈 리스트도 전달 (뷰에서 처리 가능)
-			model.addAttribute("message", "찜한 도서가 없습니다."); // 메시지 추가
+		    model.addAttribute("message", "찜한 도서가 없습니다.");
 		} else {
-			model.addAttribute("favoriteBooks", favoriteBooks);
+		    model.addAttribute("favoriteBooks", favoriteBooks);
 		}
 
 		return "myPage/myPage-favBook";
@@ -204,7 +203,7 @@ public class MyPageController {
 		}
 
 		// 모델에 게시글 정보 추가
-		model.addAttribute("boardDetail", boardDetail);
+		model.addAttribute("board", boardDetail);
 
 		// 게시글 상세보기 페이지로 이동
 		return "myPage/myPage-boardDetail";
@@ -258,6 +257,38 @@ public class MyPageController {
 
 		return "myPage/myPage-commentList";
 	}
+	
+	/** 댓글 상세 정보 이동
+	 * @param boardNo
+	 * @param model
+	 * @param loginMember
+	 * @return
+	 */
+	@GetMapping("commentDetail")
+	public String commentDetail(@RequestParam("commentNo") int commentNo, Model model,
+			@SessionAttribute(value = "loginMember", required = false) Member loginMember) {
+
+		// 서비스 호출하여 게시글 번호에 해당하는 댓글 정보를 가져옴
+		Comment commentDetail = service.selectCommentDetail(commentNo);
+
+		if (commentDetail == null) {
+			return "redirect:/myPage/commentList"; // 게시글이 없을 경우 목록으로 리다이렉트
+		}
+
+		// 모델에 게시글 정보 추가
+		model.addAttribute("commentDetail", commentDetail);
+		
+		// 모델에 게시글 정보 추가
+	    Board boardDetail = service.selectBoardDetail(commentDetail.getBoardNo());
+	    if (boardDetail == null) {
+	        return "redirect:/myPage/commentList"; // 게시글이 없을 경우 목록으로 리다이렉트
+	    }
+	    model.addAttribute("board", boardDetail);
+	    model.addAttribute("commentList", boardDetail.getCommentList());
+
+		// 게시글 상세보기 페이지로 이동
+		return "myPage/myPage-commentDetail";
+	}
 
 	
 	
@@ -269,8 +300,9 @@ public class MyPageController {
 	 * @param loginMember
 	 * @return
 	 */
-	@GetMapping("/{boardNo}/update")
-	public String updateBoardForm(@PathVariable("boardNo") int boardNo, Model model,
+	@GetMapping("boardDetail/edit/{boardNo}")
+	public String updateBoardForm(@PathVariable("boardNo") int boardNo,
+			Model model,
 			@SessionAttribute("loginMember") Member loginMember) {
 
 		// 게시글 상세 정보를 조회해서 수정 폼에 뿌려줌
@@ -283,6 +315,7 @@ public class MyPageController {
 		model.addAttribute("boardDetail", boardDetail);
 		return "myPage/myPage-boardEdit"; // 수정 폼 페이지
 	}
+	
 	
 	// 댓글 목록 화면 이동 및  수정
 	
@@ -373,7 +406,7 @@ public class MyPageController {
 	 * @return ra : 리다이렉트 시 request scope 로 메시지 전달
 	 */
 	@PostMapping("changePw") 
-	public String changePw2(@SessionAttribute("loginMember") Member loginMember,
+	public String changePw(@SessionAttribute("loginMember") Member loginMember,
 			@RequestParam Map<String, Object> paramMap, RedirectAttributes ra) {
 
 		
@@ -476,12 +509,13 @@ public class MyPageController {
 	 * @param loginMember
 	 * @return
 	 */
-	@PostMapping("/{boardNo}/update")
-	@ResponseBody // 비동기 요청에 응답하기 위해 JSON 형태로 반환
-	public Map<String, Object> boardUpdate(
+	@PostMapping("boardDetail/edit/{boardNo}")
+	public String boardUpdate(
 			@PathVariable("boardNo") int boardNo, 
-			@RequestBody Board inputBoard,
-			@SessionAttribute("loginMember") Member loginMember) {
+			@ModelAttribute Board inputBoard,
+			@SessionAttribute("loginMember") Member loginMember,
+			RedirectAttributes ra
+			) {
 
 		// 1. 커맨드 객체(inputBoard)에 ,boardNo, memberNo 세팅
 
@@ -492,12 +526,13 @@ public class MyPageController {
 		// 2. 게시글 수정 서비스 호출 후 결과 반환 받기
 		int result = service.boardUpdate(inputBoard);
 
-		// 3. 서비스 결과에 따라 JSON 형태의 응답 생성
-		Map<String, Object> response = new HashMap<>();
-		response.put("success", result > 0);
-		response.put("message", result > 0 ? "게시글이 수정되었습니다" : "수정 실패");
+		 if (result > 0) {
+		        ra.addFlashAttribute("message", "게시글이 수정되었습니다");
+		    } else {
+		        ra.addFlashAttribute("message", "수정 실패");
+		    }
 
-		return response;
+		    return "redirect:/myPage/boardDetail?boardNo=" + boardNo;
 	}
 
 
@@ -510,11 +545,12 @@ public class MyPageController {
 	 * 서버 리소스를 변경하거나 삭제하는 작업은 HTTP 표준에서 GET 방식이
 	// 아닌 POST, PUT, DELETE 같은 메서드로 처리하도록 권장
 	 */
-	@RequestMapping(value ="/{boardNo}/delete", method = RequestMethod.POST ) 
-	@ResponseBody // 비동기 요청에 응답하기 위해 JSON 형태로 반환
-	public Map<String, Object> boardDelete(
+	@PostMapping("boardDetail/delete/{boardNo}")
+	
+	public String boardDelete(
 						@PathVariable("boardNo") int boardNo,
-						@SessionAttribute("loginMember") Member loginMember, RedirectAttributes ra) {
+						@SessionAttribute("loginMember") Member loginMember,
+						RedirectAttributes ra) {
 
 		
 		Map<String, Integer> map = new HashMap<>();
@@ -526,13 +562,68 @@ public class MyPageController {
 
 		
 
-		 // JSON 응답 생성
-	    Map<String, Object> response = new HashMap<>();
-	    response.put("success", result > 0);
-	    response.put("message", result > 0 ? "게시글이 삭제되었습니다." : "게시글 삭제에 실패했습니다.");
+		if (result > 0) {
+	        ra.addFlashAttribute("message", "게시글이 삭제되었습니다.");
+	    } else {
+	        ra.addFlashAttribute("message", "게시글 삭제에 실패했습니다.");
+	    }
 
-	    return response;
-
+	    // 게시글 목록으로 리다이렉트
+	    return "redirect:/myPage/boardList";
 	}
+	
+	
+	@PostMapping("comment")
+	@ResponseBody
+	public int insertComment(@RequestBody Comment comment,
+	                         @SessionAttribute("loginMember") Member loginMember) {
+	    // 유효성 검사 추가
+	    if (comment.getCommentContent() == null || comment.getCommentContent().trim().isEmpty()) {
+	        throw new IllegalArgumentException("댓글 내용은 반드시 입력해야 합니다.");
+	    }
+
+	    comment.setMemberNo(loginMember.getMemberNo());
+
+	    return service.replyInsert(comment);
+	}
+	
+	
+	/** 댓글,답글 등록
+	 * @param comment
+	 * @param loginMember
+	 * @param ra
+	 * @return
+	 */
+	@PostMapping("commentDetail")
+	public String insertComment(
+								@PathVariable("boardNo") int boardNo,
+								@ModelAttribute Comment comment,
+	                            @SessionAttribute("loginMember") Member loginMember,
+	                            RedirectAttributes ra) {
+		
+		 // 유효성 검사
+	    if (comment.getCommentContent() == null || comment.getCommentContent().trim().isEmpty()) {
+	        ra.addFlashAttribute("message", "댓글 내용을 입력해 주세요.");
+	        return "redirect:/myPage/commentDetail?boardNo=" + comment.getBoardNo();
+	    }
+		
+	    // 댓글 작성자 정보 세팅
+	    comment.setMemberNo(loginMember.getMemberNo());
+
+	    // 댓글 작성 서비스 호출
+	    int result = service.replyInsert(comment);
+
+	    if (result > 0) {
+	        ra.addFlashAttribute("message", "댓글이 등록되었습니다.");
+	    } else {
+	        ra.addFlashAttribute("message", "댓글 등록에 실패했습니다.");
+	    }
+
+	    // 댓글 작성 후 다시 해당 게시글 상세 페이지로 리다이렉트
+	    return "redirect:/myPage/commentDetail?boardNo=" + comment.getBoardNo();
+	}
+	
+	
+	
 
 }

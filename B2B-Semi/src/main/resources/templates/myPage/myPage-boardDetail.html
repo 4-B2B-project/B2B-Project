@@ -10,12 +10,10 @@
   <th:block th:replace="~{common/common}"></th:block>
 
   <link rel="stylesheet" href="/css/myPage/myPage-boardDetail.css">
-
-
 </head>
 
 <body>
-  <div class="wrapper">
+  <div class="wrapper" th:object="${board}">
     <!-- 헤더 추가 -->
     <th:block th:replace="~{common/header}"></th:block>
 
@@ -23,65 +21,65 @@
     <th:block th:replace="~{sideMenu/sideMenu-myPage}"></th:block>
 
     <main class="main-content">
-      <section class="board-detail-header">
-        <!-- 게시글 제목 또는 존재하지 않음을 표시 -->
-        <h1 id="boardTitleSection" th:text="${boardDetail != null} ? ${boardDetail.boardTitle} : '게시글이 존재하지 않습니다.' ">제목</h1>
-        
+
+      <section class="ranking-header">
+        <h1 class="ranking-title">
+          제목 :
+          <span id="boardTitleDisplay" th:text="${board != null ? board.boardTitle : '제목이 없습니다'}">제목이 없습니다</span>
+          <input type="text" id="boardTitleEdit" class="input-field" style="display:none;" th:value="${board?.boardTitle}">
+        </h1>
       </section>
 
-      <!-- 제목 폼 (처음에는 숨겨진 상태) -->
-      <section id="editTitleForm" style="display: none;">
-        <form id="titleUpdateForm">
-          <input type="hidden" name="boardNo" th:value="${boardDetail.boardNo}" />
-          <label for="boardTitle">제목:</label>
-          <input type="text" id="boardTitleInput" name="boardTitle" th:value="${boardDetail.boardTitle}" required />
-        </form>
+      <section class="genre-writer">
+        <div class="detail-row">
+          <!-- 작성자 정보 -->
+          <div class="writer-detail">
+            <div class="writer-label">작성자</div>
+            <div class="writer-value" th:text="${board != null && board.memberNickname != null ? board.memberNickname : '작성자 정보 없음'}">작성자이름</div>
+          </div>
+        </div>
       </section>
 
-      <section class="board-detail-info" th:if="${boardDetail != null}">
-        <table class="board-info-table">
-          <tbody>
-            <tr>
-              <th>작성자</th>
-              <td th:text="${boardDetail.memberNickname}">작성자</td>
-
-            </tr>
-            <tr>
-              <th>조회수</th>
-              <td th:text="${boardDetail.readCount}">조회수</td>
-              <th>작성일</th>
-              <td th:text="${boardDetail.boardUpdateDate}">작성일</td>
-            </tr>
-          </tbody>
-        </table>
+      <section class="genre-writer">
+        <!-- 조회수, 작성일자 -->
+        <div class="detail-row">
+          <div class="detail-label">조회수</div>
+          <div class="detail-value" th:text="${board != null ? board.readCount : 0}">조회수값</div>
+          <div class="detail-label">작성일자</div>
+          <div class="detail-value" th:text="${board != null && board.boardWriteDate != null ? board.boardWriteDate : '작성일자 없음'}">작성일자값</div>
+        </div>
+      </section>
+      
+      <section class="genre-section" style="margin-bottom: 1rem; height: 500px;">
+        <div class="detail-content">
+          <span id="boardContentDisplay" th:text="${board != null && board.boardContent != null ? board.boardContent : '내용이 없습니다'}"></span>
+          <textarea id="boardContentEdit" class="input-textArea" style="display:none;" th:text="${board?.boardContent != null ? board.boardContent : ''}"></textarea>
+        </div>
       </section>
 
-      <section class="board-detail-content" id="boardContentSection" th:if="${boardDetail != null}">
-        <p th:text="${boardDetail.boardContent}">게시글 내용</p>
-      </section>
+      <div style="justify-self: right; margin-bottom: 1rem;">
+				<th:block th:if="${session.loginMember != null}">
+					<th:block th:if="${session.loginMember.memberNo == board.memberNo}">
+	                    <button class="edit-button" id="editBtn">수정</button>
+	                    <button class="delete-button" id="deleteBtn">삭제</button>
+	                    <button class="save-button" id="saveBtn" style="display:none;">저장</button>
+	                    <button class="cancel-button" id="cancelBtn" style="display:none;">취소</button>
+	                </th:block>
+				</th:block>
+				<button class="list-button" id="boardList">목록</button>
+			</div>
 
-      <!-- 내용 수정 폼 (처음에는 숨겨진 상태) -->
-      <section id="editContentForm" style="display: none;">
-        <form id="contentUpdateForm">
-          <input type="hidden" name="boardNo" th:value="${boardDetail.boardNo}" />
-          <label for="boardContent">내용:</label>
-          <textarea id="boardContentInput" name="boardContent" required
-            th:text="${boardDetail.boardContent}"></textarea>
-          <button type="button" id="submitContentEdit">수정 완료</button>
-        </form>
-      </section>
+    
 
-
-      <div class="buttons" th:if="${boardDetail != null}">
-        <button id="editButton">수정</button>
-
-        <button id="deleteButton">삭제</button>
-      </div>
     </main>
 
     <!-- 푸터 추가-->
     <th:block th:replace="~{common/footer}"></th:block>
 
+    <script th:inline="javascript">
+      const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ "로그인한 멤버";
+      const boardNo = /*[[${board?.boardNo}]]*/ "게시글 번호";
+    </script>
   </div>
 
   <script src="/js/myPage/myPage-boardDetail.js"></script>

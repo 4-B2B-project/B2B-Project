@@ -1,4 +1,25 @@
- /* 기본 전체 설정 시작 */
+/* 기본 전체 설정 시작 */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+:root {
+	--primary-color: #4f46e5;
+	--primary-hover: #4338ca;
+	--background: #ffffff;
+	--text-primary: #1f2937;
+	--text-secondary: #4b5563;
+	--card-background: #ffffff;
+}
+
+body {
+	font-family: 'Segoe UI', 'Arial', sans-serif;
+	background-color: #F9FAFB;
+}
+
  .wrapper {
   display: flex;
   flex-direction: column;
@@ -215,6 +236,22 @@
 	border-bottom: 2px solid var(--light-bg);
 }
 
+.secondary-btn {
+    background-color: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.action-btn {
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
 .review-item {
 	background-color: var(--light-bg);
 	padding: 1.5rem;
@@ -322,3 +359,35 @@
 }
 
 /* 모달 스타일 끝 */
+
+
+.book-genres {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-top: 0.5rem;
+}
+
+.genre-item {
+	background-color: #007bff;
+	color: white;
+	border-radius: 5px;
+	padding: 0.15rem 0.3rem;
+	font-size: 0.75rem;
+	font-weight: bold;
+	text-align: center;
+}
+
+.genre-item i {
+	margin-right: 0.25rem;
+}
+
+/* 추가적인 모달 창과의 일관성을 유지하기 위한 스타일 */
+.book-detail-genres .genre-item {
+	background-color: #007bff; /* 파란색 배경 */
+	color: white; /* 텍스트 색상 */
+	padding: 0.25rem 0.75rem; /* 패딩 조정 */
+	border-radius: 4px; /* 모서리를 둥글게 */
+	font-weight: bold; /* 글자 굵게 */
+	margin-right: 0.5rem; /* 장르들 간의 간격 */
+}
