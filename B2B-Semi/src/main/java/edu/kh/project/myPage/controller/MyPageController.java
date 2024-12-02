@@ -204,7 +204,7 @@ public class MyPageController {
 		}
 
 		// 모델에 게시글 정보 추가
-		model.addAttribute("boardDetail", boardDetail);
+		model.addAttribute("board", boardDetail);
 
 		// 게시글 상세보기 페이지로 이동
 		return "myPage/myPage-boardDetail";
@@ -257,6 +257,37 @@ public class MyPageController {
 		log.debug("commentList: {}", commentList);
 
 		return "myPage/myPage-commentList";
+	}
+	
+	/** 댓글 상세 정보 이동
+	 * @param boardNo
+	 * @param model
+	 * @param loginMember
+	 * @return
+	 */
+	@GetMapping("commentDetail")
+	public String commentDetail(@RequestParam("commentNo") int commentNo, Model model,
+			@SessionAttribute(value = "loginMember", required = false) Member loginMember) {
+
+		// 서비스 호출하여 게시글 번호에 해당하는 댓글 정보를 가져옴
+		Comment commentDetail = service.selectCommentDetail(commentNo);
+
+		if (commentDetail == null) {
+			return "redirect:/myPage/commentList"; // 게시글이 없을 경우 목록으로 리다이렉트
+		}
+
+		// 모델에 게시글 정보 추가
+		model.addAttribute("commentDetail", commentDetail);
+		
+		// 모델에 게시글 정보 추가
+	    Board boardDetail = service.selectBoardDetail(commentDetail.getBoardNo());
+	    if (boardDetail == null) {
+	        return "redirect:/myPage/commentList"; // 게시글이 없을 경우 목록으로 리다이렉트
+	    }
+	    model.addAttribute("board", boardDetail);
+
+		// 게시글 상세보기 페이지로 이동
+		return "myPage/myPage-commentDetail";
 	}
 
 	

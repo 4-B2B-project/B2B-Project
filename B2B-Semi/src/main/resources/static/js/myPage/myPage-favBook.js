@@ -56,17 +56,23 @@ bookInfoRows.forEach(row => {
     const bookDescription = row.getAttribute('data-description');
     const reviewCount = row.getAttribute('data-reviewCount');
 
+    const steamCount = row.getAttribute('data-steamCount');
+
     // 모달 내 요소 업데이트
     document.querySelector('.book-detail-title').textContent = bookTitle;
     document.querySelector('.book-detail-cover').src = bookCover;
-    document.querySelector('.book-detail-author span').textContent = bookAuthor;
+    document.querySelector('.book-detail-author').textContent = bookAuthor;
     document.querySelector('.book-detail-stats .stat-item:first-child span').textContent = bookRating;
     document.querySelector('.book-detail-stats .stat-item:nth-child(2) span').textContent = reviewCount;
+    document.querySelector('.book-detail-stats .stat-item:last-child span').textContent = steamCount;
     document.querySelector('.avgScore').textContent = "평균 " + bookRating + " : 10.0";
     document.querySelector('.reviewCount').textContent = "총 " + reviewCount + "개의 리뷰";
 
     // bookId 저장
     document.querySelector('#selectBookId').value = bookId;
+
+    // 찜 여부 조회
+    isBookSteam(bookId);
 
     // 장르 업데이트
     const genreContainer = document.querySelector('.book-detail-genres');
@@ -80,7 +86,7 @@ bookInfoRows.forEach(row => {
         // 태그 생성 및 class, text입히기
         const genreBadge = document.createElement('span');
         genreBadge.className = 'badge bg-primary me-2';
-        genreBadge.textContent = genre.trim(); // Trim extra spaces
+        genreBadge.textContent = genre; // Trim extra spaces
         // 장르 태그 안에 자식으로 추가
         genreContainer.appendChild(genreBadge);
       });
@@ -116,6 +122,76 @@ bookInfoRows.forEach(row => {
   });
 });
 
+
+// 찜하기 구현
+const steamBtn = document.querySelector("#steamBtn");
+if (steamBtn != null) {
+  steamBtn.addEventListener("click", () => {
+
+    console.log("찜 버튼 킄릭");
+
+    const bookId = document.getElementById("selectBookId").value;
+
+    fetch("/book/steamBook", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(bookId)
+    })
+      .then(resp => resp.json())
+      .then(result => {
+        if (result == 1) {
+          steamBtn.style.backgroundColor = "#4f46e5";
+          steamBtn.style.color = "white";
+          alert("찜 완료");
+
+        } else if (result == 2) {
+          steamBtn.style.backgroundColor = "white";
+          steamBtn.style.color = "#4F46E5";
+          alert("찜 취소")
+
+        } else {
+          alert("찜하기 오류 발생");
+
+        }
+
+      });
+
+  });
+
+}
+
+// 찜 여부 조회
+function isBookSteam(bookId) {
+
+  if (loginMember != null) {
+    memberNo = loginMember.memberNo;
+
+    obj = {
+      "memberNo": memberNo,
+      "bookId": bookId
+    };
+
+    fetch("/book/isBookSteam", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(obj)
+    })
+      .then(resp => resp.json())
+      .then(result => {
+        if (result == 1) {
+          steamBtn.style.backgroundColor = "#4f46e5";
+          steamBtn.style.color = "white";
+
+        } else {
+          steamBtn.style.backgroundColor = "white";
+          steamBtn.style.color = "#4F46E5";
+
+        }
+
+      });
+  }
+
+}
 
 
 
@@ -164,7 +240,7 @@ function selectReviewList(bookId) {
 							<p class="review-text mb-2">${COMMENT}</p>
 								<div class="review-buttons" ${memberNo === MEMBER_NO ? "" : "style='display:none;'"}> 
 									<button class="btn btn-sm btn-primary me-2 edit-btn" data-action="edit">수정</button>
-									<button class="btn btn-sm btn-danger">삭제</button>
+								<button class="btn btn-sm btn-danger" data-action="delete">삭제</button>
 								</div>
 							</th:block
 						</div>
@@ -504,31 +580,78 @@ function saveReview(reviewItem) {
 
   console.log(obj);
 
-  /*
-    fetch("/book/updateBookReview", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(obj)
-    })
+  // 댓글 리뷰 수정
+  fetch("/book/updateBookReview", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(obj)
+  })
     .then(resp => resp.text())
     .then(result => {
-        if (result > 0) {
-            alert("리뷰가 수정되었습니다.");
-            selectReviewList(bookId); // 리뷰 목록 다시 불러오기
-        } else {
-            alert("리뷰 수정에 실패했습니다.");
-        }
+      if (result > 0) {
+
+        alert("리뷰가 수정되었습니다.");
+        // 페이지 리로드
+        location.reload(true);
+
+      } else {
+
+        alert("리뷰 수정에 실패했습니다.");
+
+        // 페이지 리로드
+        location.reload(true);
+
+      }
     });
-  */
 
 }
 
+// 리뷰 삭제
+function deleteReview(reviewItem) {
+
+  console.log(reviewItem);
+  const editedRating = reviewItem.querySelector('.review-actions').textContent;
+  const bookId = document.querySelector('#selectBookId').value;
+
+  // 서버로 삭제 요청
+  const obj = {
+    "bookId": bookId,
+    "starPoint": parseFloat(editedRating),
+    "memberNo": loginMember.memberNo
+  };
+
+  fetch("/book/deleteReview", {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(obj)
+  })
+    .then(resp => resp.text())
+    .then(result => {
+      if (result > 0) {
+
+        alert("리뷰가 삭제되었습니다.");
+        // 페이지 리로드
+        location.reload(true);
+
+      } else {
+
+        alert("리뷰 삭제에 실패했습니다.");
+
+        // 페이지 리로드
+        location.reload(true);
+
+      }
+    });
+}
+
+// 수정 버튼 클릭시
 document.querySelector('.review-list').addEventListener('click', function (e) {
   const button = e.target.closest('button');
 
   if (button) {
     const reviewItem = button.closest('.review-item');
     const action = button.getAttribute('data-action');
+    const bookId = document.querySelector('#selectBookId').value;
 
     switch (action) {
       case 'edit':
@@ -538,9 +661,10 @@ document.querySelector('.review-list').addEventListener('click', function (e) {
         saveReview(reviewItem);
         break;
       case 'cancel':
-        const bookId = document.querySelector('#selectBookId').value;
         selectReviewList(bookId);
         break;
+      case 'delete':
+        deleteReview(reviewItem);
     }
   }
 });

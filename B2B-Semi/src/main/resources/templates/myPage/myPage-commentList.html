@@ -114,8 +114,8 @@
                       <div class="comment-title"
                         th:data-full-text="${comment.commentText != null ? comment.commentText : '내용이 없습니다.'}"
                         onmousemove="showTooltip(event, this)">
-                        <a th:href="@{/comment/detail(id=${comment.commentNo})}"
-                          th:text="${comment.commentText != null ? comment.commentText : '내용이 없습니다.'}">댓글 내용</a>
+                        <a th:href="@{/myPage/commentDetail(commentNo=${comment.commentNo})}"
+                          th:text="${comment.commentContent != null ? comment.commentContent : '내용이 없습니다.'}">댓글 내용</a>
                       </div>
                     </td>
 

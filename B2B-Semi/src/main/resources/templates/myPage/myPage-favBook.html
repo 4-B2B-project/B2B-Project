@@ -44,9 +44,9 @@
 
             <div th:each="book, iterStat : ${favoriteBooks}" class="book-card bookInfo" th:data-bookId="${book.bookId}"
               th:data-title="${book.title}" th:data-author="${book.author}" th:data-coverUrl="${book.coverUrl}"
-              th:data-rating="${book.customerReviewRank}" th:data-genres="${book.genres != null ? book.genres : ''}" 
+              th:data-rating="${book.customerReviewRank}" th:data-genres="${book.genres != null ? book.genres : ''}"
               th:data-description="${book.description}" th:data-reviewCount="${book.reviewCount}"
-              onclick="showBookDetailModal(this)">
+              th:data-steamCount="${book.steamCount}">
 
               <div class="rank-badge" th:text="${iterStat.index + 1}"></div>
               <!-- 랭크 뱃지 iterstat으로 순서대로-->
@@ -64,23 +64,23 @@
 
                 <div class="book-stats">
                   <div class="stat-item">
-                    <span class="star-icon">★</span>
+                    <i class="fas fa-star text-warning"></i>
                     <span th:text="${book.customerReviewRank}">평점</span>
                   </div>
 
                   <div class="stat-item">
                     <i class="fas fa-comment text-primary"></i>
-                    <span ></span>
+                    <span th:text="${book.reviewCount != null ? book.reviewCount : 0}">리뷰</span>
                   </div>
-
+                  
                   <div class="stat-item">
                     <i class="fas fa-heart text-danger"></i>
-                    <span></span>
+                    <span th:text="${book.steamCount != null ? book.steamCount : 0}">하트</span>
                   </div>
 
                 </div>
 
-               
+
 
 
 
@@ -113,7 +113,7 @@
                 <h2 class="book-detail-title mb-2"></h2>
                 <p class="book-detail-author mb-3">
                   <i class="fas fa-pen-nib me-2"></i>
-                  <span></span>
+
                 </p>
                 <div class="book-detail-stats mb-3">
                   <div class="stat-item">
@@ -131,6 +131,14 @@
                 </div>
                 <div class="book-detail-genres mb-3">
                 </div>
+                <th:block th:if="${session.loginMember != null}">
+                  <div class="action-buttons">
+                    <button class="action-btn secondary-btn" id="steamBtn">
+                      <i class="fas fa-heart"></i>
+                      찜하기
+                    </button>
+                  </div>
+                </th:block>
               </div>
             </div>
 
