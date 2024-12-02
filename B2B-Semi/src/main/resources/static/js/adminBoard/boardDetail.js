@@ -48,8 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 수정 버튼 클릭시 
     saveBtn.addEventListener("click", () => {
-		
-		fetch(`/adminBoard/editBoardDetail/${boardNo}/update`)
         const newTitle = boardTitleEdit.value.trim();
         const newContent = boardContentEdit.value.trim();
 
@@ -120,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 화면에 form태그 추가하고 실행
         document.querySelector("body").append(form);
 		
-		console.log(form);
+		console.log(form)
 		
         form.submit();
     });
