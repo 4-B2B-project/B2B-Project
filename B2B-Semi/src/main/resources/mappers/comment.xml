@@ -4,7 +4,6 @@
 
 
 	<!-- 댓글 목록 조회 -->
-	<!-- 댓글 목록 조회 -->
 	<select id="commentList">
 		SELECT LEVEL, C.* FROM
 			(SELECT 
@@ -31,6 +30,7 @@
 		ORDER SIBLINGS BY COMMENT_NO
 	</select>
 	
+
 
 	<!-- 댓글 수정 -->
 	<update id="commentUpdate">
