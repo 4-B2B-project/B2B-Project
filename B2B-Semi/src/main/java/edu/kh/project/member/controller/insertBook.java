@@ -8,7 +8,7 @@ import edu.kh.project.member.model.service.AdminService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("adminBoard")
+@RequestMapping("insertBook")
 @RequiredArgsConstructor
 public class insertBook {
 

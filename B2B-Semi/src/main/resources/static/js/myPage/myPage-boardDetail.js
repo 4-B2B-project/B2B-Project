@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 폼 객체체 만들기
         const form = document.createElement("form");
-        form.action = location.pathname.replace("board", "editBoard") + "/update";
+        form.action = `/myPage/boardDetail/edit/${boardNo}`;
         form.method = "POST";
 
         // 제목 값 세팅
@@ -122,12 +122,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* 목록으로 돌아가는 버튼 */
-const goToListBtn = document.querySelector("#communityList");
+const goToListBtn = document.querySelector("#boardList");
 
 goToListBtn.addEventListener("click", () => {
 
 	let path = location.pathname.split("/");
-	path[2] = "community";
+	path[2] = "boardList";
 
 	// 새로운 경로 조합
 	const newUrl = path.join("/") + location.search;
@@ -146,7 +146,8 @@ if (deleteBtn != null) {
 			return;
 		}
 
-		const url = location.pathname.replace("board", "editBoard") + "/delete";
+    const url = `/myPage/boardDetail/delete/${boardNo}`;
+  
 
 		// form태그 생성
 		const form = document.createElement("form");
