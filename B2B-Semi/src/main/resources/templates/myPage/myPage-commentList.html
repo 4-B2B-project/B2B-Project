@@ -112,10 +112,10 @@
                     <!-- 댓글 내용 -->
                     <td>
                       <div class="comment-title"
-                        th:data-full-text="${comment.commentContent != null ? comment.commentContent : '내용이 없습니다.'}"
+                        th:data-full-text="${comment.commentText != null ? comment.commentText : '내용이 없습니다.'}"
                         onmousemove="showTooltip(event, this)">
                         <a th:href="@{/comment/detail(id=${comment.commentNo})}"
-                          th:text="${comment.commentContent != null ? comment.commentContent : '내용이 없습니다.'}">댓글 내용</a>
+                          th:text="${comment.commentText != null ? comment.commentText : '내용이 없습니다.'}">댓글 내용</a>
                       </div>
                     </td>
 
@@ -123,7 +123,7 @@
                     <td th:text="${comment.memberNickname}">작성자</td>
 
                     <!-- 작성일 -->
-                    <td th:text="${comment.commentWriteDate}">작성일</td>
+                    <td th:text="${comment.commentRegiDate}">작성일</td>
                   </tr>
                 </th:block>
               </tbody>

@@ -178,8 +178,8 @@
 	<resultMap id="CommentResultMap"
 		type="edu.kh.project.board.model.dto.Comment">
 		<id property="commentNo" column="COMMENT_NO" />
-		<result property="commentContent" column="COMMENT_TEXT" />
-		<result property="commentWriteDate" column="COMMENT_REGI_DATE" />
+		<result property="commentText" column="COMMENT_TEXT" />
+		<result property="commentRegiDate" column="COMMENT_REGI_DATE" />
 		<result property="commentDelFl" column="COMMENT_DEL_FL" />
 		<result property="parentCommentNo" column="PARENT_COMMENT_NO" />
 		<result property="boardNo" column="BOARD_NO" />
