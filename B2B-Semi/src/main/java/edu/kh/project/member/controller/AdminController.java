@@ -38,6 +38,7 @@ public class AdminController {
 		return "adminBoard/dashAdmin";
 	}
 
+	// 회원 관리 페이지
 	@GetMapping("memberManage")
 	public String memberManage(Model model, @RequestParam(value="cp", required=false, defaultValue = "1") int cp, @RequestParam Map<String, Object> paramMap) {
 		
@@ -61,107 +62,20 @@ public class AdminController {
 		return "adminBoard/memberManage";
 	}
 	
-	@GetMapping("bookManage")
-	public String bookManage(Model model, @RequestParam(value="cp", required=false, defaultValue = "1") int cp, @RequestParam Map<String, Object> paramMap) {
+	// 회원 검색.
+	@GetMapping("searchMember")
+	public String searchMember(@RequestParam Map<String, Object> paramMap, Model model) {
 		
-		Map<String, Object> map;
+		List<Member> memberList = Adservice.searchMember(paramMap);
 		
-		if(paramMap.get("key") == null || paramMap.get("search") == null) {
-			map = Adservice.bookList(cp);
-		}
-		else {
-			map = Adservice.bookSearchList(cp, paramMap);
-		}
-		
-		log.debug("map :" + map);
-		
-		model.addAttribute("pagination", map.get("pagination"));
-		model.addAttribute("bookList", map.get("bookList"));
-	    model.addAttribute("key", paramMap.get("key"));
-	    model.addAttribute("search", paramMap.get("search"));
-		
-		return "adminBoard/bookManage";
-	}
-	
-	@GetMapping("searchBook")
-	public String searchBook(@RequestParam Map<String, Object> paramMap, Model model,
-			@RequestParam(value="cp", required =false, defaultValue = "1") int cp) {
-		
-		Map<String, Object> map = Adservice.bookSearchList(cp, paramMap);
-		
-		model.addAttribute("bookList", map.get("bookList"));
-		model.addAttribute("pagination", map.get("pagination"));
-	    model.addAttribute("key", paramMap.get("key"));
-	    model.addAttribute("search", paramMap.get("search"));
-		
-		return "adminBoard/bookManage";
-		
-	}
-	
-	@GetMapping("searchBoardList")
-	public String searchBoardList(@RequestParam Map<String, Object> paramMap, Model model,
-									@RequestParam(value="cp", required=false, defaultValue = "1") int cp) {
-		
-		Map<String, Object> map = Adservice.boardSearchList(cp, paramMap);
-		
-		model.addAttribute("boardList", map.get("boardList"));
-		model.addAttribute("pagination", map.get("pagination"));
-	    model.addAttribute("key", paramMap.get("key"));
-	    model.addAttribute("search", paramMap.get("search"));
-		
-		return "adminBoard/boardManage";
-	}
-	
-	@GetMapping("boardManage")
-	public String boardManage(Model model, @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
-										@RequestParam Map<String, Object> paramMap) {
-		
-		Map<String, Object> map;
-		
-		if(paramMap.get("key") == null || paramMap.get("search") == null) {
-			map = Adservice.boardList(cp);
-		}
-		else {
-			map = Adservice.boardSearchList(cp, paramMap);
-		}
-		
-		model.addAttribute("pagination", map.get("pagination"));
-		model.addAttribute("boardList", map.get("boardList"));
-	    model.addAttribute("key", paramMap.get("key"));
-	    model.addAttribute("search", paramMap.get("search"));
-		
-		return "adminBoard/boardManage";
-	}
-	
-	
-	@GetMapping("{boardCode:[0-9]+}/{boardNo:[0-9]+}")
-	public String boardDetail(@PathVariable("boardCode") int boardCode, @PathVariable("boardNo") int boardNo, Model model, RedirectAttributes ra, HttpServletRequest req, HttpServletResponse resp) {
-		
-		Map<String, Integer> map = new HashMap<>();
-		map.put("boardCode", boardCode);
-		map.put("boardNo", boardNo);
-		
-		Board board = Adservice.selectOne(map);
-		
-		String path = null;
-		
-		if(board == null) {
-			path = "redirect:/adminBoard/boardManage" + boardCode;
-			ra.addFlashAttribute("message", "게시글이 존재하지 않습니다.");
-		}
-		path = "adminBoard/boardManage";
-		
-		model.addAttribute("board", board);
-		
-		return path;
-	}
+		log.debug("memberList :" + memberList); // map :{MEMBER_DEL_FL=N, ENROLL_DATE=2024년 11월 22일, MEMBER_ID=user03, MEMBER_NICKNAME=유저삼}
 
+		model.addAttribute("memberList", memberList);
+		
+		return "adminBoard/memberManage";
+	}
 	
-	/** 회원 정보 수정
-	 * @param memberId
-	 * @param model
-	 * @return
-	 */
+	// 회원 정보 수정 페이지 이동.
 	@GetMapping("updateMember")
 	public String updateMember(@RequestParam("memberNo") int memberNo, Model model) {
 		
@@ -178,13 +92,7 @@ public class AdminController {
 		return "adminBoard/updateMember";
 	}
 	
-	/** 회원 정보 수정
-	 * @param ra
-	 * @param inputMember
-	 * @param memberId
-	 * @param memberAddress
-	 * @return
-	 */
+	// 회원 정보 수정 (POST)
 	@PostMapping("info")
 	public String updateInfo(RedirectAttributes ra,Member inputMember, @RequestParam(value="memberNo", required =false, defaultValue="0") int memberNo, @RequestParam("memberAddress") String[] memberAddress) {
 		
@@ -207,27 +115,7 @@ public class AdminController {
 		return "redirect:memberManage";
 	}
 	
-	/** 검색을 통한 회원 검색
-	 * @param paramMap
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("searchMember")
-	public String searchMember(@RequestParam Map<String, Object> paramMap, Model model) {
-		
-		List<Member> memberList = Adservice.searchMember(paramMap);
-		
-		log.debug("memberList :" + memberList); // map :{MEMBER_DEL_FL=N, ENROLL_DATE=2024년 11월 22일, MEMBER_ID=user03, MEMBER_NICKNAME=유저삼}
-
-		model.addAttribute("memberList", memberList);
-		
-		return "adminBoard/memberManage";
-	}
-	
-	/** 활성/탈퇴 복구
-	 * @param paramMap
-	 * @return
-	 */
+	// 회원 추방/탈퇴 복구.
 	@ResponseBody
 	@PostMapping("updateStatus")
 	public ResponseEntity<?> updateStatus(@RequestBody Map<String, Object> paramMap) {
@@ -250,28 +138,46 @@ public class AdminController {
 		
 	}
 	
-	@ResponseBody
-	@PostMapping("updateBoardStatus")
-	public ResponseEntity<?> updateBoardStatus(@RequestBody Map<String, Object> paramMap) {
+	// 도서 관리 페이지 이동.
+	@GetMapping("bookManage")
+	public String bookManage(Model model, @RequestParam(value="cp", required=false, defaultValue = "1") int cp, @RequestParam Map<String, Object> paramMap) {
 		
-		List<String> boardList = (List<String>)paramMap.get("boardList");
-		String action = (String)paramMap.get("action");
+		Map<String, Object> map;
 		
-		log.debug("boardList : " + boardList);
-		
-		boolean updateY = action.equals("삭제");
-		
-		int result = Adservice.updateBoardStatus(boardList, updateY);
-		
-		if(result > 0) {
-			return ResponseEntity.ok(Map.of("success", true));
+		if(paramMap.get("key") == null || paramMap.get("search") == null) {
+			map = Adservice.bookList(cp);
 		}
 		else {
-			return ResponseEntity.ok(Map.of("success", false, "message", "업데이트 실패..."));
+			map = Adservice.bookSearchList(cp, paramMap);
 		}
+		
+		log.debug("map :" + map);
+		
+		model.addAttribute("pagination", map.get("pagination"));
+		model.addAttribute("bookList", map.get("bookList"));
+	    model.addAttribute("key", paramMap.get("key"));
+	    model.addAttribute("search", paramMap.get("search"));
+		
+		return "adminBoard/bookManage";
+	}
+	
+	// 도서 검색.
+	@GetMapping("searchBook")
+	public String searchBook(@RequestParam Map<String, Object> paramMap, Model model,
+			@RequestParam(value="cp", required =false, defaultValue = "1") int cp) {
+		
+		Map<String, Object> map = Adservice.bookSearchList(cp, paramMap);
+		
+		model.addAttribute("bookList", map.get("bookList"));
+		model.addAttribute("pagination", map.get("pagination"));
+	    model.addAttribute("key", paramMap.get("key"));
+	    model.addAttribute("search", paramMap.get("search"));
+		
+		return "adminBoard/bookManage";
 		
 	}
 	
+	// 도서 삭제/삭제 복구.
 	@ResponseBody
 	@PostMapping("updateBookStatus")
 	public ResponseEntity<?> updateBookStatus(@RequestBody Map<String, Object> paramMap) {
@@ -294,12 +200,7 @@ public class AdminController {
 		
 	}
 	
-	@GetMapping("addBook")
-	public String addBook() {
-		
-		return "/adminBoard/insertBook";
-	}
-	
+	// 선택한 도서 데이터 보내기.
 	@GetMapping("updateBook")
 	public Book updateBook(@RequestParam("bookId") int bookId) {
 		
@@ -308,6 +209,7 @@ public class AdminController {
 		return book;
 	}
 	
+	// 도서 수정 페이지.
 	@GetMapping("updateBookPage/{bookId:[0-9]+}")
 	public String updateBookPage(@PathVariable int bookId, Model model) {
 		Book book = Adservice.selectBookDetail(bookId);
@@ -317,6 +219,7 @@ public class AdminController {
 		return "adminBoard/updateBook";
 	}
 	
+	// 도서 수정하기.
 	@ResponseBody
 	@PostMapping("updateBook")
 	public Map<String, Object> updateBook(@RequestBody Book book, 
@@ -351,6 +254,7 @@ public class AdminController {
 		
 	}
 	
+	// 도서 수정 취소.
 	@GetMapping("cancelUpdateBook")
 	public String cancelUpdateBook(@RequestParam(value="key", required = false) String key,
 			@RequestParam(value="search, required = false") String search,
@@ -366,5 +270,100 @@ public class AdminController {
 		return "redirect:/adminBoard/bookManage";
 	}
 	
+	// 도서 추가 페이지.
+	@GetMapping("addBook")
+	public String addBook() {
+		
+		return "/adminBoard/insertBook";
+	}
+	
+	// 게시글 관리 페이지.
+	@GetMapping("boardManage")
+	public String boardManage(Model model, @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+										@RequestParam Map<String, Object> paramMap) {
+		
+		Map<String, Object> map;
+		
+		if(paramMap.get("key") == null || paramMap.get("search") == null) {
+			map = Adservice.boardList(cp);
+		}
+		else {
+			map = Adservice.boardSearchList(cp, paramMap);
+		}
+		
+		model.addAttribute("pagination", map.get("pagination"));
+		model.addAttribute("boardList", map.get("boardList"));
+	    model.addAttribute("key", paramMap.get("key"));
+	    model.addAttribute("search", paramMap.get("search"));
+		
+		return "adminBoard/boardManage";
+	}
+	
+	// 게시글 검색.
+	@GetMapping("searchBoardList")
+	public String searchBoardList(@RequestParam Map<String, Object> paramMap, Model model,
+									@RequestParam(value="cp", required=false, defaultValue = "1") int cp) {
+		
+		Map<String, Object> map = Adservice.boardSearchList(cp, paramMap);
+		
+		model.addAttribute("boardList", map.get("boardList"));
+		model.addAttribute("pagination", map.get("pagination"));
+	    model.addAttribute("key", paramMap.get("key"));
+	    model.addAttribute("search", paramMap.get("search"));
+		
+		return "adminBoard/boardManage";
+	}
+	
+	// 게시글 상세.
+	@GetMapping("{boardCode:[0-9]+}/{boardNo:[0-9]+}")
+	public String boardDetail(@PathVariable("boardCode") int boardCode, @PathVariable("boardNo") int boardNo, Model model, RedirectAttributes ra, HttpServletRequest req, HttpServletResponse resp) {
+		
+		Map<String, Integer> map = new HashMap<>();
+		map.put("boardCode", boardCode);
+		map.put("boardNo", boardNo);
+		
+		Board board = Adservice.selectOne(map);
+		
+		String path = null;
+		
+		if(board == null) {
+			path = "redirect:/adminBoard/boardManage" + boardCode;
+			ra.addFlashAttribute("message", "게시글이 존재하지 않습니다.");
+		}
+		path = "adminBoard/boardManage";
+		
+		model.addAttribute("board", board);
+		
+		return path;
+	}
+	
+	// 게시글 삭제 / 삭제 복구.
+	@ResponseBody
+	@PostMapping("updateBoardStatus")
+	public ResponseEntity<?> updateBoardStatus(@RequestBody Map<String, Object> paramMap) {
+		
+		List<String> boardList = (List<String>)paramMap.get("boardList");
+		String action = (String)paramMap.get("action");
+		
+		log.debug("boardList : " + boardList);
+		log.debug("Request paramMap: " + paramMap);
+		log.debug("boardList: " + boardList);
+		log.debug("action: " + action);
+		
+		boolean updateY = action.equals("삭제");
+		
+		int result = Adservice.updateBoardStatus(boardList, updateY);
+		
+		log.debug("updateY: " + updateY);
+		log.debug("Update result: " + result);
+		
+		if(result > 0) {
+			return ResponseEntity.ok(Map.of("success", true));
+		}
+		else {
+			return ResponseEntity.ok(Map.of("success", false, "message", "업데이트 실패..."));
+		}
+		
+	}
 	
 }

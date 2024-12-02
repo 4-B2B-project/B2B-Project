@@ -24,6 +24,7 @@ function updateBoardStatus(action) {
 	
 	const boardList = Array.from(checkboxes).map(box => box.value);
 	
+	console.log(Array.from(checkboxes));
 	console.log(boardList);
 	
 	fetch("/adminBoard/updateBoardStatus", {
@@ -67,11 +68,3 @@ tbody.addEventListener("change", e => {
 		document.querySelector("#theadCheckAll").checked = allChecked;
 	}
 })
-
-// 게시글 수정 버튼 이벤트 위임.
-tbody.addEventListener("click", e => {
-	if(e.target.classList.contains("updateBoardBtn")) {
-		const boardCode = e.target.closest("tr").querySelector("a").textContent;
-		location.href = `updateBoard?boardCode=${boardCode}`;
-	}
-});

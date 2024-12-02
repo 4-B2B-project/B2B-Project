@@ -18,21 +18,23 @@ document.addEventListener('DOMContentLoaded', function() {
 		const description = document.getElementById("descriptionTextarea").value;
 		
 		const obj = {
-			bookdId : bookId,
-			author : author,
-			publisher : publisher,
-			description : description,
-			cp : cp,
-			key : key,
-			search : search
+			"bookId" : bookId,
+			"author" : author,
+			"publisher" : publisher,
+			"description" : description,
+			"cp" : cp,
+			"key" : key,
+			"search" : search
 		}
+		
+		console.log(cp);
+		console.log(key);
+		console.log(search);
 		
 		fetch("/adminBoard/updateBook", {
 			method : "POST",
 			headers : {"Content-Type" : "application/json"},
-			body : JSON.stringify({
-				obj
-			})
+			body : JSON.stringify(obj)
 		})
 		.then(response => response.json())
 		.then(data => {

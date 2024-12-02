@@ -9,15 +9,6 @@ import edu.kh.project.member.model.dto.Member;
 
 public interface AdminService {
 
-	public Map<String, Object> selectBoardList(int boardCode, int cp);
-
-
-	/** 회원 수정 버튼 클릭 시.
-	 * @param inputMember
-	 * @return
-	 */
-	public int updateMember(Member inputMember);
-
 	public int updateInfo(Member inputMember, String[] memberAddress);
 
 	public Member selectedMember(int memberNo);

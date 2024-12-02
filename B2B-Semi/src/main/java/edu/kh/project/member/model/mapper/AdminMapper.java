@@ -20,19 +20,6 @@ public interface AdminMapper {
 	 */
 	int getListCount(int boardCode);
 
-	/** 특정 게시판의 지정된 페이지 목록 조회.
-	 * @param boardCode
-	 * @param rowBounds
-	 * @return
-	 */
-	List<Board> selectBoardList(int boardCode, RowBounds rowBounds);
-
-	/** 회원 정보 수정(관리자)
-	 * @param inputMember
-	 * @return
-	 */
-	int updateMember(Member inputMember);
-
 	int updateInfo(Member inputMember);
 
 	Member selectedMember(int memberNo);
