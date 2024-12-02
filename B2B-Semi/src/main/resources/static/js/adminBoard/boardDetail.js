@@ -48,6 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 수정 버튼 클릭시 
     saveBtn.addEventListener("click", () => {
+		
+		fetch(`/adminBoard/editBoardDetail/${boardNo}/update`)
         const newTitle = boardTitleEdit.value.trim();
         const newContent = boardContentEdit.value.trim();
 
@@ -61,9 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // 폼 객체체 만들기
+        // 폼 객체 만들기
         const form = document.createElement("form");
-        form.action = location.pathname.replace("board", "editBoard") + "/update";
+        form.action = `/adminBoard/editBoardDetail/${boardNo}/update`;
         form.method = "POST";
 
         // 제목 값 세팅
@@ -117,6 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 화면에 form태그 추가하고 실행
         document.querySelector("body").append(form);
+		
+		console.log(form);
+		
         form.submit();
     });
 });
@@ -127,7 +132,7 @@ const goToListBtn = document.querySelector("#communityList");
 goToListBtn.addEventListener("click", () => {
 
 	let path = location.pathname.split("/");
-	path[2] = "community";
+	path[2] = "boardManage";
 
 	// 새로운 경로 조합
 	const newUrl = path.join("/") + location.search;
@@ -146,11 +151,9 @@ if (deleteBtn != null) {
 			return;
 		}
 
-		const url = location.pathname.replace("board", "editBoard") + "/delete";
-
 		// form태그 생성
 		const form = document.createElement("form");
-		form.action = url;
+		form.action = `/adminBoard/editBoardDetail/${boardNo}/delete`;
 		form.method = "POST";
 
 		// cp값을 저장할 input 생성
@@ -192,3 +195,5 @@ if (deleteBtn != null) {
 
 	});
 }
+
+console.log(boardNo);

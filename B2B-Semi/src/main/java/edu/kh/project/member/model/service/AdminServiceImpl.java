@@ -245,6 +245,20 @@ public class AdminServiceImpl implements AdminService{
 		return mapper.boardDetail(boardNo);
 	}
 	
+	// 게시글 수정버튼
+	@Override
+	public int boardUpdate(Map<String, Object> paramMap) {
+
+		return mapper.boardUpdate(paramMap);
+	}
+	
+	// 게시글 삭제버튼
+	@Override
+	public int boardDelete(Map<String, Object> paramMap) {
+
+		return mapper.boardDelete(paramMap);
+	}
+	
 	// 게시글 삭제/삭제 복구.
 	@Override
 	public int updateBoardStatus(List<String> boardList, boolean updateY) {

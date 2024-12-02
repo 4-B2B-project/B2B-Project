@@ -21,7 +21,7 @@
                     <img src="/default-profile.png" alt="프로필 이미지" class="profile-image">
                 </div>
                 <div class="profile-info">
-                    <h2 class="profile-title">환영합니다 nickname 님!</h2>
+                    <h2 class="profile-title" th:text="|환영합니다 ${member.memberNickname} 님!|"></h2>
                     <p class="profile-subtitle">리뷰 쓰기 · 사진 등록 · 별점 주기</p>
                     <p class="profile-description">친구를 초대해 북셰어하세요!</p>
                 </div>

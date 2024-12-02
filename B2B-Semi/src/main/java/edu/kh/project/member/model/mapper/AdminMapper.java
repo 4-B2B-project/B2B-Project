@@ -70,5 +70,9 @@ public interface AdminMapper {
 
 	Board boardDetail(int boardNo);
 
+	int boardUpdate(Map<String, Object> paramMap);
+
+	int boardDelete(Map<String, Object> paramMap);
+
 
 }

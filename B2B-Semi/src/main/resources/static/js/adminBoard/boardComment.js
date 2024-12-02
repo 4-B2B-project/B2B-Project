@@ -77,7 +77,7 @@ const selectCommentList = () => {
 
 					// 로그인한 회원 번호가 댓글 작성자 번호와 같을 때
 					// 댓글 수정/삭제 버튼 출력
-					if (loginMemberAuth == 2) {
+					if (loginMemberNo != null && loginMemberNo == comment.memberNo && loginMemberAuth == 2) {
 
 						// 수정 버튼
 						const updateBtn = document.createElement("button");

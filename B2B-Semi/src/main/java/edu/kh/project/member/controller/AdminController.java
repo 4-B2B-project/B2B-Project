@@ -10,24 +10,26 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.project.board.model.dto.Board;
 import edu.kh.project.book.model.dto.Book;
 import edu.kh.project.member.model.dto.Member;
 import edu.kh.project.member.model.service.AdminService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
 @RequestMapping("adminBoard")
+@SessionAttributes({"loginMember"})
 @RequiredArgsConstructor
 public class AdminController {
 
@@ -329,6 +331,68 @@ public class AdminController {
 		
 		model.addAttribute("board", board);
 		return "adminBoard/boardDetail";
+	}
+	
+	// 게시글 수정 버튼.
+	@PostMapping("editBoardDetail/{boardNo:[0-9]+}/update")
+	public String boardUpdate(@PathVariable ("boardNo") int boardNo, 
+			@RequestParam Map<String, Object> paramMap,
+			@SessionAttribute("loginMember") Member loginMember,
+			RedirectAttributes ra) {
+	
+		paramMap.put("boardNo", boardNo);
+		paramMap.put("memberNo", loginMember.getMemberNo());
+		
+		int result = Adservice.boardUpdate(paramMap);
+		
+		String path = null;
+		String message = null;
+		
+//		String searchInput = (String) paramMap.get("searchInput");
+		
+		if(result > 0) {
+			path = "/adminBoard/boardManage";
+			message = "수정 완료.";
+		}
+		else {
+			path = "boardDetail";
+			message = "수정 실패.";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+		
+	}
+	
+	// 게시글 삭제 버튼.
+	@PostMapping("editBoardDetail/{boardNo:[0-9]+}/delete")
+	public String boardDelete(@PathVariable("boardNo") int boardNo,
+			@RequestParam Map<String, Object> paramMap,
+			@SessionAttribute("loginMember") Member loginMember,
+			RedirectAttributes ra) {
+		
+		paramMap.put("boardNo", boardNo);
+		paramMap.put("memberNo", loginMember.getMemberNo());
+		
+		int result = Adservice.boardDelete(paramMap);
+		
+		String path = null;
+		String message = null;
+		
+		if ( result > 0) {
+			path = "/adminBoard/boardManage";
+			message = "게시글 삭제 완료.";
+		}
+		else {
+			path = "/boardDetail";
+			message = "삭제 실패.";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+		
 	}
 	
 	// 게시글 삭제 / 삭제 복구.

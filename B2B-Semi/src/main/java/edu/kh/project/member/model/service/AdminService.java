@@ -45,4 +45,8 @@ public interface AdminService {
 
 	public Board boardDetail(int boardNo);
 
+	public int boardUpdate(Map<String, Object> paramMap);
+
+	public int boardDelete(Map<String, Object> paramMap);
+
 }
