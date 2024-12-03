@@ -47,6 +47,7 @@
 					SELECT COUNT(*)
 					FROM "TB_COMMENT" TBC
 					WHERE TBC.BOARD_NO = BOA.BOARD_NO
+					AND COMMENT_DEL_FL = 'N'
 				) AS COMMENT_COUNT,
 				BOARD_CODE,
 				SECRET_CHECK
@@ -116,6 +117,7 @@
 					SELECT COUNT(*)
 					FROM "TB_COMMENT" TBC
 					WHERE TBC.BOARD_NO = BOA.BOARD_NO
+					AND COMMENT_DEL_FL = 'N'
 				) AS COMMENT_COUNT,
 				BOARD_CODE,
 				SECRET_CHECK
@@ -225,5 +227,54 @@
 		FROM "TB_BOARD"
 		WHERE BOARD_NO = #{boardNo}
 	</select>
+	
+	
+	<!-- 메인 페이지 공지 게시글 상단 3개 조회 -->
+	<select id="selectMainNotice">
+		<![CDATA[
+		SELECT 
+			ROWNUM ROW_NUM,
+			BOARD_NO,
+			BOARD_TITLE,
+			BOARD_WRITE_DATE,
+			BOARD_CODE
+		FROM
+			(SELECT 
+				BOARD_NO,
+				BOARD_TITLE,
+				TO_CHAR(BOARD_WRITE_DATE, 'YYYY-MM-DD') BOARD_WRITE_DATE,
+				BOARD_CODE
+			FROM "TB_BOARD" BOA
+			WHERE BOARD_DEL_FL = 'N'
+			AND BOARD_CODE = '3'
+			ORDER BY BOARD_WRITE_DATE DESC, BOARD_NO DESC) BOARD
+		WHERE ROWNUM <= 3
+		]]>
+	</select>
+	
+	
+	<!-- 메인 페이지 자유 게시판 게시글 상단 3개 조회 -->
+	<select id="selectMainCommnunity">
+		<![CDATA[
+		SELECT 
+			ROWNUM ROW_NUM,
+			BOARD_NO,
+			BOARD_TITLE,
+			BOARD_WRITE_DATE,
+			BOARD_CODE
+		FROM
+			(SELECT 
+				BOARD_NO,
+				BOARD_TITLE,
+				TO_CHAR(BOARD_WRITE_DATE, 'YYYY-MM-DD') BOARD_WRITE_DATE,
+				BOARD_CODE
+			FROM "TB_BOARD" BOA
+			WHERE BOARD_DEL_FL = 'N'
+			AND BOARD_CODE = '1'
+			ORDER BY BOARD_WRITE_DATE DESC, BOARD_NO DESC) BOARD
+		WHERE ROWNUM <= 3
+		]]>
+	</select>
+	
 
 </mapper>

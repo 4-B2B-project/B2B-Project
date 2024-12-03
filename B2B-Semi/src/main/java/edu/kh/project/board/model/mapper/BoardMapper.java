@@ -69,4 +69,14 @@ public interface BoardMapper {
 	 */
 	int selectReadCount(int boardNo);
 
+	/** 메인 페이지 공지 게시글 상단 3개 조회
+	 * @return
+	 */
+	List<Board> selectMainNotice();
+
+	/** 메인 페이지 자유 게시판 게시글 상단 3개 조회
+	 * @return
+	 */
+	List<Board> selectMainCommnunity();
+
 }
