@@ -94,7 +94,7 @@
   
       /* 부제목 끝 */
     </style>
-	<link rel="stylesheet" href="/css/myPage/myPage-info.css">
+	<link rel="stylesheet" href="/css/adminBoard/admin-info.css">
 </head>
 <body>
   
@@ -120,16 +120,31 @@
 
 	      <div class="profile-container">
 	        <div class="profile-header">
-	          <div class="profile-image">
-	            <img th:with="user=#{user.default.image}" th:src="${session.loginMember.profileImg ?: user}" id="profileImg">
-	          </div>
-	          <div class="profile-info">
-	            <h1 class="profile-name">관리자</h1>
-	            <p class="profile-bio">관리자계정입니다.</p>
-	          </div>
-	          <a href="/adminBoard/editInfo" class="editInfoBtn">
-	            내 정보 수정
-	          </a>
+			<form action="info" method="POST" name="myPageFrm" id="profile" enctype="multipart/form-data">
+				
+			 <div class="profile-image-area">
+	           <img th:with="user=#{user.default.image}" th:src="${session.loginMember.profileImg ?: user}" id="profileImg">
+	         </div>
+			 <span id="deleteImage">x</span>
+			 <div class="profile-btn-area">
+				
+				<label for="imageInput">이미지 선택</label>
+				
+				<input type="file" name="profileImg" id="imageInput" accept="image/*">
+				
+				<button>변경하기</button>
+				
+			 </div>
+			</form>
+			
+	        <div class="profile-info">
+	          <h1 class="profile-name">관리자</h1>
+	          <p class="profile-bio">관리자계정입니다.</p>
+	        </div>
+			  
+	        <a href="/adminBoard/editInfo" class="editInfoBtn">
+	          내 정보 수정
+	        </a>
 
 
 	        </div>
@@ -158,7 +173,7 @@
   </div>
 
     <!-- js 추가 -->
-    <script src="/js/myPage/myPage.js"></script>
+    <script src="/js/adminBoard/dashAdmin.js"></script>
 
 </body>
 </html>

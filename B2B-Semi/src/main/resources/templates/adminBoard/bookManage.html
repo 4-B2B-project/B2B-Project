@@ -153,7 +153,7 @@
 					<td th:text="*{pubDate}">출판일</td>
 					<td th:text="*{isDeleted}">삭제 여부</td>
 					<td>
-						<button name="updateBookBtn" th:data-book-id="*{bookId}">도서 수정</button>
+						<button class="updateBookBtn" name="updateBookBtn" th:data-book-id="*{bookId}">도서 수정</button>
 					</td>
 					<td>
 						<input class="checkbox" type="checkbox" th:value="*{bookId}">

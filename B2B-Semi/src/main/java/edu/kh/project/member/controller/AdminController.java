@@ -51,7 +51,7 @@ public class AdminController {
 			String[] arr = memberAddress.split("\\^\\^\\^");
 			
 			if (arr.length == 3) {
-				model.addAttribute("postdcode", arr[0]);
+				model.addAttribute("postcode", arr[0]);
 				model.addAttribute("address", arr[1]);
 				model.addAttribute("detailAddress", arr[2]);
 			}
@@ -92,7 +92,7 @@ public class AdminController {
 		
 		ra.addFlashAttribute("message", message);
 		
-		return "redirect:editInfo";
+		return "redirect:dashAdmin";
 	}
 	
 	// 회원 관리 페이지

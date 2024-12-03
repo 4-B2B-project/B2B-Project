@@ -25,6 +25,14 @@ th {
 	width: 77.74px;
 }
 
+.updateMemberBtn {
+	background-color: #039E24;
+	color: white;
+	border: white 1px;
+	border-radius: 5px;
+	padding: 6px;
+}
+
 #searchInput {
 	width: 673px;
 }

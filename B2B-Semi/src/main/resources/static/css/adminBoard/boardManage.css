@@ -29,6 +29,14 @@ th {
 	width: 673px;
 }
 
+.updateBoardBtn {
+	background-color: #039E24;
+	color: white;
+	border: white 1px;
+	border-radius: 5px;
+	padding: 6px;
+}
+
 /* 페이지 네이션 */
 .pagination {
 	justify-content: center;
