@@ -16,10 +16,16 @@ public interface BookMapper {
 	 */
 	List<Book> mainBookList();
 
-	/** 도서 등록 (테스트 버전)
+	/** 도서 등록
 	 * @param book
 	 */
-	void insertBook(Book book);
+	int insertBook(Book book);
+	
+	/** 등록된 도서가 있는지 조회
+	 * @param isbn
+	 * @return
+	 */
+	int srchBook(String isbn);
 
 	/** 도서 목록 개수 조회
 	 * @return
@@ -146,6 +152,6 @@ public interface BookMapper {
 	 * @return
 	 */
 	int insertSteamBook(Map<String, Object> map);
-	
+
 	
 }

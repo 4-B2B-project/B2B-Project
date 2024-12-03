@@ -198,7 +198,6 @@ function isBookSteam(bookId) {
 		})
 		.then(resp => resp.json())
 		.then(result => {
-			console.log();
 			if(result == 1) {
 				steamBtn.style.backgroundColor = "#4f46e5";
 				steamBtn.style.color = "white";

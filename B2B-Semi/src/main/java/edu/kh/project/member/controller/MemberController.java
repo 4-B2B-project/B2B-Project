@@ -155,16 +155,12 @@ public class MemberController {
 		
 		if(result > 0) { // 성공 시
 			message = inputMember.getMemberNickname() + "님의 가입을 환영 합니다!";
-			path = "firstProfile";
-			
-			// 회원 정보를 RedirectAttributes에 추가
-	        ra.addFlashAttribute("memberInfo", inputMember);
+			path = "/";
 			
 		} else { // 실패
 			message = "회원 가입 실패...";
 			path = "sigunup";
 		}
-		
 		
 		ra.addFlashAttribute("message", message);
 		
@@ -184,15 +180,5 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-	/** 처음 프로필 페이지 이동
-	 * @return
-	 */
-	@GetMapping("firstProfile")
-	public String firstProfile(@ModelAttribute("memberInfo") Member member, Model model) {
-	    model.addAttribute("member", member);
-
-	    return "/member/firstProfile";
-	}
-
 	
 }

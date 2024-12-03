@@ -58,6 +58,10 @@ const checkObj = {
 	"authKey": false
 };
 
+const emailCheck = {
+	"check": false
+};
+
 // ---------------------------------
 // 인증번호 받기 버튼
 const sendAuthKeyBtn = document.querySelector("#sendAuthKeyBtn");
@@ -88,7 +92,6 @@ let sec = initSec;
 // 1) 이메일 유효성 검사에 사용될 요소 얻어오기
 const memberEmail = document.querySelector("#memberEmail");
 const emailMessage = document.querySelector("#emailMessage");
-const emailCheck = false;
 
 // ------------------------------------------
 /* 이메일 인증 */
@@ -124,14 +127,14 @@ memberEmail.addEventListener("input", e => {
 	emailMessage.innerText = "사용 가능한 이메일입니다.";
 	emailMessage.classList.add("confirm");
 	emailMessage.classList.remove("error");
-	emailCheck = true;
+	emailCheck.check = true;
 
 });
 
 // 인증번호 받기 버튼 클릭 시 
 sendAuthKeyBtn.addEventListener("click", () => {
 	
-	if(emailCheck) {
+	if(emailCheck.check) {
 
 		checkObj.authKey = false;
 		authKeyMessage.innerText = "";
@@ -523,9 +526,6 @@ const signUpForm = document.querySelector("#signUpForm");
 
 // 회원 가입 폼 제출 시
 signUpForm.addEventListener("submit", e => {
-	// checkObj의 저장된 값(value) 중
-	// 하나라도 false가 있으면 제출 X
-
 	// for ~ in (객체 전용 향상된 for 문)
 	for (let key in checkObj) { // checkObj 요소의 key 값을 순서대로 꺼내옴
 
@@ -550,7 +550,6 @@ signUpForm.addEventListener("submit", e => {
 					str = "전화번호가 유효하지 않습니다"; break;
 			}
 
-			console.log(str);
 			alert(str);
 
 			document.getElementById(key).focus(); // 초점 이동

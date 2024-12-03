@@ -109,5 +109,18 @@ public interface BookService {
 	 */
 	int isBookSteam(Map<String, Object> paramMap);
 
+	/** 등록된 도서가 있는지 조회
+	 * @param isbn
+	 * @return
+	 */
+	int srchBook(String isbn);
+	
+	/** 선택한 도서 등록
+	 * @param isbn
+	 * @return
+	 */
+	int selectedInsertBook(String isbn);
+
+
 
 }
