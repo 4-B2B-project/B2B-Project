@@ -11,6 +11,9 @@
 
   <link rel="stylesheet" href="/css/myPage/myPage-info.css">
 
+  <link rel="stylesheet" href="/css/myPage/myPage-sideMenu.css">
+
+
 </head>
 
 <body>
@@ -68,6 +71,7 @@
 
                 <!-- 선호 장르 출력 -->
                 <div class="favorite-genres" th:if="${member?.memberBookCategory != null}">
+                  <span class="genre-label">선호 장르 :</span>
                   <span class="genre-item" th:text="${member?.memberBookCategory}">선호 장르 없음</span>
                 </div>
 

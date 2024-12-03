@@ -10,6 +10,7 @@
   <th:block th:replace="~{common/common}"></th:block>
 
   <link rel="stylesheet" href="/css/myPage/myPage-commentList.css">
+  <link rel="stylesheet" href="/css/myPage/myPage-sideMenu.css">
 
 
 </head>
@@ -105,15 +106,14 @@
 
                 <!-- 댓글 목록이 있을 때 -->
                 <th:block th:unless="${#lists.isEmpty(commentList)}">
-                  <tr th:each="comment : ${commentList}">
+                  <tr th:each="comment : ${commentList}" th:if="${comment.commentDelFl == 'N'}">
                     <!-- 댓글 구분 -->
                     <td th:text="${comment.commentNo}">댓글 번호</td>
 
                     <!-- 댓글 내용 -->
                     <td>
                       <div class="comment-title"
-                        th:data-full-text="${comment.commentContent != null ? comment.commentContent : '내용이 없습니다.'}"
-                        onmousemove="showTooltip(event, this)">
+                        th:data-full-text="${comment.commentContent != null ? comment.commentContent : '내용이 없습니다.'}">
                         <a th:href="@{/myPage/commentDetail(commentNo=${comment.commentNo})}"
                           th:text="${comment.commentContent != null ? comment.commentContent : '내용이 없습니다.'}">댓글 내용</a>
                       </div>

@@ -223,8 +223,7 @@
 		FROM TB_COMMENT c
 		JOIN
 		TB_MEMBER m ON c.MEMBER_NO = m.MEMBER_NO
-		WHERE c.MEMBER_NO =
-		#{memberNo}
+		WHERE c.MEMBER_NO = #{memberNo}
 		AND c.COMMENT_DEL_FL = 'N'
 		ORDER BY c.COMMENT_NO ASC
 	</select>
@@ -422,8 +421,22 @@
     </select>
 	
 	
+	<!-- 댓글 수정 -->
+	<update id="updateComment">
+		UPDATE TB_COMMENT
+		SET COMMENT_CONTENT = #{commentContent}
+		WHERE COMMENT_NO = #{commentNo}
+		AND MEMBER_NO = #{memberNo}
+	</update>
 	
-
+	
+	<!-- 댓글 삭제 -->
+	<update id="deleteComment">
+        UPDATE TB_COMMENT
+        SET COMMENT_DEL_FL = 'Y'
+        WHERE COMMENT_NO = #{commentNo}
+        AND MEMBER_NO = #{memberNo}
+    </update>
 
 
 

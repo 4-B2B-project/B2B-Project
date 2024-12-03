@@ -191,6 +191,21 @@ public interface MyPageMapper {
 	int countBoard(int memberNo);
 
 
+	/** 댓글 수정
+	 * @param comment
+	 * @return
+	 */
+	int updateComment(Comment comment);
+
+
+	/** 댓글 삭제
+	 * @param commentNo
+	 * @param memberNo
+	 * @return
+	 */
+	int deleteComment(int commentNo, int memberNo);
+
+
 
 
 	

@@ -28,7 +28,8 @@
 				<h1 class="ranking-title">
 					제목 :
 					<span id="boardTitleDisplay" th:text="${board?.boardTitle}">제목이 없습니다</span>
-    <input type="text" id="boardTitleEdit" class="input-field" style="display:none;" th:value="${board?.boardTitle}">
+					<input type="text" id="boardTitleEdit" class="input-field" style="display:none;"
+						th:value="${board?.boardTitle}">
 				</h1>
 			</section>
 
@@ -37,12 +38,19 @@
 					<!-- 작성자 정보 -->
 					<div class="writer-detail">
 						<div class="writer-label">작성자</div>
+
+						<!-- 프로필 이미지 추가 -->
+						<div class="writer-profile">
+							<img th:src="@{|${#messages.msg('user.default.image')}|}" alt="프로필 이미지" class="profile-img"
+								style="width: 50px; height: 50px; border-radius: 50%;">
+						</div>
+
 						<div class="writer-value" th:text="*{memberNickname}">작성자이름</div>
 					</div>
 				</div>
 			</section>
-				
-			
+
+
 			<section class="genre-writer">
 				<!-- 조회수, 작성일자 -->
 				<div class="detail-row">
@@ -52,21 +60,18 @@
 					<div class="detail-value" th:text="*{boardWriteDate}">작성일자값</div>
 				</div>
 			</section>
-			
+
 			<section class="genre-section" style="margin-bottom: 1rem; height: 500px;">
 				<div class="detail-content">
 					<span id="boardContentDisplay" th:text="*{boardContent}"></span>
-					<textarea id="boardContentEdit" class="input-textArea" style="display:none;" th:text="*{boardContent}"></textarea>
+					<textarea id="boardContentEdit" class="input-textArea" style="display:none;"
+						th:text="*{boardContent}"></textarea>
 				</div>
 			</section>
-			
+
 			<div style="justify-self: right; margin-bottom: 1rem;">
-				<th:block th:if="${session.loginMember != null}">
-					<th:block th:if="${session.loginMember.memberNo == board.memberNo}">
-	                    
-	                </th:block>
-				</th:block>
-				<button class="list-button" id="commentList">목록</button>
+
+				<a class="list-button" id="commentListBack" href="/myPage/commentList">목록</a>
 			</div>
 
 			<section class="genre-section">
@@ -81,12 +86,18 @@
 
 		<script th:inline="javascript">
 			const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ "로그인한 멤버";
-			
+
 			const boardNo = /*[[${board.boardNo}]]*/ "게시글 번호";
 		</script>
 
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			const userDefaultImage = /*[[${#messages.msg('user.default.image')}]]*/ '/images/user.png';
+			/*]]>*/
+		</script>
+
 		<script src="/js/myPage/myPage-commentDetail.js"></script>
-		<script src="/js/myPage/myPage-comment.js"></script>
+		<script src="/js/board/comment.js"></script>
 
 
 	</div>

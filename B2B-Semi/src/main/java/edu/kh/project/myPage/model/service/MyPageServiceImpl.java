@@ -319,15 +319,27 @@ public class MyPageServiceImpl implements MyPageService {
 	// 댓글 수(count)
 	@Override
 	public int getCommentCount(int memberNo) {
-		// TODO Auto-generated method stub
 		return mapper.countComment(memberNo);
 	}
 
 	// 게시글 수(count)
 	@Override
 	public int getBoardCount(int memberNo) {
-		// TODO Auto-generated method stub
 		return mapper.countBoard(memberNo);
+	}
+	
+	// 댓글 수정
+	@Override
+	public int updateComment(Comment comment) {
+		
+		return mapper.updateComment(comment);
+	}
+	
+	// 댓글 삭제
+	@Override
+	public int deleteComment(int commentNo, int memberNo) {
+		
+		return mapper.deleteComment(commentNo,memberNo);
 	}
 
 }

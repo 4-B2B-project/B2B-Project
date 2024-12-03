@@ -31,7 +31,7 @@ const selectCommentList = () => {
 					const profileImg = document.createElement("img");
 
 					if (comment.profileImg == null)
-						profileImg.src = userDefaultIamge; // 기본 이미지
+						profileImg.src = userDefaultImage; // 기본 이미지
 					else
 						profileImg.src = comment.profileImg; // 회원 이미지
 
@@ -428,5 +428,4 @@ const updateComment = (commentNo, btn) => {
 		})
 		.catch(err => console.log(err));
 }
-
 

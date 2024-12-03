@@ -10,10 +10,12 @@ import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,6 +32,7 @@ import edu.kh.project.book.model.dto.Book;
 import edu.kh.project.common.util.Pagination;
 import edu.kh.project.member.model.dto.Member;
 import edu.kh.project.myPage.model.service.MyPageService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,7 +57,7 @@ public class MyPageController {
 	 * @return
 	 */
 	@GetMapping("info") 
-	public String info(@SessionAttribute("loginMember") Member loginMember, Model model) {
+	public String info(@SessionAttribute("loginMember") Member loginMember, Model model, HttpServletRequest request) {
 
 		System.out.println("loginMember: " + loginMember);
 		
@@ -81,6 +84,8 @@ public class MyPageController {
 	        model.addAttribute("favoriteBookCount", favoriteBookCount);
 			
 			model.addAttribute("member", loginMember);
+			
+			model.addAttribute("currentUri", request.getRequestURI());
 			
 		}
 
@@ -137,7 +142,7 @@ public class MyPageController {
 	 */
 	@GetMapping("favBook") 
 	public String favBook(@SessionAttribute("loginMember") Member loginMember, Model model,
-			RedirectAttributes ra) { 
+			RedirectAttributes ra, HttpServletRequest request) { 
 
 		int memberNo = loginMember.getMemberNo(); 
 
@@ -152,6 +157,8 @@ public class MyPageController {
 		} else {
 		    model.addAttribute("favoriteBooks", favoriteBooks);
 		}
+		
+		model.addAttribute("currentUri", request.getRequestURI());
 
 		return "myPage/myPage-favBook";
 	}
@@ -168,7 +175,8 @@ public class MyPageController {
 	public String boardList(
 			@SessionAttribute("loginMember") Member loginMember,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
-			@RequestParam Map<String, Object> paramMap) {
+			@RequestParam Map<String, Object> paramMap,
+			HttpServletRequest request) {
 
 		
 		int memberNo = loginMember.getMemberNo();
@@ -199,6 +207,8 @@ public class MyPageController {
 
 		// 검색 데이터 전달
 		model.addAttribute("paramMap", paramMap); // 검색 조건 및 파라미터
+		
+		model.addAttribute("currentUri", request.getRequestURI());
 
 		log.debug("paramMap: {}", paramMap);
 		log.debug("boardList: {}", boardList);
@@ -242,7 +252,8 @@ public class MyPageController {
 	@GetMapping("commentList") 
 	public String commentList(@SessionAttribute("loginMember") Member loginMember,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model,
-			@RequestParam Map<String, Object> paramMap) {
+			@RequestParam Map<String, Object> paramMap,
+			HttpServletRequest request) {
 
 		int memberNo = loginMember.getMemberNo();
 
@@ -272,6 +283,8 @@ public class MyPageController {
 		model.addAttribute("commentList", commentList.get("commentList"));
 		// 검색 데이터 전달
 		model.addAttribute("paramMap", paramMap); // 검색 조건 및 파라미터
+		
+		model.addAttribute("currentUri", request.getRequestURI());
 
 
 		log.debug("paramMap: {}", paramMap);
@@ -349,7 +362,9 @@ public class MyPageController {
 	 * @return
 	 */
 	@GetMapping("changePw") 
-	public String changePw() {
+	public String changePw(Model model, HttpServletRequest request) {
+		
+		model.addAttribute("currentUri", request.getRequestURI());
 		return "myPage/myPage-changePw";
 	}
 
@@ -646,6 +661,34 @@ public class MyPageController {
 	}
 	
 	
+	
+    /** 댓글 수정
+     * @param comment
+     * @param loginMember
+     * @return
+     */
+    @PutMapping("comment")
+    @ResponseBody
+    public int updateComment(@RequestBody Comment comment, @SessionAttribute("loginMember") Member loginMember) {
+        if (comment.getCommentContent() == null || comment.getCommentContent().trim().isEmpty()) {
+            throw new IllegalArgumentException("댓글 내용은 반드시 입력해야 합니다.");
+        }
+
+        comment.setMemberNo(loginMember.getMemberNo());
+        return service.updateComment(comment);
+    }
+
+    
+    /** 댓글 삭제
+     * @param commentNo
+     * @param loginMember
+     * @return
+     */
+    @DeleteMapping("comment/{commentNo}")
+    @ResponseBody
+    public int deleteComment(@PathVariable("commentNo") int commentNo, @SessionAttribute("loginMember") Member loginMember) {
+        return service.deleteComment(commentNo, loginMember.getMemberNo());
+    }
 	
 
 }
