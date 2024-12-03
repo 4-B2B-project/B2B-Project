@@ -118,7 +118,7 @@
 														             ? @{/board/{boardCode}/{boardNo}(boardCode=*{boardCode}, cp=${cp}, boardNo=*{boardNo}, searchType=*{searchType}, searchInput=*{searchInput})}
 														             : '#'" th:text="${#strings.equals(board.secretCheck, 'Y') }
 														            ? '비밀글' 
-														            : ${board.boardTitle}">
+														            : |${board.boardTitle} (${board.commentCount})|">
 															제목
 														</a>
 														<span th:if="${#strings.equals(board.secretCheck, 'Y')}">
@@ -138,7 +138,7 @@
 														</th:block>
 														<th:block th:if="${#strings.equals(board.secretCheck, 'N')}">
 															<a th:href="@{/board/{boardCode}/{boardNo}(boardCode=*{boardCode}, cp=${cp}, boardNo=*{boardNo}, searchType=*{searchType}, searchInput=*{searchInput})}"
-																th:text="${board.boardTitle}">
+																th:text="|${board.boardTitle} (${board.commentCount})|">
 																제목
 															</a>
 														</th:block>
@@ -150,7 +150,7 @@
 											<!-- boardCode가 4가 아닐 때 제목 출력 -->
 											<a th:if="${boardCode != 4}"
 												th:href="@{/board/{boardCode}/{boardNo}(boardCode=*{boardCode}, cp=${cp}, boardNo=*{boardNo}, searchType=${searchType}, searchInput=${searchInput})}"
-												th:text="${board.boardTitle}">
+												th:text="|${board.boardTitle} (${board.commentCount})|">
 												제목
 											</a>
 										</div>
