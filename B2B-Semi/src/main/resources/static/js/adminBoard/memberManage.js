@@ -33,7 +33,7 @@ tbody.addEventListener("change", e => {
 });
 
 const updateDelFlYBtn = document.querySelector("#updateDelFlY").addEventListener("click", () => updateMemberStatus('탈퇴'));
-const updateDelFlNBtn = document.querySelector("#updateDelFlN").addEventListener("click", () => updateMemberStatus('복구'));
+const updateDelFlNBtn = document.querySelector("#updateDelFlN").addEventListener("click", () => updateMemberStatus('활성'));
 
 function updateMemberStatus(action) {
 	

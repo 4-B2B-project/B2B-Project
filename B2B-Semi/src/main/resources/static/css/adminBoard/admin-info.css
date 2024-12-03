@@ -1,0 +1,204 @@
+ /* 기본 전체 설정 시작 */
+ .wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+/* 기본 전체 설정 끝 */
+
+/* Main Content Styles */
+.main-content {
+  margin-left: var(--sidebar-width);
+  min-height: 75vh;
+  padding: 2rem;
+  flex-grow: 1;
+}
+
+/* 타이틀 시작 */
+.ranking-header {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+.ranking-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--dark-text);
+  margin-bottom: 1.5rem;
+}
+
+/* 타이틀 끝 */
+
+
+/* 부제목 시작 */
+.genre-section {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+.genre-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--light-bg);
+}
+
+.genre-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--dark-text);
+}
+
+/* 부제목 끝 */
+
+
+/* 메인 컨텐츠 css*/
+.profile-container {
+  max-width: 600px;
+  margin: 20px auto;
+  background-color: white;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.profile-image {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background-color: #e5e5e5;
+  overflow: hidden;
+}
+
+.profile-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-info {
+  text-align: center;
+}
+
+.profile-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.profile-bio {
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.editInfoBtn {
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.editInfoBtn:hover {
+  background-color: #4338ca;
+}
+
+.stats-container {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  margin-top: 32px;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  color: #666;
+  font-size: 0.875rem;
+}
+
+/* ************* 프로필 화면 ************* */
+.profile-image-area{
+  width: 150px;
+  height: 150px;
+  border: 3px solid #ccc;
+  border-radius: 50%;
+
+  position: relative;
+
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin: 0 auto; /* center within parent */
+}
+
+#profileImage{
+  height: 100%;
+}
+
+/* 삭제버튼 */
+form[name='myPageFrm']{position: relative;}
+
+#deleteImage{
+  position: absolute;
+  top: 0px;
+  right: 240px;
+  cursor: pointer;
+}
+
+/* 이미지 버튼 영역 */
+.profile-btn-area{
+  width: 230px;
+  margin: 20px 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-btn-area > *{
+  width: 110px;
+  height: 33px;
+  padding: 5px 10px;
+
+  border: 1px solid black;
+  background-color: white;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+}
+
+#imageInput{ display: none;}
+
+.profile-btn-area > button{
+  background-color: #455ba8;
+  color : white;
+  margin-left: 2px;
+}

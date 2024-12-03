@@ -7,94 +7,8 @@
     <!-- 공용 css/js 추가 -->
     <th:block th:replace="~{common/common}"></th:block>
 
-    <style>
-      /* 기본 전체 설정 시작 */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      }
-  
-      :root {
-        --primary-color: #4f46e5;
-        --primary-hover: #4338ca;
-        --background: #ffffff;
-        --text-primary: #1f2937;
-        --text-secondary: #4b5563;
-        --card-background: #ffffff;
-      }
-  
-      body {
-        font-family: 'Segoe UI', 'Arial', sans-serif;
-        background-color: #F9FAFB;
-      }
-  
-      .wrapper {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-      }
-  
-      /* 기본 전체 설정 끝 */
-  
-  
-      /* Main Content Styles */
-      .main-content {
-        margin-left: var(--sidebar-width);
-        min-height: 75vh;
-        padding: 2rem;
-        flex-grow: 1;
-      }
-  
-  
-      /* 타이틀 시작 */
-      .ranking-header {
-        background: white;
-        padding: 2rem;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        margin-bottom: 2rem;
-      }
-  
-      .ranking-title {
-        font-size: 2.2rem;
-        font-weight: 700;
-        color: var(--dark-text);
-        margin-bottom: 1.5rem;
-      }
-  
-      /* 타이틀 끝 */
-  
-  
-      /* 부제목 시작 */
-      .genre-section {
-        background: white;
-        border-radius: 15px;
-        padding: 2rem;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        margin-bottom: 2rem;
-      }
-  
-      .genre-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid var(--light-bg);
-      }
-  
-      .genre-title {
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: var(--dark-text);
-      }
-  
-      /* 부제목 끝 */
-    </style>
-
   <link rel="stylesheet" href="/css/adminBoard/memberManage.css">
+  <link rel="stylesheet" href="/css/adminBoard/admin-sidebar.css">
 </head>
 <body>
   
@@ -113,25 +27,36 @@
         <h1 class="ranking-title">회원 관리</h1>
       </section>
 
-      <section class="ranking-header">
-
+      <div class="genre-section">
         <form action="/adminBoard/searchMember" method="get" id="memberSearch">
-	        <select name="key" id="searchKey">
-	          <option value="id">아이디</option>
-	          <option value="nickname">닉네임</option>
-	          <option value="delflY">탈퇴</option>
-	          <option value="delflN">활성</option>
-  			  
-	        </select>
-			
-	        <input type="text" placeholder="검색어를 입력하세요." id="searchInput" name="search">
-        	<button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i>검색</button>
+			<div class="search-section">
+				<div class="search-wrapper">
+					<div class="input-group flex-grow-1">
+						
+						<select name="key" id="searchKey" class="form-select" style="border-radius: 8px;" th:value="${key}">
+						  <option value="id" th:selected="${key == 'id'}">아이디</option>
+						  <option value="nickname" th:selected="${key == 'nickname'}">닉네임</option>
+						  <option value="delflY" th:selected="${key == 'delflY'}">탈퇴</option>
+						  <option value="delflN" th:selected="${key == 'delflN'}">활성</option>
+						</select>
+
+						<input type="text" class="form-control" 
+						style="border-radius: 8px;" placeholder="검색어를 입력하세요."
+						 id="searchInput" name="search" th:value="${search}">
+						
+					</div>
+					
+					<button id="searchBtn" class="search-button"><i class="fa-solid fa-magnifying-glass"></i>검색</button>
+					
+				</div>
+			</div>
+
 		</form>
  
-      </section>
+      </div>
 
       <section class="memberList-tb">
-        <table border="1" style="border-collapse: collapse;">
+        <table class="table table-hover" style="border-collapse: collapse;">
   
           <thead>
             <th>회원 아이디</th>
@@ -153,9 +78,11 @@
 					<td th:text="*{memberId}">아이디</td>
 					<td th:text="*{memberNickname}">닉네임</td>
 					<td th:text="*{enrollDate}">가입일</td>
-					<td th:text="*{memberDelFl}">탈퇴 여부</td>
+					<td th:text="*{memberDelFl ? '탈퇴' : '활성'}"
+						th:classappend="*{memberDelFl ? 'text-danger' : 'text-success'}"
+					>탈퇴 여부</td>
 					<td>
-						<button name="updateMemberBtn" th:data-member-no="*{memberNo}">회원 수정</button>
+						<button class="updateMemberBtn" name="updateMemberBtn" th:data-member-no="*{memberNo}">회원 수정</button>
 					</td>
 					<td>
 						<input class="checkbox" type="checkbox" th:value="*{memberNo}">
@@ -180,7 +107,7 @@
 				            <a class="page-link py-1 px-2"
 				               th:href="${pagination.currentPage <= 1 || pagination.startPage == 1} 
 				                        ? '#' 
-				                        : @{/adminBoard/boardManage(cp=1, key=${key}, search=${search})}"
+				                        : @{/adminBoard/memberManage(cp=1, key=${key}, search=${search})}"
 				               th:aria-disabled="${pagination.currentPage <= 1 || pagination.startPage == 1}">&lt;&lt;</a>
 				        </li>
 
@@ -189,7 +116,7 @@
 				            <a class="page-link py-1 px-2"
 				               th:href="${pagination.currentPage <= 1 || pagination.startPage == 1} 
 				                        ? '#' 
-				                        : @{/adminBoard/boardManage(cp=${pagination.prevPage}, key=${key}, search=${search})}"
+				                        : @{/adminBoard/memberManage(cp=${pagination.prevPage}, key=${key}, search=${search})}"
 				               th:aria-disabled="${pagination.currentPage <= 1 || pagination.startPage == 1}">이전</a>
 				        </li>
 
@@ -200,7 +127,7 @@
 						        <a class="page-link py-1 px-2"
 						           th:href="${i == pagination.currentPage} 
 						                    ? '#' 
-						                    : @{/adminBoard/boardManage(cp=${i}, key=${key}, search=${search})}"
+						                    : @{/adminBoard/memberManage(cp=${i}, key=${key}, search=${search})}"
 						           th:text="${i}"
 						           th:aria-current="${i == pagination.currentPage} ? 'page'">현재페이지</a>
 						    </li>
@@ -211,7 +138,7 @@
 				            <a class="page-link py-1 px-2"
 				               th:href="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} 
 				                        ? '#' 
-				                        : @{/adminBoard/boardManage(cp=${pagination.nextPage}, key=${key}, search=${search})}"
+				                        : @{/adminBoard/memberManage(cp=${pagination.nextPage}, key=${key}, search=${search})}"
 				               th:aria-disabled="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage}">다음</a>
 				        </li>
 
@@ -220,7 +147,7 @@
 				            <a class="page-link py-1 px-2"
 				               th:href="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} 
 				                        ? '#' 
-				                        : @{/adminBoard/boardManage(cp=${pagination.maxPage}, key=${key}, search=${search})}"
+				                        : @{/adminBoard/memberManage(cp=${pagination.maxPage}, key=${key}, search=${search})}"
 				               th:aria-disabled="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage}">&gt;&gt;</a>
 				        </li>
 				    </ul>

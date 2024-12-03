@@ -12,7 +12,7 @@ searchBoardListBtn.addEventListener("click", () => {
 })
 
 const updateDelFlYBtn = document.querySelector("#updateDelFlY").addEventListener("click", () => updateBoardStatus('삭제'));
-const updateDelFlNBtn = document.querySelector("#updateDelFlN").addEventListener("click", () => updateBoardStatus('복구'));
+const updateDelFlNBtn = document.querySelector("#updateDelFlN").addEventListener("click", () => updateBoardStatus('활성'));
 
 function updateBoardStatus(action) {
 	

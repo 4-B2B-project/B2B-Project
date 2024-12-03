@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.project.board.model.dto.Board;
@@ -35,19 +36,98 @@ public class AdminController {
 
 	private final AdminService Adservice;
 	
-	
+	// 관리자 대쉬보드 홈
 	@GetMapping("dashAdmin")
-	public String dashAdmin() {
+	public String dashAdmin(Model model) {
+		
+		int bookCount = Adservice.bookCount();
+		
+		int memberCount = Adservice.memberCount();
+		
+		int boardCount = Adservice.boardCount();
+		
+		model.addAttribute("activeMenu", "dashAdmin");
+		model.addAttribute("bookCount", bookCount);
+		model.addAttribute("memberCount", memberCount);
+		model.addAttribute("boardCount", boardCount);
+		
 		return "adminBoard/dashAdmin";
 	}
 
 	// 관리자 정보 수정 페이지
 	@GetMapping("editInfo")
-	public String adminEditInfo() {
+	public String adminEditInfo(@SessionAttribute("loginMember") Member loginMember, Model model) {
+		
+		String memberAddress = loginMember.getMemberAddress();
+		
+		if (memberAddress != null) {
+			String[] arr = memberAddress.split("\\^\\^\\^");
+			
+			if (arr.length == 3) {
+				model.addAttribute("postcode", arr[0]);
+				model.addAttribute("address", arr[1]);
+				model.addAttribute("detailAddress", arr[2]);
+			}
+			else {
+				model.addAttribute("message", "주소 형식이 잘못 되었습니다.");
+			}
+		}
 		
 		return "adminBoard/editInfo";
 	}
 	
+	// 관리자 프로필 사진 변경.
+	@PostMapping("editProfile")
+	public String profileImage(@RequestParam("profileImg") MultipartFile profileImg,
+			@SessionAttribute("loginMember") Member loginMember, RedirectAttributes ra) throws Exception {
+		
+		int result = Adservice.profileImage(profileImg, loginMember);
+		
+		String message = null;
+		
+		if(result > 0) {
+			message = "프로필 사진이 변경되었습니다.";
+		}
+		else {
+			message = "변경에 실패했습니다.";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:dashAdmin";
+	}
+	
+	// 관리자 정보 수정.
+	@PostMapping("editInfo")
+	public String editAdminInfo(Member inputMember, @SessionAttribute("loginMember") Member loginMember,
+			@RequestParam("memberAddress") String[] memberAddress, RedirectAttributes ra) {
+		
+		inputMember.setMemberNo(loginMember.getMemberNo());
+		
+		int result = Adservice.editInfo(inputMember, memberAddress);
+		
+		String message = null;
+		
+		if (result > 0) {
+			loginMember.setMemberNo(inputMember.getMemberNo());
+			loginMember.setMemberId(inputMember.getMemberId());
+			loginMember.setMemberNickname(inputMember.getMemberNickname());
+			loginMember.setMemberTel(inputMember.getMemberTel());
+			loginMember.setMemberBookCategory(inputMember.getMemberBookCategory());
+			loginMember.setMemberAddress(inputMember.getMemberAddress());
+			
+			message = "정보가 수정되었습니다.";
+			
+		}
+		
+		else {
+			message = "수정에 실패했습니다.";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:dashAdmin";
+	}
 	
 	// 회원 관리 페이지
 	@GetMapping("memberManage")
@@ -67,7 +147,8 @@ public class AdminController {
 		model.addAttribute("memberList", map.get("memberList"));
 	    model.addAttribute("key", paramMap.get("key"));
 	    model.addAttribute("search", paramMap.get("search"));
-		
+	    model.addAttribute("activeMenu", "memberManage");
+	    
 	    log.debug("memberList :" + map.get("memberList"));
 	    
 		return "adminBoard/memberManage";
@@ -75,13 +156,15 @@ public class AdminController {
 	
 	// 회원 검색.
 	@GetMapping("searchMember")
-	public String searchMember(@RequestParam Map<String, Object> paramMap, Model model) {
+	public String searchMember(@RequestParam Map<String, Object> paramMap, Model model, @RequestParam(value="cp", required = false, defaultValue="1") int cp) {
 		
-		List<Member> memberList = Adservice.searchMember(paramMap);
-		
-		log.debug("memberList :" + memberList); // map :{MEMBER_DEL_FL=N, ENROLL_DATE=2024년 11월 22일, MEMBER_ID=user03, MEMBER_NICKNAME=유저삼}
+		Map<String, Object> map = Adservice.searchMember(paramMap, cp);
 
-		model.addAttribute("memberList", memberList);
+		model.addAttribute("memberList", map.get("memberList"));
+		model.addAttribute("pagination", map.get("pagination"));
+	    model.addAttribute("key", paramMap.get("key"));
+	    model.addAttribute("search", paramMap.get("search"));
+	    model.addAttribute("activeMenu", "memberManage");
 		
 		return "adminBoard/memberManage";
 	}
@@ -99,6 +182,7 @@ public class AdminController {
 		model.addAttribute("postcode", address[0]);
 		model.addAttribute("address", address[1]);
 		model.addAttribute("detailAddress", address[2]);
+		model.addAttribute("activeMenu", "memberManage");
 		
 		return "adminBoard/updateMember";
 	}
@@ -162,8 +246,7 @@ public class AdminController {
 			map = Adservice.bookSearchList(cp, paramMap);
 		}
 		
-		log.debug("map :" + map);
-		
+		model.addAttribute("activeMenu", "bookManage");
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("bookList", map.get("bookList"));
 	    model.addAttribute("key", paramMap.get("key"));
@@ -183,6 +266,7 @@ public class AdminController {
 		model.addAttribute("pagination", map.get("pagination"));
 	    model.addAttribute("key", paramMap.get("key"));
 	    model.addAttribute("search", paramMap.get("search"));
+	    model.addAttribute("activeMenu", "bookManage");
 		
 		return "adminBoard/bookManage";
 		
@@ -226,6 +310,7 @@ public class AdminController {
 		Book book = Adservice.selectBookDetail(bookId);
 		
 		model.addAttribute("book", book);
+		model.addAttribute("activeMenu", "bookManage");
 		
 		return "adminBoard/updateBook";
 	}
@@ -295,6 +380,7 @@ public class AdminController {
 			map = Adservice.boardSearchList(cp, paramMap);
 		}
 		
+		model.addAttribute("activeMenu", "boardManage");
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));
 	    model.addAttribute("key", paramMap.get("key"));
@@ -314,6 +400,7 @@ public class AdminController {
 		model.addAttribute("pagination", map.get("pagination"));
 	    model.addAttribute("key", paramMap.get("key"));
 	    model.addAttribute("search", paramMap.get("search"));
+	    model.addAttribute("activeMenu", "boardManage");
 		
 		return "adminBoard/boardManage";
 	}
@@ -330,11 +417,12 @@ public class AdminController {
 		}
 		
 		model.addAttribute("board", board);
+		model.addAttribute("activeMenu", "boardManage");
 		return "adminBoard/boardDetail";
 	}
 	
 	// 게시글 수정 버튼.
-	@PostMapping("editBoardDetail/{boardNo:[0-9]+}/update")
+	@PostMapping("boardDetail/{boardNo:[0-9]+}/update")
 	public String boardUpdate(@PathVariable ("boardNo") int boardNo, 
 			@RequestParam Map<String, Object> paramMap,
 			@SessionAttribute("loginMember") Member loginMember,
@@ -355,7 +443,7 @@ public class AdminController {
 			message = "수정 완료.";
 		}
 		else {
-			path = "boardDetail";
+			path = "/adminBoard/boardDetail";
 			message = "수정 실패.";
 		}
 		
@@ -366,7 +454,7 @@ public class AdminController {
 	}
 	
 	// 게시글 삭제 버튼.
-	@PostMapping("editBoardDetail/{boardNo:[0-9]+}/delete")
+	@PostMapping("boardDetail/{boardNo:[0-9]+}/delete")
 	public String boardDelete(@PathVariable("boardNo") int boardNo,
 			@RequestParam Map<String, Object> paramMap,
 			@SessionAttribute("loginMember") Member loginMember,
