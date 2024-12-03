@@ -170,6 +170,42 @@ public interface MyPageMapper {
 	int replyInsert(Comment comment);
 
 
+	/** 좋아요한 도서 수(count)
+	 * @param memberNo
+	 * @return
+	 */
+	int countFavBooks(int memberNo);
+
+
+	/** 댓글 수
+	 * @param memberNo
+	 * @return
+	 */
+	int countComment(int memberNo);
+
+
+	/** 게시글 수
+	 * @param memberNo
+	 * @return
+	 */
+	int countBoard(int memberNo);
+
+
+	/** 댓글 수정
+	 * @param comment
+	 * @return
+	 */
+	int updateComment(Comment comment);
+
+
+	/** 댓글 삭제
+	 * @param commentNo
+	 * @param memberNo
+	 * @return
+	 */
+	int deleteComment(int commentNo, int memberNo);
+
+
 
 
 	
