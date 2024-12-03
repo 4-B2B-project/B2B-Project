@@ -39,9 +39,11 @@
 												<img th:src="${book.coverUrl}" alt="Book cover" class="book-cover">
 												<div class="book-info">
 													<!-- 책 제목 -->
-													<div class="book-title" th:text="${book.title}" th:data-full-title="${book.title}"></div>
+													<div class="book-title" th:text="${book.title}"
+														th:data-full-title="${book.title}"></div>
 													<!-- 책 저자 -->
-													<div class="book-author" th:text="${book.author}" th:data-full-author="${book.author}"></div>
+													<div class="book-author" th:text="${book.author}"
+														th:data-full-author="${book.author}"></div>
 													<div class="book-stats">
 														<!-- 평점 -->
 														<span class="stat-item">평점: <span
@@ -83,41 +85,31 @@
 		<section class="community-section">
 			<div class="community-card">
 				<h2 class="section-title">
-					<i class="fas fa-comments"></i>
-					자유게시판
+					<a href="/board/community/3" class="boardLink-button">
+						<i class="fas fa-clipboard"></i>
+						공지사항
+					</a>
 				</h2>
-				<ul class="post-list">
+				<ul class="post-list" th:each="notice : ${noticeList}" th:object="${notice}">
 					<li class="post-item">
 						<i class="fas fa-pen"></i>
-						<a href="#" class="post-link">이번 달 독서 모임 후기</a>
-					</li>
-					<li class="post-item">
-						<i class="fas fa-pen"></i>
-						<a href="#" class="post-link">추천 도서 공유합니다</a>
-					</li>
-					<li class="post-item">
-						<i class="fas fa-pen"></i>
-						<a href="#" class="post-link">신간 리뷰 모음</a>
+						<a th:href="@{/board/{boardCode}/{boardNo}(boardCode=*{boardCode}, boardNo=*{boardNo})}" class="post-link" th:text="*{boardTitle}">
+							제목</a>
 					</li>
 				</ul>
 			</div>
 			<div class="community-card">
 				<h2 class="section-title">
-					<i class="fas fa-star"></i>
-					추천게시판
+					<a href="/board/community/1" class="boardLink-button">
+						<i class="fas fa-comments"></i>
+						자유게시판
+					</a>
 				</h2>
-				<ul class="post-list">
+				<ul class="post-list" th:each="community : ${communityList}" th:object="${community}">
 					<li class="post-item">
 						<i class="fas fa-pen"></i>
-						<a href="#" class="post-link">이달의 베스트 추천작</a>
-					</li>
-					<li class="post-item">
-						<i class="fas fa-pen"></i>
-						<a href="#" class="post-link">장르별 추천 도서</a>
-					</li>
-					<li class="post-item">
-						<i class="fas fa-pen"></i>
-						<a href="#" class="post-link">입문자를 위한 추천</a>
+						<a th:href="@{/board/{boardCode}/{boardNo}(boardCode=*{boardCode}, boardNo=*{boardNo})}" class="post-link" th:text="*{boardTitle}">
+							제목</a>
 					</li>
 				</ul>
 			</div>

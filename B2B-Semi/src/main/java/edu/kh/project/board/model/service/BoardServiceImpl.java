@@ -123,4 +123,18 @@ public class BoardServiceImpl implements BoardService{
 		return -1;
 		
 	}
+
+
+	// 메인 페이지 공지 게시글 상단 3개 조회
+	@Override
+	public List<Board> selectMainNotice() {
+		return mapper.selectMainNotice();
+	}
+
+
+	// 메인 페이지 자유 게시판 게시글 상단 3개 조회
+	@Override
+	public List<Board> selectMainCommnunity() {
+		return mapper.selectMainCommnunity();
+	}
 }

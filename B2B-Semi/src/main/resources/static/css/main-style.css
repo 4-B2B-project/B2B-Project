@@ -275,6 +275,15 @@ body {
 	background: black;
 }
 
+.boardLink-button {
+	text-decoration: none;
+	color: black;
+}
+
+.boardLink-button:hover{
+	color: var(--primary);
+}
+
 
 @media (max-width: 1024px) {
 	.sidebar {

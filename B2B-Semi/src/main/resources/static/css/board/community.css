@@ -105,7 +105,7 @@ body {
 }
 
 .search-section .input-group .form-select {
-	width: 90px !important;
+	width: 100px !important;
 	/* 제목 탭 너비 축소 */
 	margin-right: 20px;
 	flex: 0 0 auto;
