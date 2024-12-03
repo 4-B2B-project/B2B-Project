@@ -397,6 +397,32 @@
 	</insert>
 
 	
+	
+	
+	 <!-- 좋아요한 도서 수 가져오기 -->
+    <select id="countFavBooks" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        TB_FAVORITE
+        FROM TB_FAVORITE
+        WHERE member_no = #{memberNo}
+    </select>
+	
+	 <!-- 댓글 수 가져오기 -->
+    <select id="countComment" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM TB_COMMENT
+        WHERE member_no = #{memberNo}
+    </select>
+    
+     <!-- 게시글 수 가져오기 -->
+    <select id="countBoard" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM TB_BOARD
+        WHERE member_no = #{memberNo}
+    </select>
+	
+	
+	
 
 
 

@@ -57,9 +57,31 @@ public class MyPageController {
 	public String info(@SessionAttribute("loginMember") Member loginMember, Model model) {
 
 		System.out.println("loginMember: " + loginMember);
+		
+		
 
 		if (loginMember != null) {
+			
+			int memberNo = loginMember.getMemberNo();
+			
+			
+			// 댓글 수 (count)
+	        int commentCount = service.getCommentCount(memberNo);
+	        
+	        // 게시글 수 (count)
+	        int boardCount = service.getBoardCount(memberNo);
+	        
+			// 좋아요한 도서 수(count)
+	        int favoriteBookCount = service.getFavoriteBookCount(memberNo);
+			
+			
+			
+	        model.addAttribute("commentCount", commentCount);
+	        model.addAttribute("boardCount", boardCount);
+	        model.addAttribute("favoriteBookCount", favoriteBookCount);
+			
 			model.addAttribute("member", loginMember);
+			
 		}
 
 		return "myPage/myPage-info";

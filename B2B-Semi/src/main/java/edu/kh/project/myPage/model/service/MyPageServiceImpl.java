@@ -309,4 +309,25 @@ public class MyPageServiceImpl implements MyPageService {
 		return mapper.replyInsert(comment);
 	}
 
+	
+	// 좋아요한 도서 수(count)
+	@Override
+	public int getFavoriteBookCount(int memberNo) {
+		 return mapper.countFavBooks(memberNo);
+	}
+
+	// 댓글 수(count)
+	@Override
+	public int getCommentCount(int memberNo) {
+		// TODO Auto-generated method stub
+		return mapper.countComment(memberNo);
+	}
+
+	// 게시글 수(count)
+	@Override
+	public int getBoardCount(int memberNo) {
+		// TODO Auto-generated method stub
+		return mapper.countBoard(memberNo);
+	}
+
 }

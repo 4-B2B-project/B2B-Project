@@ -14,96 +14,101 @@
 </head>
 
 <body>
-	
+
   <div class="wrapper">
     <!-- 헤더 추가 -->
     <th:block th:replace="~{common/header}"></th:block>
-  
+
 
     <!-- 사이드 추가 -->
     <th:block th:replace="~{sideMenu/sideMenu-myPage}"></th:block>
 
 
-      <main class="main-content">
+    <main class="main-content">
 
-        <section class="ranking-header">
-          <h1 class="ranking-title">
-            <i class="fas fa-crown me-2" style="color: #FFD700;"></i>
-            내 정보
-          </h1>
-        </section>
+      <section class="ranking-header">
+        <h1 class="ranking-title">
+          <i class="fas fa-crown me-2" style="color: #FFD700;"></i>
+          내 정보
+        </h1>
+      </section>
 
-        <section class="genre-section">
-          <div class="genre-header">
+      <section class="genre-section">
+        <div class="genre-header">
 
-            <div class="profile-container">
-              <div class="profile-header">
+          <div class="profile-container">
+            <div class="profile-header">
 
-                <form action="info" method="POST" name="myPageFrm" id="profile" enctype="multipart/form-data">
-                  <div class="profile-image-area">
-        
-                    <img th:with="user=#{user.default.image}"
-                        th:src="${session.loginMember.profileImg ?: user}"
-                        id="profileImg" >
-                      
-                  </div>
-                  <span id="deleteImage">x</span>
-        
-                  <div class="profile-btn-area">
-                    <label for="imageInput">이미지 선택</label>
-        
-                    <input type="file" name="profileImg" id="imageInput" accept="image/*">
-        
-                    <button>변경하기</button>
-                  </div>
-        
-        
-                </form>
-                
+              <form action="info" method="POST" name="myPageFrm" id="profile" enctype="multipart/form-data">
+                <div class="profile-image-area">
 
+                  <img th:with="user=#{user.default.image}" th:src="${session.loginMember.profileImg ?: user}"
+                    id="profileImg">
 
-                <div class="profile-info">
-                  
-                  <h1 th:text="${member?.memberNickname ?: '아이디 없음'}" class="profile-name">아이디</h1> <!-- 여기 이제부터 수정!!!!!!!!-->
-                  
                 </div>
-                <a href="/myPage/editInfo" class="editInfoBtn">
-                  내 정보 수정
-                </a>
+                <span id="deleteImage">x</span>
 
+                <div class="profile-btn-area">
+                  <label for="imageInput">이미지 선택</label>
+
+                  <input type="file" name="profileImg" id="imageInput" accept="image/*">
+
+                  <button>변경하기</button>
+                </div>
+
+
+              </form>
+
+
+
+              <div class="profile-info">
+
+                <h1 th:text="${member?.memberNickname ?: '아이디 없음'}" class="profile-name">아이디</h1>
+                <!-- 여기 이제부터 수정!!!!!!!!-->
+
+                <!-- 선호 장르 출력 -->
+                <div class="favorite-genres" th:if="${member?.memberBookCategory != null}">
+                  <span class="genre-item" th:text="${member?.memberBookCategory}">선호 장르 없음</span>
+                </div>
 
               </div>
+              <a href="/myPage/editInfo" class="editInfoBtn">
+                내 정보 수정
+              </a>
 
-              <div class="stats-container">
-                <div class="stat-item">
-                  <p class="stat-number">00</p>
-                  <p class="stat-label">작성한 댓글</p>
-                </div>
-                <div class="stat-item">
-                  <p class="stat-number">00</p>
-                  <p class="stat-label">작성한 게시글</p>
-                </div>
-                <div class="stat-item">
-                  <p class="stat-number">00</p>
-                  <p class="stat-label">좋아요한 도서</p>
-                </div>
-              </div>
+
             </div>
 
-
-
+            <div class="stats-container">
+              <div class="stat-item">
+                <p class="stat-number" th:text="${commentCount}">0</p>
+                <p class="stat-label">작성한 댓글</p>
+              </div>
+              <div class="stat-item">
+                <p class="stat-number" th:text="${boardCount}">0</p>
+                <p class="stat-label">작성한 게시글</p>
+              </div>
+              <div class="stat-item">
+                <p class="stat-number" th:text="${favoriteBookCount}">0</p>
+                <p class="stat-label">좋아요한 도서</p>
+              </div>
+            </div>
           </div>
-        </section>
 
 
-      </main>
-      
-  <!-- 푸터 추가-->
-  <th:block th:replace="~{common/footer}"></th:block>
+
+        </div>
+      </section>
+
+
+    </main>
+
+    <!-- 푸터 추가-->
+    <th:block th:replace="~{common/footer}"></th:block>
 
   </div>
 
- 
+
 
   <!-- js 추가 -->
   <script src="/js/myPage/myPage-info.js"></script>
