@@ -60,9 +60,12 @@ public class MemberController {
 		// 로그인 서비스 호출
 		Member loginMember = service.login(inputMember);
 		
+		String path = null;
+		
 		// 로그인 실패 시
 		if(loginMember == null) {
 			ra.addFlashAttribute("message", "아이디 또는 비밀번호가 일치하지 않습니다.");
+			path = "login";
 		} else {
 			
 			// Session scope에 loginMember 추가
@@ -92,11 +95,13 @@ public class MemberController {
 			// 응답 객체에 쿠키 추가 -> 클라이언트 전달
 			resp.addCookie(cookie);
 			
+			path = "/";
+			
 		}
 		
 		log.debug("loginMember" + loginMember);
 		
-		return "redirect:/"; // 메인페이지 재요청
+		return "redirect:" + path; // 메인페이지 재요청
 	}
 	
 	/** 이메일 중복검사 (비동기 요청)
