@@ -7,92 +7,7 @@
     <!-- 공용 css/js 추가 -->
     <th:block th:replace="~{common/common}"></th:block>
     <link rel="stylesheet" href="/css/adminBoard/bookManage.css">
-    <style>
-      /* 기본 전체 설정 시작 */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      }
-  
-      :root {
-        --primary-color: #4f46e5;
-        --primary-hover: #4338ca;
-        --background: #ffffff;
-        --text-primary: #1f2937;
-        --text-secondary: #4b5563;
-        --card-background: #ffffff;
-      }
-  
-      body {
-        font-family: 'Segoe UI', 'Arial', sans-serif;
-        background-color: #F9FAFB;
-      }
-  
-      .wrapper {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-      }
-  
-      /* 기본 전체 설정 끝 */
-  
-  
-      /* Main Content Styles */
-      .main-content {
-        margin-left: var(--sidebar-width);
-        min-height: 75vh;
-        padding: 2rem;
-        flex-grow: 1;
-      }
-  
-  
-      /* 타이틀 시작 */
-      .ranking-header {
-        background: white;
-        padding: 2rem;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        margin-bottom: 2rem;
-      }
-  
-      .ranking-title {
-        font-size: 2.2rem;
-        font-weight: 700;
-        color: var(--dark-text);
-        margin-bottom: 1.5rem;
-      }
-  
-      /* 타이틀 끝 */
-  
-  
-      /* 부제목 시작 */
-      .genre-section {
-        background: white;
-        border-radius: 15px;
-        padding: 2rem;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        margin-bottom: 2rem;
-      }
-  
-      .genre-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid var(--light-bg);
-      }
-  
-      .genre-title {
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: var(--dark-text);
-      }
-  
-      /* 부제목 끝 */
-    </style>
+	<link rel="stylesheet" href="/css/adminBoard/admin-sidebar.css">
 
 </head>
 <body>
@@ -109,25 +24,33 @@
     <main class="main-content">
 
 		<section class="ranking-header">
-		  <h1 class="ranking-title">
-		    도서 관리
-		  </h1>
+		  <h1 class="ranking-title">도서 관리</h1>
 		</section>
 		
-		<section class="ranking-header">
-			<select name="key" id="searchKey">
-				<option value="title">도서 제목</option>
+		<div class="genre-section">
+			<div class="search-section">
+				<div class="search-wrapper">
+					
+					<div class="input-group flex-grow-1">
+						
+						<select name="key" id="searchKey" class="form-select" style="border-radius: 8px;" th:value="${key}">
+							<option value="title" th:selected="${key == 'title'}">도서 제목</option>
+							<option value="name" th:selected="${key == 'name'}">작가명</option>
+							<option value="delfl" th:selected="${key == 'delfl'}">삭제 여부</option>
+						</select>
 
-				<option value="name">작가명</option>
-				<option value="delfl">삭제 여부</option>
-			</select>
-			
-		  <input type="text" placeholder="검색어를 입력하세요." id="searchInput" name="search" th:value="${search}">
-		  <button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i>검색</button>
-		</section>
+						<input type="text" placeholder="검색어를 입력하세요." class="form-control" style="border-radius: 8px;" id="searchInput" name="search" th:value="${search}">
+						
+					</div>
+					
+					<button id="searchBtn" class="search-button"><i class="fa-solid fa-magnifying-glass"></i>검색</button>
+				</div>
+			</div>
+
+		</div>
 
 	  <section class="memberList-tb">
-	    <table border="1" style="border-collapse: collapse;">
+	    <table style="border-collapse: collapse;" class="table table-hover">
 
 	      <thead>
 	        <th>번호</th>
@@ -151,7 +74,9 @@
 					<td th:text="*{title}">도서 제목</td>
 					<td th:text="*{author}">작가명</td>
 					<td th:text="*{pubDate}">출판일</td>
-					<td th:text="*{isDeleted}">삭제 여부</td>
+					<td th:text="*{isDeleted == 'Y' ? '삭제' : '활성'}"
+						th:classappend="*{isDeleted == 'Y' ? 'text-danger' : 'text-success'}"
+					>삭제 여부</td>
 					<td>
 						<button class="updateBookBtn" name="updateBookBtn" th:data-book-id="*{bookId}">도서 수정</button>
 					</td>

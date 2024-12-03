@@ -12,7 +12,7 @@ searchBookListBtn.addEventListener("click", () => {
 })
 
 const updateDelFlYBtn = document.querySelector("#updateDelFlY").addEventListener("click", () => updateBookStatus('삭제'));
-const updateDelFlNBtn = document.querySelector("#updateDelFlN").addEventListener("click", () => updateBookStatus('복구'));
+const updateDelFlNBtn = document.querySelector("#updateDelFlN").addEventListener("click", () => updateBookStatus('활성'));
 
 function updateBookStatus(action) {
 	

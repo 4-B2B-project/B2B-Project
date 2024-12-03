@@ -1,16 +1,20 @@
 package edu.kh.project.member.model.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import edu.kh.project.board.model.dto.Board;
 import edu.kh.project.book.model.dto.Book;
 import edu.kh.project.common.util.Pagination;
+import edu.kh.project.common.util.Utility;
 import edu.kh.project.member.model.dto.Member;
 import edu.kh.project.member.model.mapper.AdminMapper;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +25,63 @@ import lombok.RequiredArgsConstructor;
 public class AdminServiceImpl implements AdminService{
 
 	private final AdminMapper mapper;
+	
+	@Value("${my.profile.web-path}")
+	private String profileWebPath;
+	
+	@Value("${my.profile.folder-path}")
+	private String profileFolderPath;
+	
+	// 도서 수 조회.
+	@Override
+	public int bookCount() {
+		return mapper.bookCount();
+	}
+
+	// 회원 수 조회.
+	@Override
+	public int memberCount() {
+		return mapper.memberCount();
+	}
+
+	// 게시글 수 조회.
+	@Override
+	public int boardCount() {
+		return mapper.boardCount();
+	}
+	
+	// 관리자 프로필 사진 변경.
+	@Override
+	public int profileImage(MultipartFile profileImg, Member loginMember) throws Exception{
+
+		String updatePath = null;
+		
+		String rename = null;
+		
+		if(!profileImg.isEmpty()) {
+			
+			rename = Utility.fileRename(profileImg.getOriginalFilename());
+			
+			updatePath = profileWebPath + rename;
+			
+		}
+		
+		Member mem = Member.builder().memberNo(loginMember.getMemberNo()).profileImg(updatePath).build();
+	
+		int result = mapper.profileImage(mem);
+		
+		if(result > 0) {
+			
+			if(!profileImg.isEmpty()) {
+				profileImg.transferTo(new File(profileFolderPath + rename));
+			}
+			
+			loginMember.setProfileImg(updatePath);
+			
+		}
+		
+		return result;
+	}
 	
 	// 관리자 정보 수정.
 	@Override
@@ -38,6 +99,7 @@ public class AdminServiceImpl implements AdminService{
 		
 		return mapper.editInfo(inputMember);
 	}
+	
 	
 	// 회원 목록 조회. (검색 x)
 	@Override
@@ -84,9 +146,23 @@ public class AdminServiceImpl implements AdminService{
 	
 	// 회원 검색.
 	@Override
-	public List<Member> searchMember(Map<String, Object> paramMap) {
+	public Map<String, Object> searchMember(Map<String, Object> paramMap, int cp) {
 
-		return mapper.searchMember(paramMap);
+		int listCount = mapper.searchMemberCount(paramMap);
+		
+		Pagination pagination = new Pagination(cp, listCount);
+		
+		Map<String, Object> searchParam = new HashMap<>();
+	    searchParam.put("pagination", pagination);
+	    searchParam.putAll(paramMap);
+	    
+	    List<Member> memberList = mapper.searchMember(searchParam);
+	    
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("pagination", pagination);
+	    map.put("memberList", memberList);
+		
+		return map;
 	}
 	
 	// 선택한 회원 정보 조회.
@@ -163,26 +239,6 @@ public class AdminServiceImpl implements AdminService{
 		return result;
 	}
 	
-	// 도서 검색.
-	@Override
-	public Map<String, Object> searchBookList(Map<String, Object> paramMap, int cp) {
-
-		int bookCount = mapper.searchBookCount(paramMap);
-		Pagination pagination = new Pagination(cp, bookCount);
-		
-		int limit = pagination.getLimit();
-		int offset = (cp - 1) * limit;
-		RowBounds rowBounds = new RowBounds(offset, limit);
-		
-		List<Book> bookList = mapper.searchBookList(paramMap, rowBounds);
-		
-		Map<String, Object> result = new HashMap<>();
-		result.put("pagination", pagination);
-		result.put("bookList", bookList);
-
-		return result;
-	}
-	
 	// 도서 삭제/삭제 복구.
 	@Override
 	public int updateBookStatus(List<String> bookList, boolean updateY) {
@@ -190,7 +246,7 @@ public class AdminServiceImpl implements AdminService{
 		String status = updateY ? "Y" : "N";
 		return mapper.updateBookStatus(bookList, status);
 	}
-	
+
 	// 도서 수정 페이지 및 데이터 보내기.
 	@Override
 	public Book selectBookDetail(int bookId) {
@@ -228,14 +284,8 @@ public class AdminServiceImpl implements AdminService{
 		return map;
 	}
 	
-	// 게시글 검색.
-	@Override
-	public List<Board> searchBoard(Map<String, Object> paramMap) {
-
-		return mapper.searchBoard(paramMap);
-	}
 	
-	// 게시판 관리 조회. (검색 o)
+	// 게시판 관리 조회. (검색 o) / 게시글 검색.
 	@Override
 	public Map<String, Object> boardSearchList(int cp, Map<String, Object> paramMap) {
 		
@@ -283,7 +333,5 @@ public class AdminServiceImpl implements AdminService{
 		
 		return mapper.updateBoardStatus(boardList, status);
 	}
-
-
 
 }

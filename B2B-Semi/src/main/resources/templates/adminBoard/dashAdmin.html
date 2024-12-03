@@ -95,6 +95,7 @@
       /* 부제목 끝 */
     </style>
 	<link rel="stylesheet" href="/css/adminBoard/admin-info.css">
+	<link rel="stylesheet" href="/css/adminBoard/admin-sidebar.css">
 </head>
 <body>
   
@@ -120,7 +121,7 @@
 
 	      <div class="profile-container">
 	        <div class="profile-header">
-			<form action="info" method="POST" name="myPageFrm" id="profile" enctype="multipart/form-data">
+			<form action="editProfile" method="POST" name="myPageFrm" id="profile" enctype="multipart/form-data">
 				
 			 <div class="profile-image-area">
 	           <img th:with="user=#{user.default.image}" th:src="${session.loginMember.profileImg ?: user}" id="profileImg">
@@ -151,15 +152,15 @@
 
 	        <div class="stats-container">
 	          <div class="stat-item">
-	            <p class="stat-number">000</p>
+	            <p class="stat-number" th:text="${bookCount}">000</p>
 	            <p class="stat-label">등록된 도서 수</p>
 	          </div>
 	          <div class="stat-item">
-	            <p class="stat-number">000</p>
+	            <p class="stat-number" th:text="${memberCount}">000</p>
 	            <p class="stat-label">가입한 회원 수</p>
 	          </div>
 	          <div class="stat-item">
-	            <p class="stat-number">000</p>
+	            <p class="stat-number" th:text="${boardCount}">000</p>
 	            <p class="stat-label">등록된 게시글 수</p>
 	          </div>
 	        </div>
