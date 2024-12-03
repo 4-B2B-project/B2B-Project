@@ -11,7 +11,7 @@
 			</a>
 		</div>
 		<div class="nav-item">
-			<a href="#" class="nav-link has-submenu">
+			<a href="submenu" class="nav-link has-submenu">
 				전체 랭킹 TOP20
 				<i class="fas fa-chevron-down ms-auto"></i>
 			</a>
@@ -28,7 +28,7 @@
 			</div>
 		</div>
 		<div class="nav-item">
-			<a href="#" class="nav-link has-submenu">
+			<a href="submenu" class="nav-link has-submenu">
 				기간별 랭킹
 				<i class="fas fa-chevron-down ms-auto"></i>
 			</a>
@@ -46,24 +46,72 @@
 
 
 <script>
-	// Mobile menu toggle
-	const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-	const sidebar = document.querySelector('.sidebar');
-
-	mobileMenuBtn.addEventListener('click', () => {
-		sidebar.classList.toggle('active');
-	});
-
 	// Submenu toggle
 	const submenuLinks = document.querySelectorAll('.has-submenu');
 
+	// 모든 .nav-link 요소와 href 값 가져오기
+	const pageLink = document.querySelectorAll(".sidebar .nav-link");
+	const hrefAddress = Array.from(pageLink);
+
+	// 현재 페이지 경로
+	let locationLink = location.pathname.split("/");
+	const locHref = "/" + locationLink[1] + "/" + locationLink[2];
+
+	// 서브메뉴 반복문 실행
 	submenuLinks.forEach(link => {
+		// 해당 서브메뉴 a태그 클릭시
 		link.addEventListener('click', (e) => {
+			// a태그 이벤트 막기
 			e.preventDefault();
+			
+			// 서브메뉴 안의 다음 요소 가져오기
 			const submenu = link.nextElementSibling;
+			
+			// 지정한 클래스 값이 없으면 추가하고, 있으면 제거
 			submenu.classList.toggle('active');
+			
+			// 해당 아이콘 가져와서 활성화에 따라 회전 시키기
 			const icon = link.querySelector('.fa-chevron-down');
 			icon.style.transform = submenu.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0)';
 		});
 	});
+	
+	
+	// 사이드 메뉴의 a태그들 반복문 실행
+	hrefAddress.forEach(addr => {
+		
+		// a태그의 href 주소값 가져오기
+		const page = new URL(addr.href).pathname;
+		
+		// 현재 호출 주소와 a태그의 href주소가 일치하면
+		if(page == locHref) {
+			addr.style.backgroundColor = "#F3F4F6";
+			addr.style.color = "#4F46E5";
+			addr.style.transform = "translateX(5px)";
+			addr.style.fontWeight = "bold"; 
+			
+			// 해당 태그의 가장 가까운 조상요소(.submenu) 찾기
+			const submenu = addr.closest('.submenu');
+			
+			// 조상 요소가 있으면			
+	        if (submenu) {
+	            // 부모 메뉴 펼치기
+	            submenu.classList.add('active');
+	            
+				// 해당 조상요소의 앞부분 형제 요소 찾기
+	            const parentLink = submenu.previousElementSibling;
+				
+				// 형제요소의 아이콘 찾기
+	            const icon = parentLink.querySelector('.fa-chevron-down');
+				
+				// 해당 아이콘이 있으면 회전
+	            if (icon) {
+	                icon.style.transform = 'rotate(180deg)';
+	            }
+	        }
+			
+		}
+	})
+	
+	
 </script>

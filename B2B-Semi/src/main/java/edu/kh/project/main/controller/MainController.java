@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import edu.kh.project.board.model.dto.Board;
+import edu.kh.project.board.model.service.BoardService;
 import edu.kh.project.book.model.dto.Book;
 import edu.kh.project.book.model.service.BookService;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +22,25 @@ import lombok.RequiredArgsConstructor;
 public class MainController {
 	
 	private final BookService service;
+	
+	private final BoardService boardService;
 
 	
+	/** 메인 페이지
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/") // "/" 요청 매핑
 	public String mainPage(Model model) {
 		
+		// 도서 목록 조회
 		List<Book> bookList = service.mainBookList();
+		
+		// 공지 게시글 상단 3개 조회
+		List<Board> noticeList = boardService.selectMainNotice();
+		
+		// 자유 게시판 게시글 상단 3개 조회
+		List<Board> communityList = boardService.selectMainCommnunity();
 
 		// 데이터를 5개씩 그룹화
 		// 2단계 그룹화
@@ -56,6 +71,8 @@ public class MainController {
 
 		// 모델에 그룹화된 데이터를 추가
 		model.addAttribute("bookList", groupedBooks);
+		model.addAttribute("noticeList", noticeList);
+		model.addAttribute("communityList", communityList);
 		return "common/main";
 	}
 	

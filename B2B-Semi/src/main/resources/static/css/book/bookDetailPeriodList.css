@@ -160,7 +160,7 @@ body {
 
 .date-input-group span {
     color: #6b7280;
-    font-weight: 500;
+    font-weight: bold;
     font-size: 0.95rem;
     margin: 0 0.5rem;
 }
