@@ -11,8 +11,8 @@
 }
 
 .nav-link.active {
-  background-color: var(--primary-color) !important; /* 선택된 항목의 배경색 */
-  color: #ffffff !important; /* 텍스트 색상 강조 */
+  background-color: #F3F4F6 !important; /* 선택된 항목의 배경색 */
+  color: #4F46E5 !important; /* 텍스트 색상 강조 */
   font-weight: bold !important; /* 선택된 항목을 더 돋보이게 함 */
   border-left: 5px solid #fbbf24 !important; /* 선택된 항목에 왼쪽 경계선 추가 */
 }
