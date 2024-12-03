@@ -8,6 +8,8 @@
 
   <link rel="stylesheet" href="/css/myPage/myPage-boardList.css">
 
+  <link rel="stylesheet" href="/css/myPage/myPage-sideMenu.css">
+
   <!-- 공용 css/js 추가 -->
   <th:block th:replace="~{common/common}"></th:block>
 
@@ -114,8 +116,7 @@
 
                   <!-- 게시글 제목 -->
                   <td>
-                    <div class="board-title" th:data-full-text="${board.boardTitle}"
-                      onmousemove="showTooltip(event, this)">
+                    <div class="board-title" th:data-full-text="${board.boardTitle}">
                       <a th:href="@{/myPage/boardDetail(boardNo=${board.boardNo})}" th:text="${board.boardTitle}">게시글 제목</a>
                     </div>
                   </td>
