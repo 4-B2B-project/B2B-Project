@@ -1,5 +1,8 @@
 package edu.kh.project.member.controller;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -171,7 +173,10 @@ public class AdminController {
 	
 	// 회원 정보 수정 페이지 이동.
 	@GetMapping("updateMember")
-	public String updateMember(@RequestParam("memberNo") int memberNo, Model model) {
+	public String updateMember(@RequestParam("memberNo") int memberNo, Model model,
+							@RequestParam(value = "key", required = false) String key,
+				            @RequestParam(value = "search", required = false) String search,
+				            @RequestParam(value = "cp", required = false, defaultValue = "1") int cp ) {
 		
 		Member selectedMember = Adservice.selectedMember(memberNo);
 		
@@ -184,30 +189,56 @@ public class AdminController {
 		model.addAttribute("detailAddress", address[2]);
 		model.addAttribute("activeMenu", "memberManage");
 		
+		model.addAttribute("key", key);
+		model.addAttribute("search", search);
+		model.addAttribute("cp", cp);
+		
 		return "adminBoard/updateMember";
 	}
 	
 	// 회원 정보 수정 (POST)
-	@PostMapping("info")
-	public String updateInfo(RedirectAttributes ra,Member inputMember, @RequestParam(value="memberNo", required =false, defaultValue="0") int memberNo, @RequestParam("memberAddress") String[] memberAddress) {
+	@PostMapping("updateMember")
+	public String updateInfo(RedirectAttributes ra,Member inputMember, 
+							@RequestParam(value="memberNo", required =false, defaultValue="0") int memberNo,
+							@RequestParam("memberAddress") String[] memberAddress,
+						    @RequestParam(value = "key", required = false) String key,
+						    @RequestParam(value = "search", required = false) String search,
+						    @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+						    Model model) {
 		
 		int result = Adservice.updateInfo(inputMember, memberAddress);
 		
-		log.debug("memberNo : " + memberNo);
+		if(key != null) {
+			key = URLDecoder.decode(key, StandardCharsets.UTF_8);
+			key = URLEncoder.encode(key, StandardCharsets.UTF_8);
+			}
+		
+		if (search != null) {
+	        search = URLDecoder.decode(search, StandardCharsets.UTF_8);
+	        search = URLEncoder.encode(search, StandardCharsets.UTF_8);
+	    }
+		
 		
 		String message = null;
+		
+		String path = null;
 		
 		if(result > 0) {
 			message = "회원 정보 수정 성공함.";
 			
+			path = String.format("/adminBoard/memberManage?cp=%d&key=%s&search=%s", cp, key, search);
+			
+			model.addAttribute("cp", cp);
 		}
 		else {
 			message = "정보 수정 실패...";
+			path = "/adminBoard/updateMember";
 		}
 		
 		ra.addFlashAttribute("message", message);
 		
-		return "redirect:memberManage";
+		return "redirect:" + path;
+		
 	}
 	
 	// 회원 추방/탈퇴 복구.
@@ -306,10 +337,16 @@ public class AdminController {
 	
 	// 도서 수정 페이지.
 	@GetMapping("updateBookPage/{bookId:[0-9]+}")
-	public String updateBookPage(@PathVariable int bookId, Model model) {
+	public String updateBookPage(@PathVariable int bookId, Model model,
+			@RequestParam(value="key", required = false) String key,
+			@RequestParam(value="search", required = false) String search,
+			@RequestParam(value="cp", required = false, defaultValue = "1") int cp) {
 		Book book = Adservice.selectBookDetail(bookId);
 		
 		model.addAttribute("book", book);
+		model.addAttribute("key", key);
+		model.addAttribute("search", search);
+		model.addAttribute("cp", cp);
 		model.addAttribute("activeMenu", "bookManage");
 		
 		return "adminBoard/updateBook";
@@ -343,8 +380,6 @@ public class AdminController {
 		} catch (Exception e) {
 			map.put("success", false);
 		}
-		
-		log.debug("Key: " + key + ", Search: " + search + ", CP: " + cp);
 		
 		return map;
 		
@@ -407,7 +442,10 @@ public class AdminController {
 	
 	// 게시글 상세.
 	@GetMapping("boardDetail/{boardNo:[0-9]+}")
-	public String boardDetail(@PathVariable("boardNo") int boardNo, Model model, RedirectAttributes ra) {
+	public String boardDetail(@PathVariable("boardNo") int boardNo, Model model, RedirectAttributes ra,
+			@RequestParam(value="key", required = false) String key,
+			@RequestParam(value="search", required = false) String search,
+			@RequestParam(value="cp", required = false, defaultValue = "1") int cp) {
 		
 		Board board = Adservice.boardDetail(boardNo);
 		
@@ -417,6 +455,9 @@ public class AdminController {
 		}
 		
 		model.addAttribute("board", board);
+		model.addAttribute("key", key);
+		model.addAttribute("search", search);
+		model.addAttribute("cp", cp);
 		model.addAttribute("activeMenu", "boardManage");
 		return "adminBoard/boardDetail";
 	}
@@ -425,6 +466,9 @@ public class AdminController {
 	@PostMapping("boardDetail/{boardNo:[0-9]+}/update")
 	public String boardUpdate(@PathVariable ("boardNo") int boardNo, 
 			@RequestParam Map<String, Object> paramMap,
+			@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
+			@RequestParam(value="key", required = false) String key,
+			@RequestParam(value="search" , required = false) String search,
 			@SessionAttribute("loginMember") Member loginMember,
 			RedirectAttributes ra) {
 	
@@ -436,10 +480,8 @@ public class AdminController {
 		String path = null;
 		String message = null;
 		
-//		String searchInput = (String) paramMap.get("searchInput");
-		
 		if(result > 0) {
-			path = "/adminBoard/boardManage";
+			path = String.format("/adminBoard/boardManage?cp=%d&key=%s&search=%s" , cp, key, search );
 			message = "수정 완료.";
 		}
 		else {
@@ -458,7 +500,10 @@ public class AdminController {
 	public String boardDelete(@PathVariable("boardNo") int boardNo,
 			@RequestParam Map<String, Object> paramMap,
 			@SessionAttribute("loginMember") Member loginMember,
-			RedirectAttributes ra) {
+			RedirectAttributes ra,
+			@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
+			@RequestParam(value="key", required = false) String key,
+			@RequestParam(value="search" , required = false) String search) {
 		
 		paramMap.put("boardNo", boardNo);
 		paramMap.put("memberNo", loginMember.getMemberNo());
@@ -469,7 +514,7 @@ public class AdminController {
 		String message = null;
 		
 		if ( result > 0) {
-			path = "/adminBoard/boardManage";
+			path = String.format("/adminBoard/boardManage?cp=%d&key=%s&search=%s", 1, key, search);
 			message = "게시글 삭제 완료.";
 		}
 		else {

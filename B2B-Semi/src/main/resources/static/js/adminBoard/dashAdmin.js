@@ -32,8 +32,6 @@ function execDaumPostcode() {
 // 주소 검색 버튼 클릭 시 (myPage-info.html 외에도 문제가 발생하지 않도록 예외처리 해둔 부분!)
 const searchAddress = document.querySelector("#searchAddress");
 
-console.log(searchAddress);
-
 if(searchAddress != null) { // 화면상에 id가 searchAddress인 요소가 존재하는 경우에만
     searchAddress.addEventListener("click", execDaumPostcode);
 }

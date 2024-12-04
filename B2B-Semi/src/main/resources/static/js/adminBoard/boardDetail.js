@@ -66,59 +66,21 @@ document.addEventListener('DOMContentLoaded', () => {
         form.action = `/adminBoard/boardDetail/${boardNo}/update`;
         form.method = "POST";
 
-        // 제목 값 세팅
-        const titleInput = document.createElement("input");
-        titleInput.type = "hidden";
-        titleInput.name = "boardTitle";
-        titleInput.value = newTitle;
+		form.innerHTML = `<input type="hidden" name="boardTitle" value="${newTitle}">
+		<input type="hidden" name="boardContent" value="${newContent}">`;
 
-		// 내용 값 세팅
-        const contentInput = document.createElement("input");
-        contentInput.type = "hidden";
-        contentInput.name = "boardContent";
-        contentInput.value = newContent;
-
-        // 검색값 세팅
-        const params = new URLSearchParams(location.search);
-        const cp = params.get("cp");
-        const searchType = params.get("searchType");
-        const searchInput = params.get("searchInput");
-
-		// 페이징
-        if (cp) {
-            const cpInput = document.createElement("input");
-            cpInput.type = "hidden";
-            cpInput.name = "cp";
-            cpInput.value = cp;
-            form.append(cpInput);
-        }
-
-		// 검색조건
-        if (searchType) {
-            const searchTypeInput = document.createElement("input");
-            searchTypeInput.type = "hidden";
-            searchTypeInput.name = "searchType";
-            searchTypeInput.value = searchType;
-            form.append(searchTypeInput);
-        }
-
-		// 검색값
-        if (searchInput) {
-            const searchInputElement = document.createElement("input");
-            searchInputElement.type = "hidden";
-            searchInputElement.name = "searchInput";
-            searchInputElement.value = encodeURIComponent(searchInput);
-            form.append(searchInputElement);
-        }
-
-        // form에 붙이기
-        form.append(titleInput);
-        form.append(contentInput);
+		const params = new URLSearchParams(location.search);
+		for( const [key, value] of params.entries()) {
+			const input = document.createElement("input");
+			input.tpye = "hidden";
+			input.name = key;
+			input.value = encodeURIComponent(value);
+			form.appendChild(input);
+		}
+		
 
         // 화면에 form태그 추가하고 실행
-        document.querySelector("body").append(form);
-		
-		console.log(form)
+        document.querySelector("body").appendChild(form);
 		
         form.submit();
     });
@@ -129,7 +91,19 @@ const goToListBtn = document.querySelector("#communityList");
 
 goToListBtn.addEventListener("click", () => {
 
-	window.location.href = "/adminBoard/boardManage";
+	const URLParams = new URLSearchParams(window.location.search);
+
+	const key = URLParams.get('key') || '';
+	const search = URLParams.get('search') || '';
+	const cp = URLParams.get('cp') || '';
+	
+	if(key == null) {
+		window.location.href = `/adminBoard/boardManage?cp=${cp}`;
+	}
+	else {
+		window.location.href = `/adminBoard/boardManage?cp=${cp}&key=${key}&search=${search}`;
+	}
+	
 });
 
 const deleteBtn = document.querySelector("#deleteBtn");
@@ -147,44 +121,19 @@ if (deleteBtn != null) {
 		form.action = `/adminBoard/boardDetail/${boardNo}/delete`;
 		form.method = "POST";
 
-		// cp값을 저장할 input 생성
-		const cpInput = document.createElement("input");
-		cpInput.type = "hidden";
-		cpInput.name = "cp";
+		const params = new URLSearchParams(location.search);
 		
-		// 검색조건 저장할 input 생성
-		const srchtype = document.createElement("input");
-		srchtype.type = "hidden";
-		srchtype.name = "searchType";
-		
-		// 검색 값 저장할 input 생성
-		const srchInput = document.createElement("input");
-		srchInput.type = "hidden";
-		srchInput.name = "searchInput";
-
-		// 쿼리스트링에서 검색조건 값 가져오기
-		const params = new URLSearchParams(location.search)
-		const type = params.get("searchType");
-		srchtype.value = type;
-		
-		// 쿼리스트링에서 검색 값 가져오기
-		const inp = params.get("searchInput");
-		const encodedSearchInput = encodeURIComponent(inp);
-		srchInput.value = encodedSearchInput;
-		
-		// 페이징값 넣기
-		const cp = params.get("cp");
-		cpInput.value = cp;
-
-		form.append(srchtype);
-		form.append(srchInput);
-		form.append(cpInput);
+		for (const [key, value] of params.entries()) {
+		    const input = document.createElement("input");
+		    input.type = "hidden";
+		    input.name = key;
+		    input.value = encodeURIComponent(value);
+		    form.appendChild(input);
+		}
 
 		// 화면에 form태그를 추가한 후 제출하기
-		document.querySelector("body").append(form);
+		document.querySelector("body").appendChild(form);
 		form.submit();
 
 	});
 }
-
-console.log(boardNo);

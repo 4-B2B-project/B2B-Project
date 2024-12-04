@@ -11,6 +11,12 @@ searchBookListBtn.addEventListener("click", () => {
 	window.location.href = `/adminBoard/searchBook?key=${key}&search=${query}`;
 })
 
+input.addEventListener("keyup", e => {
+	if(e.key == "Enter") {
+		searchBookListBtn.click();
+	}
+})
+
 const updateDelFlYBtn = document.querySelector("#updateDelFlY").addEventListener("click", () => updateBookStatus('삭제'));
 const updateDelFlNBtn = document.querySelector("#updateDelFlN").addEventListener("click", () => updateBookStatus('활성'));
 
@@ -72,7 +78,23 @@ const updateBookBtn = document.querySelectorAll("button[name='updateBookBtn']").
 	button.addEventListener("click", () => {
 		const bookId = button.getAttribute('data-book-id');
 		
-		window.location.href = `/adminBoard/updateBook?bookId=${bookId}`;
+		const URLParams = new URLSearchParams(window.location.search);
+
+		let key = URLParams.get('key');
+		let search = URLParams.get('search');
+		let cp = URLParams.get('cp');
+		
+		if(cp == null) {
+			cp = 1;
+		}
+		if(key == null) {
+			key = '';
+		}
+		if(search == null) {
+			search = '';
+		}
+		
+		window.location.href = `/adminBoard/updateBook?cp=${cp}&key=${key}&search=${search}&bookId=${bookId}`;
 	})
 });
 

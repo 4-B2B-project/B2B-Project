@@ -23,6 +23,9 @@
 		<th:block th:replace="~{sideMenu/sideMenu-admin}"></th:block>
 
 		<main class="main-content">
+			<input type="hidden" name="key" th:value="${key}">
+			<input type="hidden" name="search" th:value="${search}">
+			<input type="hidden" name="cp" th:value="${pagination != null ? pagination.currentPage : 1}">
 
 			<section class="ranking-header">
 				<h1 class="ranking-title">

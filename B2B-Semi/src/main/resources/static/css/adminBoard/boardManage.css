@@ -303,11 +303,11 @@ body {
 }
 
 .board-label-3 {
-	background-color: #fefcbf; /* 공지 게시판 배경색 (연한 노란색) */
-	color: #d69e2e; /* 공지 게시판 텍스트 색상 */
+	background-color: #f7d7d9; /* 공지 게시판 배경색 (연한 노란색) */
+	color: #c53030; /* 공지 게시판 텍스트 색상 */
 }
 
 .board-label-4 {
-	background-color: #f7d7d9; /* 문의 게시판 배경색 (연한 분홍색) */
-	color: #c53030; /* 문의 게시판 텍스트 색상 */
+	background-color: #fefcbf; /* 문의 게시판 배경색 (연한 분홍색) */
+	color: #d69e2e; /* 문의 게시판 텍스트 색상 */
 }

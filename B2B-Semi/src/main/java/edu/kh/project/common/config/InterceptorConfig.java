@@ -7,7 +7,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import edu.kh.project.common.interceptor.AdminInterceptor;
 import edu.kh.project.common.interceptor.BoardTypeInterceptor;
-import edu.kh.project.common.interceptor.MyPageInterceptor;
 import lombok.RequiredArgsConstructor;
 
 // 인터셉터가 어떤 요청을 가로챌지 설정하는 클래스
@@ -18,7 +17,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
 	
 	private final AdminInterceptor adminInterceptor;
 	
-	private final MyPageInterceptor myPageInterceptor;
 	// 인터셉터 클래스 Bean 등록
 	@Bean // 개발자가 만들어서 반환하는 객체를 Bean 등록 - 관리는 Spring Container가 수행
 	public BoardTypeInterceptor boardTypeInterceptor() {
@@ -39,11 +37,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
 		registry.addInterceptor(adminInterceptor)
 				.addPathPatterns("/adminBoard/**")
 				.excludePathPatterns("/login", "/error", "/accessDenied");
-		
-		
-		registry.addInterceptor(myPageInterceptor)
-		.addPathPatterns("/myPage/**")
-		.excludePathPatterns("/login", "/error", "/accessDenied2");
 		
 	}
 	

@@ -97,14 +97,5 @@ public class MainController {
 		
 		return "redirect:/";
 	}
-	
-	// MyPage
-	@GetMapping("/accessDenied2")
-	public String accessDenied2(RedirectAttributes ra) {
-		
-		ra.addFlashAttribute("message", "권한이 없습니다.");
-		
-		return "redirect:/";
-		
-	}
+
 }
