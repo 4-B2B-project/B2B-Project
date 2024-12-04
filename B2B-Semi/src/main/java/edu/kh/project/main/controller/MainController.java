@@ -57,11 +57,16 @@ public class MainController {
 		        List<Map<String, Object>> group = new ArrayList<>();
 		        for (Book book : bookList.subList(i, end)) {
 		            Map<String, Object> bookMap = new HashMap<>();
+		            bookMap.put("bookId", book.getBookId());
+		            bookMap.put("fullTitle", book.getFullTitle());
 		            bookMap.put("title", book.getTitle());
-		            bookMap.put("author", book.getAuthor());
-		            bookMap.put("rating", book.getCustomerReviewRank());
-		            bookMap.put("reviewCount", book.getReviewCount());
 		            bookMap.put("coverUrl", book.getCoverUrl());
+		            bookMap.put("author", book.getAuthor());
+		            bookMap.put("customerReviewRank", book.getCustomerReviewRank());
+		            bookMap.put("genres", book.getGenres());
+		            bookMap.put("description", book.getDescription());
+		            bookMap.put("reviewCount", book.getReviewCount());
+		            bookMap.put("steamCount", book.getSteamCount());
 		            group.add(bookMap);
 		        }
 		        

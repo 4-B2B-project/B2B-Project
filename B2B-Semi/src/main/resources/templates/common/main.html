@@ -24,7 +24,10 @@
 
 		<section class="genre-carousel">
 			<div class="swiper">
-				<h1 class="ranking-title">주간 인기 도서</h1>
+				<h1 class="ranking-title">
+					<i class="fa-solid fa-book"></i>
+					주간 인기 도서
+				</h1>
 				<div class="swiper-wrapper">
 					<!-- 그룹 출력 -->
 					<th:block th:unless="${#lists.isEmpty(bookList)}">
@@ -34,7 +37,12 @@
 									<div class="books-grid">
 										<!-- 각 그룹 내의 책들 순회 -->
 										<th:block th:each="book, iterStat : ${group}">
-											<div class="book-card">
+											<div class="book-card"
+												th:data-bookId="${book.bookId}" th:data-title="${book.fullTitle}"
+												th:data-coverUrl="${book.coverUrl}" th:data-author="${book.author}"
+												th:data-rating="${book.customerReviewRank}" th:data-genres="${book.genres}"
+												th:data-description="${book.description}" th:data-reviewCount="${book.reviewCount}" 
+												th:data-steamCount="${book.steamCount}">
 												<!-- 책 커버 이미지 -->
 												<img th:src="${book.coverUrl}" alt="Book cover" class="book-cover">
 												<div class="book-info">
@@ -47,7 +55,7 @@
 													<div class="book-stats">
 														<!-- 평점 -->
 														<span class="stat-item">평점: <span
-																th:text="${book.rating}"></span></span>
+																th:text="${book.customerReviewRank}"></span></span>
 														<!-- 리뷰 수 -->
 														<span class="stat-item">리뷰: <span
 																th:text="${book.reviewCount}"></span></span>
@@ -93,7 +101,8 @@
 				<ul class="post-list" th:each="notice : ${noticeList}" th:object="${notice}">
 					<li class="post-item">
 						<i class="fas fa-pen"></i>
-						<a th:href="@{/board/{boardCode}/{boardNo}(boardCode=*{boardCode}, boardNo=*{boardNo})}" class="post-link" th:text="*{boardTitle}">
+						<a th:href="@{/board/{boardCode}/{boardNo}(boardCode=*{boardCode}, boardNo=*{boardNo})}"
+							class="post-link" th:text="*{boardTitle}">
 							제목</a>
 					</li>
 				</ul>
@@ -108,7 +117,8 @@
 				<ul class="post-list" th:each="community : ${communityList}" th:object="${community}">
 					<li class="post-item">
 						<i class="fas fa-pen"></i>
-						<a th:href="@{/board/{boardCode}/{boardNo}(boardCode=*{boardCode}, boardNo=*{boardNo})}" class="post-link" th:text="*{boardTitle}">
+						<a th:href="@{/board/{boardCode}/{boardNo}(boardCode=*{boardCode}, boardNo=*{boardNo})}"
+							class="post-link" th:text="*{boardTitle}">
 							제목</a>
 					</li>
 				</ul>
@@ -116,11 +126,87 @@
 		</section>
 	</main>
 
+	<!-- 도서 상세 모달 -->
+	<div class="modal fade" id="bookDetailModal" tabindex="-1" aria-labelledby="bookDetailModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header border-0">
+					<h5 class="modal-title" id="bookDetailModalLabel">도서 상세정보</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<!-- 책 기본 정보 -->
+					<div class="book-detail-header d-flex gap-4 mb-4">
+						<input type="hidden" id="selectBookId" />
+						<img src="" alt="Book cover" class="book-detail-cover">
+						<div class="book-detail-info">
+							<h2 class="book-detail-title mb-2"></h2>
+							<p class="book-detail-author mb-3">
+								<i class="fas fa-pen-nib me-2"></i>
+
+							</p>
+							<div class="book-detail-stats mb-3">
+								<div class="stat-item">
+									<i class="fas fa-star text-warning"></i>
+									<span></span>
+								</div>
+								<div class="stat-item">
+									<i class="fas fa-comment text-primary"></i>
+									<span></span>
+								</div>
+								<div class="stat-item">
+									<i class="fas fa-heart text-danger"></i>
+									<span></span>
+								</div>
+							</div>
+							<div class="book-detail-genres mb-3">
+							</div>
+						</div>
+					</div>
+
+					<!-- 책 소개 -->
+					<div class="book-synopsis mb-4">
+						<h3 class="section-title">작품 소개</h3>
+						<p class="book-synopsis-text">
+						</p>
+					</div>
+
+					<!-- 독자 리뷰 섹션 -->
+					<div class="reader-reviews mb-4">
+						<div class="d-flex justify-content-between align-items-center mb-4">
+							<h3 class="section-title mb-0">독자 리뷰</h3>
+							<div class="review-stats">
+								<span class="me-3">
+									<i class="fas fa-star text-warning"></i>
+									<span class="avgScore"></span>
+								</span>
+								<span>
+									<i class="fas fa-comment text-primary"></i>
+									<span class="reviewCount"></span>
+								</span>
+							</div>
+						</div>
+
+						<!-- 리뷰 목록 -->
+						<div class="review-list">
+							<!-- 리뷰 아이템 -->
+
+							<!-- 추가 리뷰 아이템들... -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<!-- common/footer 추가-->
 	<th:block th:replace="~{common/footer}"></th:block>
 
 	<!-- script 추가-->
 	<script>
+		const loginMember = /*[[${session.loginMember}]]*/ "로그인 정보";
+		
 		const swiper = new Swiper('.swiper', {
 			slidesPerView: 1,
 			spaceBetween: 30,

@@ -200,6 +200,16 @@
 	</update>
 	
 	
+	<!-- 관리자 권한 게시글 삭제(del = 'Y') -->
+	<update id="adminBoardDelete">
+		UPDATE "TB_BOARD"
+		SET
+			BOARD_DEL_FL = 'Y'
+		WHERE BOARD_NO = #{boardNo}
+		AND BOARD_CODE = #{boardCode}
+	</update>
+	
+	
 	<!-- 게시글 수정 -->
 	<update id="boardUpdate">
 		UPDATE "TB_BOARD"

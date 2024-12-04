@@ -40,7 +40,7 @@ public class BookServiceImpl implements BookService{
 		RestTemplate restTemplate = new RestTemplate();
 	    String apiUrl = "https://www.aladin.co.kr/ttb/api/ItemList.aspx"
 	                    + "?ttbkey=ttbeotmd12131437001"  // 발급받은 API 키
-	                    + "&QueryType=Bestseller"
+	                    + "&QueryType=ItemNewSpecial"
 	                    + "&MaxResults=50"
 	                    + "&start=1"
 	                    + "&SearchTarget=Book"
@@ -197,7 +197,6 @@ public class BookServiceImpl implements BookService{
 
 	    // 결과 리스트 추출
 	    List<Map<String, Object>> items = (List<Map<String, Object>>) response.get("item");
-	    List<Book> bookList = new ArrayList<>();
 	    
 	    // 반환값 변수 생성
 	    int result = 0;

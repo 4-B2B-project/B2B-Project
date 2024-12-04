@@ -21,10 +21,13 @@ document.querySelector("#boardWriteFrm").addEventListener("submit", e => {
 	const boardTitle = document.querySelector("[name='boardTitle']");
 	const boardContent = document.querySelector("[name='boardContent']");
 	const secretCheck = document.querySelector("[name='secretCheck']");
-	const selector = document.querySelector("[name='selector']");
+	const selectCheckBox = document.querySelector("#selectCheckBox");
 	
-	if(selector != null) {
-		secretCheck.value = selector.value;
+	// 체크 여부에 따른 값 세팅
+	if(selectCheckBox.checked) {
+		secretCheck.value = "Y";
+	} else {
+		secretCheck.value = "N";
 	}
 	
 	// 유효성 검사
