@@ -102,7 +102,7 @@
 
               <!-- 게시글 목록이 있을 때 -->
               <th:block th:unless="${#lists.isEmpty(boardList)}">
-                <tr th:each="board : ${boardList}">
+                <tr th:each="board : ${boardList}" th:if="${board.boardDelFl == 'N'}">
                   <!-- 게시글 구분 -->
                   <td>
                     <span th:switch="${board.boardCode}">
@@ -125,7 +125,11 @@
                   <td th:text="${board.memberNickname}">작성자</td>
 
                   <!-- 작성일 -->
-                  <td th:text="${board.boardUpdateDate}">작성일</td>
+                  <td>
+                    <span th:if="${board.boardUpdateDate != null}" th:text="${board.boardUpdateDate}">수정된 작성일</span>
+                    <span th:unless="${board.boardUpdateDate != null}" th:text="${board.boardWriteDate}">최초 작성일</span>
+                  </td>
+                  
                 </tr>
               </th:block>
             </tbody>

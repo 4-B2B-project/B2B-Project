@@ -1,5 +1,5 @@
-// 취소버튼 눌렀을때 로그인 페이지로 돌아가기
-document.querySelectorAll('#cancelButton').forEach(button => {
+// 취소버튼 눌렀을때 페이지로 돌아가기
+document.querySelectorAll('#cancelBtn').forEach(button => {
   button.addEventListener('click', function () {
       if (confirm("수정을 취소하시겠습니까?")) {
           window.location.href = '/myPage/info';
