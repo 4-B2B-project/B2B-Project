@@ -14,6 +14,11 @@ searchMemberListBtn.addEventListener("click", () => {
 
 });
 
+input.addEventListener("keyup", e => {
+	if(e.key == "Enter") {
+		searchMemberListBtn.click();
+	}
+})
 
 // 체크박스 전체 선택.
 document.querySelector("#theadCheckAll").addEventListener("change", e => {
@@ -73,6 +78,16 @@ const updateMemberBtn = document.querySelectorAll("button[name='updateMemberBtn'
 	button.addEventListener("click", () => {
 		const memberNo = button.getAttribute('data-member-no');
 		
-		window.location.href = `/adminBoard/updateMember?memberNo=${memberNo}`;
+		const URLParams = new URLSearchParams(window.location.search);
+		
+		const key = URLParams.get('key');
+		const search = URLParams.get('search');
+		let cp = URLParams.get('cp');
+		
+		if(cp == null) {
+			cp = 1;
+		}
+		
+		window.location.href = `/adminBoard/updateMember?cp=${cp}&key=${key}&search=${search}&memberNo=${memberNo}`;
 	})
 });

@@ -88,5 +88,14 @@ public class MainController {
 		
 	}
 	
-	
+	// 로그인 하지 않았거나, 일반 유저가 관리자 페이지로 접속하려 할 경우
+	// 메인페이지로 리다이렉트
+	@GetMapping("/accessDenied")
+	public String accessDenied(RedirectAttributes ra) {
+		
+		ra.addFlashAttribute("message", "권한이 없습니다.");
+		
+		return "redirect:/";
+	}
+
 }
