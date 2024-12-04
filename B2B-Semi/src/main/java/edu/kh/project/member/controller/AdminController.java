@@ -528,7 +528,21 @@ public class AdminController {
 		
 	}
 	
-	// 게시글 삭제 / 삭제 복구.
+	
+	/** 게시글 삭제 / 삭제 복구.
+	 * @param paramMap
+	 * 
+	 * ResponseEntity<?>
+	 * RESTful API 개발 시 유연한 응답 처리를 가능하게 해줌.
+	 * HTTP 응답의 세부 설정 가능, 예외 처리와 에러 응답에 유용, API 개발 시 높은 유연성 제공.
+	 * 
+	 * ResponseEntity.ok() : 200 OK 상태 코드로 응답.
+	 * ResponseEntity.ok() : 200 OK 상태 코드로 응답.
+	 * ResponseEntity.ok() : 200 OK 상태 코드로 응답.
+	 * ResponseEntity.ok() : 200 OK 상태 코드로 응답.
+	 * 
+	 * @return
+	 */
 	@ResponseBody
 	@PostMapping("updateBoardStatus")
 	public ResponseEntity<?> updateBoardStatus(@RequestBody Map<String, Object> paramMap) {
