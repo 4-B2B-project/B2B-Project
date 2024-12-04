@@ -1,6 +1,5 @@
 package edu.kh.project.board.controller;
 
-import java.net.URLEncoder;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
@@ -105,7 +104,18 @@ public class EditBoardController {
 		paramMap.put("boardNo", boardNo);
 		paramMap.put("memberNo", loginMember.getMemberNo());
 		
-		int result = service.boardDelete(paramMap);
+		int result = 0;
+		
+		if(loginMember.getMemberAuth() == 2) {
+			// 관리자 권한 게시글 삭제
+			result = service.adminBoardDelete(paramMap);
+			
+		} else {
+			// 사용자 권한 게시글 삭제
+			result = service.boardDelete(paramMap);
+			
+		}
+		
 		
 		String path = null;
 		String message = null;

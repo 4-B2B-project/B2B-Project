@@ -68,6 +68,9 @@
 	                    <button class="save-button" id="saveBtn" style="display:none;">저장</button>
 	                    <button class="cancel-button" id="cancelBtn" style="display:none;">취소</button>
 	                </th:block>
+					<th:block th:if="${session.loginMember.memberAuth == 2}">
+	                    <button class="delete-button" id="deleteBtn">삭제</button>
+	                </th:block>
 				</th:block>
 				<button class="list-button" id="communityList">목록</button>
 			</div>
