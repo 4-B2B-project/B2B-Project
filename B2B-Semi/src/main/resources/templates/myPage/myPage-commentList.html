@@ -44,7 +44,7 @@
                 <div class="input-group flex-grow-1">
                   <select class="form-select" name="searchType" style="border-radius: 8px;" th:value="${searchType}">
                     <option th:value="content" th:selected="${searchType == 'content'}">내용</option>
-                    <option th:value="nickname" th:selected="${searchType == 'nickname'}">작성자</option>
+                    
                   </select>
                   <input type="text" class="form-control" name="searchInput" placeholder="검색어를 입력하세요"
                     style="border-radius: 8px;" th:value="${searchInput}">
@@ -136,7 +136,8 @@
                 <!-- 첫 페이지로 이동 -->
                 <li class="page-item"
                   th:classappend="${pagination.currentPage <= 1 || pagination.startPage == 1} ? 'disabled'">
-                  <a class="page-link py-1 px-2" th:href="${pagination.currentPage <= 1 || pagination.startPage == 1} 
+                  <a class="page-link py-1 px-2" 
+                    th:href="${pagination.currentPage <= 1 || pagination.startPage == 1} 
 					                        ? '#' 
 					                        : @{/myPage/commentList(cp=1, searchType=${searchType}, searchInput=${searchInput})}"
                     th:aria-disabled="${pagination.currentPage <= 1 || pagination.startPage == 1}">&lt;&lt;</a>
