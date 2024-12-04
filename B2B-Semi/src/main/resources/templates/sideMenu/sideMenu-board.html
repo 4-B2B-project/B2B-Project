@@ -18,3 +18,34 @@
 
 	</nav>
 </aside>
+
+<script>
+	const pageLink = document.querySelectorAll(".sidebar .nav-link");
+	const hrefAddress = Array.from(pageLink);
+	
+	let locationLink = location.pathname.split("/");
+	let locHref = "/" + locationLink[1];
+	
+	if(locationLink[2] == 'community') {
+		locHref += `/${locationLink[2]}/${locationLink[3]}`;
+	} else {
+		locHref += `/community/${locationLink[2]}`;
+	}
+	
+	// 사이드 메뉴의 a태그들 반복문 실행
+	hrefAddress.forEach(addr => {
+		
+		// a태그의 href 주소값 가져오기
+		const page = new URL(addr.href).pathname;
+		
+		// 현재 호출 주소와 a태그의 href주소가 일치하면
+		if(page == locHref) {
+			addr.style.backgroundColor = "#F3F4F6";
+			addr.style.color = "#4F46E5";
+			addr.style.transform = "translateX(5px)";
+			addr.style.fontWeight = "bold"; 
+			
+		}
+	})
+	
+</script>

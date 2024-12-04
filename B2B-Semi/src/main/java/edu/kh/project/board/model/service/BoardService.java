@@ -39,6 +39,12 @@ public interface BoardService {
 	 * @return
 	 */
 	int boardDelete(Map<String, Object> paramMap);
+	
+	/** 관리자 권한 게시글 삭제
+	 * @param paramMap
+	 * @return
+	 */
+	int adminBoardDelete(Map<String, Object> paramMap);
 
 	/** 게시글 수정
 	 * @param paramMap
@@ -61,5 +67,6 @@ public interface BoardService {
 	 * @return
 	 */
 	List<Board> selectMainCommnunity();
+
 
 }

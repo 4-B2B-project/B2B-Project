@@ -258,16 +258,12 @@ public class MyPageController {
 		int memberNo = loginMember.getMemberNo();
 
 		Map<String, Object> commentList = null;
+		
+		
 
-		if (!paramMap.isEmpty()) {
-			paramMap.remove("cp");
-		}
-
-		if (paramMap.isEmpty()) {
-			// 검색 조건이 없을 경우
-			// 게시글 목록 조회
-
-			commentList = service.selectCommentList(memberNo, cp);
+		 if (paramMap == null || paramMap.isEmpty() || !paramMap.containsKey("searchType")) {
+		        // 검색 조건이 없을 경우 댓글 목록 조회
+		        commentList = service.selectCommentList(memberNo, cp);
 
 		} else {
 			paramMap.put("memberNo", memberNo);

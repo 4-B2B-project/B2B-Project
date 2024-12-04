@@ -71,7 +71,7 @@ body {
 .genre-slide {
 	background: #fff;
 	border-radius: 10px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
 	padding: 2rem;
 }
 
@@ -325,3 +325,161 @@ body {
 		font-size: 0.75rem;
 	}
 }
+
+
+/* 모달 스타일 */
+.modal-dialog-scrollable .modal-content {
+	border-radius: 15px;
+}
+
+.book-detail-cover {
+	width: 200px;
+	height: 280px;
+	object-fit: cover;
+	border-radius: 10px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.book-detail-title {
+	font-size: 2rem;
+	font-weight: 700;
+	color: var(--dark-text);
+}
+
+.book-detail-stats {
+	display: flex;
+	gap: 1.5rem;
+}
+
+.section-title {
+	font-size: 1.5rem;
+	font-weight: 600;
+	color: var(--dark-text);
+	margin-bottom: 1rem;
+	padding-bottom: 0.5rem;
+	border-bottom: 2px solid var(--light-bg);
+}
+
+.secondary-btn {
+    background-color: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.action-btn {
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.review-item {
+	background-color: var(--light-bg);
+	padding: 1.5rem;
+	border-radius: 10px;
+	margin-bottom: 1rem;
+}
+
+.reviewer-avatar {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	margin-right: 1rem;
+}
+
+.reviewer-name {
+	font-weight: 500;
+	color: var(--dark-text);
+}
+
+.review-text {
+	margin-top: 1rem;
+	color: var(--secondary-color);
+}
+
+/* 리뷰 섹션 스타일 */
+.rating-select {
+	display: inline-flex;
+	flex-direction: row-reverse;
+	font-size: 24px;
+}
+
+.review-buttons {
+	justify-self: right;
+}	
+
+.star-rating {
+	position: relative;
+	color: #ddd;
+	cursor: pointer;
+	padding: 0 5px;
+}
+
+.star-rating:before {
+	content: "★";
+}
+
+.star-rating.half:after {
+	content: "★";
+	position: absolute;
+	left: 5px;
+	width: 36%;
+	overflow: hidden;
+	color: #FFD700;
+}
+
+.star-rating.full {
+	color: #FFD700;
+}
+
+.selected-rating {
+	margin-left: 10px;
+	font-size: 18px;
+}
+
+
+.review-item {
+	background-color: white;
+	border: 1px solid var(--light-bg);
+}
+
+.review-date {
+	font-size: 0.9rem;
+}
+
+.review-footer {
+	padding-top: 1rem;
+	border-top: 1px solid var(--light-bg);
+}
+
+.review-comments {
+	background-color: var(--light-bg);
+	padding: 1rem;
+	border-radius: 8px;
+}
+
+.comment-item {
+	background-color: white;
+	padding: 0.75rem;
+	border-radius: 6px;
+	margin-bottom: 0.75rem;
+}
+
+.comment-date {
+	font-size: 0.85rem;
+}
+
+.comment-options .btn {
+	padding: 0 0.5rem;
+}
+
+.comment-form .input-group {
+	background-color: white;
+	border-radius: 6px;
+	overflow: hidden;
+}
+
+/* 모달 스타일 끝 */
