@@ -88,8 +88,10 @@
 	<select id="getBoardListCount" resultType="int">
 		SELECT COUNT(*)
 		FROM
-		"TB_BOARD"
+		"TB_BOARD" 
 		WHERE MEMBER_NO = #{memberNo}
+		AND BOARD_DEL_FL = 'N'
+		
 	</select>
 
 
@@ -100,10 +102,11 @@
 		b.BOARD_NO,
 		b.BOARD_TITLE,
 		b.BOARD_CONTENT,
-		b.BOARD_WRITE_DATE,
-		b.BOARD_UPDATE_DATE,
+		TO_CHAR(b.BOARD_WRITE_DATE, 'yyyy-MM-dd') AS BOARD_WRITE_DATE,
+        TO_CHAR(b.BOARD_UPDATE_DATE, 'yyyy-MM-dd') AS BOARD_UPDATE_DATE,
 		b.READ_COUNT,
 		b.BOARD_CODE,
+		b.BOARD_DEL_FL,
 		m.MEMBER_NICKNAME AS MEMBER_NICKNAME
 		FROM
 		TB_BOARD b
@@ -111,8 +114,7 @@
 		WHERE
 		b.MEMBER_NO = #{memberNo}
 		AND b.BOARD_DEL_FL = 'N'
-		ORDER BY b.BOARD_NO
-		ASC
+		ORDER BY b.BOARD_NO ASC
 	</select>
 
 
@@ -127,6 +129,7 @@
 		JOIN TB_MEMBER m ON b.MEMBER_NO =
 		m.MEMBER_NO
 		WHERE b.MEMBER_NO = #{memberNo}
+		AND b.BOARD_DEL_FL = 'N'
 		<if
 			test="searchType != null and searchInput != null and searchInput != ''">
 			AND
@@ -152,9 +155,11 @@
 		b.BOARD_NO,
 		b.BOARD_TITLE,
 		b.BOARD_CONTENT,
-		b.BOARD_WRITE_DATE,
+		TO_CHAR(b.BOARD_WRITE_DATE, 'yyyy-MM-dd') AS BOARD_WRITE_DATE,
+		TO_CHAR(b.BOARD_UPDATE_DATE, 'yyyy-MM-dd') AS BOARD_UPDATE_DATE,
 		b.READ_COUNT,
 		b.BOARD_CODE,
+		b.BOARD_DEL_FL,
 		m.MEMBER_NICKNAME
 		FROM TB_BOARD b
 		JOIN
@@ -212,20 +217,24 @@
 	<!-- 댓글 목록 조회 -->
 	<select id="selectAllCommentList" resultMap="CommentResultMap">
 		SELECT
-		c.COMMENT_NO,
-		c.COMMENT_CONTENT,
-		c.COMMENT_DEL_FL,
-		c.COMMENT_WRITE_DATE,
-		c.MEMBER_NO,
-		c.BOARD_NO,
-		m.MEMBER_NICKNAME,
-		m.PROFILE_IMG
+			c.COMMENT_NO,
+			c.COMMENT_CONTENT,
+			c.COMMENT_DEL_FL,
+			TO_CHAR(c.COMMENT_WRITE_DATE, 'yyyy-MM-dd') AS COMMENT_WRITE_DATE,
+			c.MEMBER_NO,
+			c.BOARD_NO,
+			m.MEMBER_NICKNAME,
+			m.PROFILE_IMG
 		FROM TB_COMMENT c
 		JOIN
 		TB_MEMBER m ON c.MEMBER_NO = m.MEMBER_NO
 		WHERE c.MEMBER_NO = #{memberNo}
 		AND c.COMMENT_DEL_FL = 'N'
+		
+		
+		
 		ORDER BY c.COMMENT_NO ASC
+		
 	</select>
 
 	<!-- 검색 조건에 따른 댓글 수 조회 -->
@@ -236,6 +245,7 @@
 		JOIN TB_MEMBER m ON c.MEMBER_NO =
 		m.MEMBER_NO
 		WHERE c.MEMBER_NO = #{memberNo}
+		AND c.COMMENT_DEL_FL = 'N'
 		<if
 			test="searchType != null and searchInput != null and searchInput != ''">
 			AND
@@ -243,9 +253,7 @@
 				<when test="searchType == 'content'">
 					c.COMMENT_CONTENT LIKE '%' || #{searchInput} || '%'
 				</when>
-				<when test="searchType == 'nickname'">
-					c.MEMBER_NICKNAME LIKE '%' || #{searchInput} || '%'
-				</when>
+				
 				<otherwise>
 					m.MEMBER_NICKNAME LIKE '%' || #{searchInput} || '%'
 				</otherwise>
@@ -264,7 +272,7 @@
 		c.COMMENT_NO,
 		c.COMMENT_CONTENT,
 		c.COMMENT_DEL_FL,
-		c.COMMENT_WRITE_DATE,
+		TO_CHAR(c.COMMENT_WRITE_DATE, 'yyyy-MM-dd') AS COMMENT_WRITE_DATE,
 		c.PARENT_COMMENT_NO,
 		c.MEMBER_NO,
 		c.BOARD_NO,
@@ -273,6 +281,7 @@
 		FROM TB_COMMENT c
 		JOIN TB_MEMBER m ON c.MEMBER_NO = m.MEMBER_NO
 		WHERE c.MEMBER_NO = #{memberNo}
+		AND c.COMMENT_DEL_FL = 'N'
 		<if
 			test="searchType != null and searchInput != null and searchInput != ''">
 			AND
@@ -321,8 +330,8 @@
 		b.BOARD_NO,
 		b.BOARD_TITLE,
 		b.BOARD_CONTENT,
-		b.BOARD_WRITE_DATE,
-		b.BOARD_UPDATE_DATE,
+		TO_CHAR(b.BOARD_WRITE_DATE, 'yyyy-MM-dd') AS BOARD_WRITE_DATE,
+        TO_CHAR(b.BOARD_UPDATE_DATE, 'yyyy-MM-dd') AS BOARD_UPDATE_DATE,
 		b.READ_COUNT,
 		b.BOARD_CODE,
 		b.MEMBER_NO,
@@ -360,7 +369,7 @@
 	    SELECT
 	        c.COMMENT_NO,
 	        c.COMMENT_CONTENT,
-	        c.COMMENT_WRITE_DATE,
+	        TO_CHAR(c.COMMENT_WRITE_DATE, 'yyyy-MM-dd') AS COMMENT_WRITE_DATE,
 	        c.COMMENT_DEL_FL,
 	        c.PARENT_COMMENT_NO,
 	        c.BOARD_NO,
@@ -424,7 +433,8 @@
 	<!-- 댓글 수정 -->
 	<update id="updateComment">
 		UPDATE TB_COMMENT
-		SET COMMENT_CONTENT = #{commentContent}
+		SET COMMENT_CONTENT = #{commentContent},
+		COMMENT_WRITE_DATE = SYSDATE
 		WHERE COMMENT_NO = #{commentNo}
 		AND MEMBER_NO = #{memberNo}
 	</update>

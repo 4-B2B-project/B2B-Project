@@ -215,7 +215,6 @@ public class MyPageServiceImpl implements MyPageService {
 
 		// 2. 페이징 처리
 		Pagination pagination = new Pagination(cp, listCount);
-		// System.out.println(pagination); // 콘솔에 pagination 객체가 제대로 생성되었는지 확인
 
 		// 3. RowBounds 객체 생성 (offset, limit)
 		int limit = pagination.getLimit();
@@ -223,7 +222,6 @@ public class MyPageServiceImpl implements MyPageService {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 
 		// 4. 전체 게시글 목록 조회
-		// pagination.getStartPage(), pagination.getLimit());
 		List<Comment> commentList = mapper.selectAllCommentList(memberNo, rowBounds);
 
 		// 5. 목록 조회 결과 + Pagination 객체를 Map으로 묶음

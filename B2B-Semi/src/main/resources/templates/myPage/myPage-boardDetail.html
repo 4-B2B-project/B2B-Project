@@ -46,7 +46,10 @@
           <div class="detail-label">조회수</div>
           <div class="detail-value" th:text="${board != null ? board.readCount : 0}">조회수값</div>
           <div class="detail-label">작성일자</div>
-          <div class="detail-value" th:text="${board != null && board.boardWriteDate != null ? board.boardWriteDate : '작성일자 없음'}">작성일자값</div>
+          <div class="detail-value">
+            <span th:if="${board.boardUpdateDate != null}" th:text="${board.boardUpdateDate}">수정된 날짜</span>
+            <span th:unless="${board.boardUpdateDate != null}" th:text="${board.boardWriteDate}">작성된 날짜</span>
+          </div>
         </div>
       </section>
       

@@ -1,3 +1,13 @@
+:root {
+  --primary-color: #4f46e5;
+  --primary-hover: #4338ca;
+  --background: #ffffff;
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+  --card-background: #ffffff;
+  --highlight-color: #4f46e5;
+}
+
 /* 프로필 컨테이너 */
 .profile-container {
   max-width: 600px;
