@@ -278,3 +278,36 @@ body {
 	color: green;
 	font-weight: bold;
 }
+
+/* 게시판 종류 라벨 */
+.board-label {
+	display: inline-block;
+	padding: 5px 10px;
+	border-radius: 8px;
+	background-color: #f0f3f7; /* 배경 색상 (회색톤) */
+	color: #4a5568; /* 텍스트 색상 (짙은 회색) */
+	font-weight: bold; /* 굵게 */
+	text-align: center;
+	margin: 5px 0; /* 상하 여백 */
+	width: 60px; /* 고정된 너비 */
+}
+
+.board-label-1 {
+	background-color: #d4e9f7; /* 자유 게시판 배경색 (연한 파란색) */
+	color: #2b6cb0; /* 자유 게시판 텍스트 색상 */
+}
+
+.board-label-2 {
+	background-color: #e6fffa; /* 추천 게시판 배경색 (연한 청록색) */
+	color: #319795; /* 추천 게시판 텍스트 색상 */
+}
+
+.board-label-3 {
+	background-color: #f7d7d9; /* 공지 게시판 배경색 (연한 노란색) */
+	color: #c53030; /* 공지 게시판 텍스트 색상 */
+}
+
+.board-label-4 {
+	background-color: #fefcbf; /* 문의 게시판 배경색 (연한 분홍색) */
+	color: #d69e2e; /* 문의 게시판 텍스트 색상 */
+}
