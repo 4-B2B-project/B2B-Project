@@ -27,10 +27,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			"search" : search
 		}
 		
-		console.log(cp);
-		console.log(key);
-		console.log(search);
-		
 		fetch("/adminBoard/updateBook", {
 			method : "POST",
 			headers : {"Content-Type" : "application/json"},
@@ -57,7 +53,20 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	cancelUpdate.addEventListener("click", () => {
 		alert("수정 취소. 목록으로 돌아갑니다.");
-		window.location.href = `/adminBoard/bookManage?cp=${cp}&key=${key}&search=${search}`;
+		
+		const URLParams = new URLSearchParams(window.location.search);
+
+		const key = URLParams.get('key') || '';
+		const search = URLParams.get('search') || '';
+		const cp = URLParams.get('cp') || '';
+		
+		if(key == null) {
+			window.location.href = `/adminBoard/bookManage?cp=${cp}`;
+		}
+		else {
+			window.location.href = `/adminBoard/bookManage?cp=${cp}&key=${key}&search=${search}`;
+		}
+		
 	});
 	
 });

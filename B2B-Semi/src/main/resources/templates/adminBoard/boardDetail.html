@@ -7,7 +7,6 @@
 	<title>게시글 상세</title>
 
 	<link rel="stylesheet" href="/css/adminBoard/boardDetail.css">
-	<link rel="stylesheet" href="/css/board/comment-style.css">
 	<link rel="stylesheet" href="/css/adminBoard/admin-sidebar.css">
 
 	<!-- templates/common/common.html 조각으로 추가 -->
@@ -24,6 +23,9 @@
 		<th:block th:replace="~{sideMenu/sideMenu-admin}"></th:block>
 
 		<main class="main-content">
+			<input type="hidden" name="key" th:value="${key}">
+			<input type="hidden" name="search" th:value="${search}">
+			<input type="hidden" name="cp" th:value="${pagination != null ? pagination.currentPage : 1}">
 
 			<section class="ranking-header">
 				<h1 class="ranking-title">
@@ -73,10 +75,6 @@
 				<button class="list-button" id="communityList">목록</button>
 			</div>
 
-			<section class="genre-section">
-				<th:block th:replace="~{board/comment}"></th:block>
-			</section>
-
 		</main>
 
 
@@ -90,8 +88,6 @@
 		</script>
 
 		<script src="/js/adminBoard/boardDetail.js"></script>
-		<script src="/js/adminBoard/boardComment.js"></script>
-
 
 	</div>
 

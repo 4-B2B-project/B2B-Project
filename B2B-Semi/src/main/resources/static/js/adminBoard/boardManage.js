@@ -11,6 +11,12 @@ searchBoardListBtn.addEventListener("click", () => {
 	window.location.href = `/adminBoard/searchBoard?key=${key}&search=${query}`;
 })
 
+input.addEventListener("keyup", e => {
+	if(e.key == "Enter") {
+		searchBoardListBtn.click();
+	}
+})
+
 const updateDelFlYBtn = document.querySelector("#updateDelFlY").addEventListener("click", () => updateBoardStatus('삭제'));
 const updateDelFlNBtn = document.querySelector("#updateDelFlN").addEventListener("click", () => updateBoardStatus('활성'));
 
@@ -74,13 +80,25 @@ const updateBoardBtn = document.querySelectorAll("button[class='updateBoardBtn']
 	button.addEventListener("click", () => {
 		
 		const boardNo = button.getAttribute('data-board-id');
-		console.log(boardNo);
-		window.location.href = `/adminBoard/boardDetail/${boardNo}`;
+
+		const URLParams = new URLSearchParams(window.location.search);
+
+		let key = URLParams.get('key');
+		let search = URLParams.get('search');
+		let cp = URLParams.get('cp');
+		
+		if(cp == null) {
+			cp = 1;
+		}
+		if(key == null) {
+			key = '';
+		}
+		if(search == null) {
+			search = '';
+		}
+		
+		
+		window.location.href = `/adminBoard/boardDetail/${boardNo}?cp=${cp}&key=${key}&search=${search}`;
 				
 	})
 });
-
-
-
-
-

@@ -1,4 +1,4 @@
-const searchBtn = document.querySelector(".search-button"); // 도서 관리 검색창
+const searchBtn = document.querySelector(".search-button");
 const srchBookList = document.querySelector("#srchBookList");
 const searchInput = document.querySelector("#searchInput");
 const saveBtn = document.querySelector("#saveBtn");

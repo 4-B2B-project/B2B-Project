@@ -33,7 +33,6 @@ public class InsertBookController {
 		return "/adminBoard/insertBook";
 	}
 	
-		
 	/** 도서 검색API
 	 * @param book
 	 * @return
@@ -48,9 +47,7 @@ public class InsertBookController {
 		
 		return bookList;
 	}
-	
-	
-	
+
 	/** 선택된 도서 등록
 	 * @param book
 	 * @param ra
