@@ -2,7 +2,7 @@
 document.querySelectorAll('#cancelBtn').forEach(button => {
   button.addEventListener('click', function () {
       if (confirm("수정을 취소하시겠습니까?")) {
-          window.location.href = '/myPage/info';
+          window.location.href = '/myPage/profile';
       }
   });
 });

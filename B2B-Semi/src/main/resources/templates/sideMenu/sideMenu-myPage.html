@@ -5,23 +5,38 @@
 <aside class="sidebar">
 	<nav class="sidebar-nav">
 		<div class="nav-item">
-			<a href="/myPage/info" class="nav-link" th:classappend="${currentUri == '/myPage/info'} ? 'active'">내 정보</a>
+			<a href="/myPage/profile" class="nav-link" 
+				th:classappend="${currentUri.contains('/myPage/profile') || currentUri.contains('/myPage/editInfo')} ? 'active'">
+				내 정보
+			</a>
 		</div>
 
 		<div class="nav-item">
-			<a href="/myPage/favBook" class="nav-link" th:classappend="${currentUri == '/myPage/favBook'} ? 'active'">내가 찜한 도서 목록</a>
+			<a href="/myPage/favBook" class="nav-link" 
+				th:classappend="${currentUri.contains('/myPage/favBook')} ? 'active'">
+				내가 찜한 도서 목록
+			</a>
 		</div>
 
 		<div class="nav-item">
-			<a href="/myPage/boardList" class="nav-link" th:classappend="${currentUri == '/myPage/boardList'} ? 'active'">내가 작성한 게시글 목록</a>
+			<a href="/myPage/boardList" class="nav-link" 
+				th:classappend="${currentUri.contains('/myPage/boardList') || currentUri.contains('/myPage/boardDetail') || currentUri.contains('/myPage/boardDetail/edit')} ? 'active'">
+				내가 작성한 게시글 목록
+			</a>
 		</div>
 
 		<div class="nav-item">
-			<a href="/myPage/commentList" class="nav-link" th:classappend="${currentUri == '/myPage/commentList'} ? 'active'">내가 작성한 댓글 목록</a>
+			<a href="/myPage/commentList" class="nav-link" 
+				th:classappend="${currentUri.contains('/myPage/commentList') || currentUri.contains('/myPage/commentDetail')} ? 'active'">
+				내가 작성한 댓글 목록
+			</a>
 		</div>
 
 		<div class="nav-item">
-			<a href="/myPage/changePw" class="nav-link" th:classappend="${currentUri == '/myPage/changePw'} ? 'active'">비밀번호 변경</a>
+			<a href="/myPage/changePw" class="nav-link" 
+				th:classappend="${currentUri.contains('/myPage/changePw')} ? 'active'">
+				비밀번호 변경
+			</a>
 		</div>
 	</nav>
 </aside>

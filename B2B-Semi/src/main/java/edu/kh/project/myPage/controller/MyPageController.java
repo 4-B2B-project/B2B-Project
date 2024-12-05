@@ -56,7 +56,7 @@ public class MyPageController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping("info") 
+	@GetMapping("profile") 
 	public String info(@SessionAttribute("loginMember") Member loginMember, Model model, HttpServletRequest request) {
 
 		System.out.println("loginMember: " + loginMember);
@@ -89,7 +89,7 @@ public class MyPageController {
 			
 		}
 
-		return "myPage/myPage-info";
+		return "myPage/myPage-profile";
 	}
 
 	/** 내 정보 수정 화면 이동
@@ -98,7 +98,7 @@ public class MyPageController {
 	 * @return
 	 */
 	@GetMapping("editInfo") 
-	public String editInfo(@SessionAttribute("loginMember") Member loginMember, Model model) {
+	public String editInfo(@SessionAttribute("loginMember") Member loginMember, Model model, HttpServletRequest request) {
 
 		// 현재 로그인한 회원의 주소를 꺼내옴
 		// 현재 로그인한 회원 정보 -> Session에 등록된 상태(loginMember)
@@ -129,6 +129,8 @@ public class MyPageController {
 				model.addAttribute("message", "주소 형식이 잘못되었습니다.");
 			}
 		}
+		
+		model.addAttribute("currentUri", request.getRequestURI());
 
 		return "myPage/myPage-editInfo";
 	}
@@ -225,7 +227,7 @@ public class MyPageController {
 	 */
 	@GetMapping("boardDetail")
 	public String boardDetail(@RequestParam("boardNo") int boardNo, Model model,
-			@SessionAttribute(value = "loginMember", required = false) Member loginMember) {
+			@SessionAttribute(value = "loginMember", required = false) Member loginMember, HttpServletRequest request) {
 
 		// 서비스 호출하여 게시글 번호에 해당하는 게시글 정보를 가져옴
 		Board boardDetail = service.selectBoardDetail(boardNo);
@@ -236,6 +238,8 @@ public class MyPageController {
 
 		// 모델에 게시글 정보 추가
 		model.addAttribute("board", boardDetail);
+		
+		model.addAttribute("currentUri", request.getRequestURI());
 
 		// 게시글 상세보기 페이지로 이동
 		return "myPage/myPage-boardDetail";
@@ -297,7 +301,7 @@ public class MyPageController {
 	 */
 	@GetMapping("commentDetail")
 	public String commentDetail(@RequestParam("commentNo") int commentNo, Model model,
-			@SessionAttribute(value = "loginMember", required = false) Member loginMember) {
+			@SessionAttribute(value = "loginMember", required = false) Member loginMember, HttpServletRequest request) {
 
 		// 서비스 호출하여 게시글 번호에 해당하는 댓글 정보를 가져옴
 		Comment commentDetail = service.selectCommentDetail(commentNo);
@@ -316,6 +320,9 @@ public class MyPageController {
 	    }
 	    model.addAttribute("board", boardDetail);
 	    model.addAttribute("commentList", boardDetail.getCommentList());
+	    
+	    
+	    model.addAttribute("currentUri", request.getRequestURI());
 
 		// 게시글 상세보기 페이지로 이동
 		return "myPage/myPage-commentDetail";
@@ -374,7 +381,7 @@ public class MyPageController {
 	 * @param ra
 	 * @return
 	 */
-	@PostMapping("info")
+	@PostMapping("profile")
 	public String profileImageInfo(@RequestParam("profileImg") MultipartFile profileImg,
 			@SessionAttribute("loginMember") Member loginMember, RedirectAttributes ra) throws Exception {
 
@@ -392,7 +399,7 @@ public class MyPageController {
 		// POST 요청에 대한 처리 로직 작성
 		// 예를 들어, 폼에서 전달된 데이터를 처리하고 DB에 업데이트
 
-		return "redirect:info"; // POST 후 다시 GET 요청으로 리다이렉트 (정보 갱신 후 내 정보 페이지로 돌아감)
+		return "redirect:profile"; // POST 후 다시 GET 요청으로 리다이렉트 (정보 갱신 후 내 정보 페이지로 돌아감)
 	}
 
 	/**
@@ -458,7 +465,7 @@ public class MyPageController {
 			// 리다이렉트 /myPage/info
 
 			message = "비밀번호 변경 성공!!!";
-			path = "/myPage/info";
+			path = "/myPage/profile";
 
 		} else {
 			// 변경 실패시
@@ -531,7 +538,7 @@ public class MyPageController {
 
 		ra.addFlashAttribute("message", message);
 
-		return "redirect:info";
+		return "redirect:profile";
 
 	}
 

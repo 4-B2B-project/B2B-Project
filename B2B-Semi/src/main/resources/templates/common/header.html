@@ -24,7 +24,7 @@
 
 				<th:block th:unless="${session.loginMember == null}" th:object="${session.loginMember}">
 					<th:block th:if="${session.loginMember.memberAuth == 1}">
-						<a href="/myPage/info" class="nav-link sign-btn ms-3" th:text="*{memberNickname}">계정 닉네임</a>
+						<a href="/myPage/profile" class="nav-link sign-btn ms-3" th:text="*{memberNickname}">계정 닉네임</a>
 						
 					</th:block>
 					<th:block th:if="${session.loginMember.memberAuth == 2}">
