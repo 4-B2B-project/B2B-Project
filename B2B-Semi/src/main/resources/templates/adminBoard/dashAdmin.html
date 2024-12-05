@@ -59,6 +59,12 @@
 	          <h1 class="profile-name">관리자</h1>
 	          <p class="profile-bio">관리자계정입니다.</p>
 	        </div>
+			
+			<!-- 선호 장르 출력 -->
+            <div class="favorite-genres" th:if="${member?.memberBookCategory != null}">
+              <span class="genre-label">선호 장르 :</span>
+              <span class="genre-item" th:text="${member?.memberBookCategory}">선호 장르 없음</span>
+            </div>
 			  
 	        <a href="/adminBoard/editInfo" class="editInfoBtn">
 	          내 정보 수정

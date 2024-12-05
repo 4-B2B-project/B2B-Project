@@ -50,8 +50,6 @@ function updateMemberStatus(action) {
 	
 	const memberNos = Array.from(checkboxes).map(box => box.value);
 	
-	console.log(memberNos);
-	
 	fetch("/adminBoard/updateStatus", {
 		method : "POST",
 		headers : {"Content-type" : "application/json"},
@@ -86,6 +84,12 @@ const updateMemberBtn = document.querySelectorAll("button[name='updateMemberBtn'
 		
 		if(cp == null) {
 			cp = 1;
+		}
+		if(key == null) {
+			key == '';
+		}
+		if(search == null) {
+			search == '';
 		}
 		
 		window.location.href = `/adminBoard/updateMember?cp=${cp}&key=${key}&search=${search}&memberNo=${memberNo}`;

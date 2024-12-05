@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +29,9 @@ public class InsertBookController {
 	 * @return
 	 */
 	@GetMapping("addBook")
-	public String addBook() {
+	public String addBook(Model model) {
+		
+		model.addAttribute("activeMenu", "bookManage");
 		
 		return "/adminBoard/insertBook";
 	}
