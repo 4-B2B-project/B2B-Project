@@ -6,9 +6,15 @@ const checkAll = document.querySelector("#theadCheckAll");
 searchMemberListBtn.addEventListener("click", () => {
 
 	if(searchMemberListBtn) {
-		const key = document.querySelector("#searchKey").value;
-		const query = input.value.trim();
-	
+		let key = document.querySelector("#searchKey").value;
+		let query = input.value.trim();
+		if(key == null) {
+			key = '';
+		}
+		
+		if(query == null) {
+			query = '';
+		}
 		window.location.href = `/adminBoard/searchMember?key=${key}&search=${query}`;
 	}
 
@@ -78,20 +84,19 @@ const updateMemberBtn = document.querySelectorAll("button[name='updateMemberBtn'
 		
 		const URLParams = new URLSearchParams(window.location.search);
 		
-		const key = URLParams.get('key');
-		const search = URLParams.get('search');
+		let key = URLParams.get('key');
+		let search = URLParams.get('search');
 		let cp = URLParams.get('cp');
 		
 		if(cp == null) {
 			cp = 1;
 		}
 		if(key == null) {
-			key == '';
+			key = '';
 		}
 		if(search == null) {
-			search == '';
+			search = '';
 		}
 		
-		window.location.href = `/adminBoard/updateMember?cp=${cp}&key=${key}&search=${search}&memberNo=${memberNo}`;
-	})
+		window.location.href = `/adminBoard/updateMember?cp=${cp}&key=${key}&search=${search}&memberNo=${memberNo}`;	})
 });
