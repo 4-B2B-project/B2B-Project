@@ -227,6 +227,12 @@
 	        <when test="key == 'delfl'">
 	          AND IS_DELETED LIKE '%' || #{search} || '%'
 	        </when>
+	        <when test='key == "delflY"'>
+			  AND IS_DELETED = 'Y'
+			</when>
+			<when test='key == "delflN"'>
+			  AND IS_DELETED = 'N'
+			</when>
 		</choose>
 		
 		ORDER BY TITLE) BK
@@ -339,6 +345,12 @@
 	        </when>
 	        <when test="key == 'nickname'">
 	         AND MEMBER_NICKNAME LIKE '%' || #{search} || '%'
+	        </when>
+	        <when test="key == 'delflY'">
+	          AND BOARD_DEL_FL = 'Y'
+	        </when>
+	        <when test="key == 'delflN'">
+	          AND BOARD_DEL_FL = 'N'
 	        </when>
 		</choose>
 		ORDER BY BOARD_NO DESC
