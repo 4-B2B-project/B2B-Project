@@ -300,7 +300,7 @@
 		BOARD_DEL_FL
 		FROM TB_BOARD
 		JOIN TB_MEMBER USING (MEMBER_NO)
-		ORDER BY BOARD_NO
+		ORDER BY BOARD_NO DESC
 	</select>
 	
 	<!-- 검색한 게시글 수 조회. -->

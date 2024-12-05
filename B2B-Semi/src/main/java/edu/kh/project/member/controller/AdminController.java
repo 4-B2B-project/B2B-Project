@@ -151,6 +151,8 @@ public class AdminController {
 	    model.addAttribute("search", paramMap.get("search"));
 	    model.addAttribute("activeMenu", "memberManage");
 	    
+	    log.debug("memberList :" + map.get("memberList"));
+	    
 		return "adminBoard/memberManage";
 	}
 	
@@ -259,9 +261,9 @@ public class AdminController {
 		else {
 			map.put("success", false);
 			map.put("message", "업데이트 실패...");
-		}
+	}
 	
-		return map;
+	return map;
 		
 	}
 	
@@ -400,6 +402,8 @@ public class AdminController {
 		ra.addAttribute("key", key != null ? key : "");
 		ra.addAttribute("search", search != null ? search : "");
 		ra.addAttribute("cp", cp);
+		
+		log.debug("Key: " + key + ", Search: " + search + ", CP: " + cp);
 		
 		return "redirect:/adminBoard/bookManage";
 	}
