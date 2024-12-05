@@ -36,7 +36,8 @@
 						<select name="key" id="searchKey" class="form-select" style="border-radius: 8px;" th:value="${key}">
 							<option value="title" th:selected="${key == 'title'}">도서 제목</option>
 							<option value="name" th:selected="${key == 'name'}">작가명</option>
-							<option value="delfl" th:selected="${key == 'delfl'}">삭제 여부</option>
+							<option value="delflY" th:selected="${key == 'delflY'}">삭제</option>
+							<option value="delflN" th:selected="${key == 'delflN'}">활성</option>
 						</select>
 
 						<input type="text" placeholder="검색어를 입력하세요." class="form-control" style="border-radius: 8px;" id="searchInput" name="search" th:value="${search}">
