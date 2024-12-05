@@ -177,7 +177,7 @@ function srchUserId () {
 	.then(resp => resp.text())
 	.then(result => {
 		
-		document.getElementById('signUpForm').style.display = 'none';
+		document.getElementById('srchIdForm').style.display = 'none';
 		document.getElementById('print-div').style.display = 'block';
 		
 		if(result != '') {
