@@ -63,7 +63,9 @@
 			<div style="justify-self: right; margin-bottom: 1rem;">
 				<th:block th:if="${session.loginMember != null}">
 					<th:block th:if="${session.loginMember.memberNo == board.memberNo || session.loginMember.memberAuth == 2}">
-	                    <button class="edit-button" id="editBtn">수정</button>
+						<th:block th:if="${session.loginMember.memberNo == board.memberNo}">
+							 <button class="edit-button" id="editBtn">수정</button>
+						</th:block>
 	                    <button class="delete-button" id="deleteBtn">삭제</button>
 	                    <button class="save-button" id="saveBtn" style="display:none;">저장</button>
 	                    <button class="cancel-button" id="cancelBtn" style="display:none;">취소</button>

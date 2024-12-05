@@ -17,7 +17,7 @@ goToListBtn.addEventListener("click", () => {
 
 
 // 작성 폼 유효성 검사 및 제출 처리
-document.querySelector("#boardWriteFrm").addEventListener("submit", e => {
+document.querySelector("#boardWriteFrm").addEventListener("click", e => {
 	const boardTitle = document.querySelector("[name='boardTitle']");
 	const boardContent = document.querySelector("[name='boardContent']");
 	const secretCheck = document.querySelector("[name='secretCheck']");

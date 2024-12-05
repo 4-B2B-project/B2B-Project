@@ -341,7 +341,7 @@
 	         AND MEMBER_NICKNAME LIKE '%' || #{search} || '%'
 	        </when>
 		</choose>
-		ORDER BY BOARD_NO
+		ORDER BY BOARD_NO DESC
 	</select>
 	
 	<!-- 게시글 상세 조회. -->
