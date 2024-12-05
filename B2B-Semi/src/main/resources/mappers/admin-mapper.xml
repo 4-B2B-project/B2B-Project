@@ -42,10 +42,10 @@
 	          AND MEMBER_NICKNAME LIKE '%' || #{search} || '%'
 	        </when>
 	        <when test="key == 'delflY'">
-	          AND MEMBER_DEL_FL LIKE '%' || #{search} || '%'
+	          AND MEMBER_DEL_FL = 'Y'
 	        </when>
 	        <when test="key == 'delflN'">
-	          AND MEMBER_DEL_FL LIKE '%' || #{search} || '%'
+	          AND MEMBER_DEL_FL = 'N'
 	        </when>
 		</choose>
 	</select>
@@ -62,10 +62,10 @@
 	          AND MEMBER_NICKNAME LIKE '%' || #{search} || '%'
 	        </when>
 	        <when test="key == 'delflY'">
-	          AND MEMBER_DEL_FL LIKE '%' || #{search} || '%'
+	          AND MEMBER_DEL_FL = 'Y'
 	        </when>
 	        <when test="key == 'delflN'">
-	          AND MEMBER_DEL_FL LIKE '%' || #{search} || '%'
+	          AND MEMBER_DEL_FL = 'N'
 	        </when>
 		</choose>
 	</select>
@@ -187,9 +187,12 @@
 	        <when test="key == 'name'">
 	          AND AUTHOR LIKE '%' || #{search} || '%'
 	        </when>
-	        <when test="key == 'delfl'">
-	          AND IS_DELETED LIKE '%' || #{search} || '%'
-	        </when>
+	        <when test='key == "delflY"'>
+			  AND IS_DELETED = 'Y'
+			</when>
+			<when test='key == "delflN"'>
+			  AND IS_DELETED = 'N'
+			</when>
 		</choose>
 		
 		ORDER BY TITLE) BK
@@ -223,9 +226,6 @@
 	        </when>
 	        <when test="key == 'name'">
 	          AND AUTHOR LIKE '%' || #{search} || '%'
-	        </when>
-	        <when test="key == 'delfl'">
-	          AND IS_DELETED LIKE '%' || #{search} || '%'
 	        </when>
 	        <when test='key == "delflY"'>
 			  AND IS_DELETED = 'Y'
@@ -325,6 +325,12 @@
 	        </when>
 	        <when test="key == 'nickname'">
 	          AND MEMBER_NICKNAME LIKE '%' || #{search} || '%'
+	        </when>
+	        <when test="key == 'delflY'">
+	          AND BOARD_DEL_FL = 'Y'
+	        </when>
+	        <when test="key == 'delflN'">
+	          AND BOARD_DEL_FL = 'N'
 	        </when>
 		</choose>
 	</select>
