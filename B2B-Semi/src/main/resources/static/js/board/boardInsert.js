@@ -22,7 +22,8 @@ goToListBtn.addEventListener("click", () => {
 
 
 // 작성 폼 유효성 검사 및 제출 처리
-document.querySelector("#boardInsert").addEventListener("click", e => {
+const insertBtn = document.querySelector("#boardInsert");
+insertBtn.addEventListener("click", e => {
 	const boardTitle = document.querySelector("[name='boardTitle']");
 	const boardContent = document.querySelector("[name='boardContent']");
 	const secretCheck = document.querySelector("[name='secretCheck']");
@@ -53,5 +54,6 @@ document.querySelector("#boardInsert").addEventListener("click", e => {
 		return;
 	}
 	
+	document.querySelector("#boardWriteFrm").submit();	
 
 });

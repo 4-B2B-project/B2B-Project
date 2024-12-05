@@ -168,15 +168,24 @@ public class EditBoardController {
 		String message = null;
 		
 		String searchInput = (String) paramMap.get("searchInput");
+		String searchType = (String) paramMap.get("searchType");
+		
+		if(searchInput == null) {
+			searchInput = "";
+		}
+		
+		if(searchType == null) {
+			searchType = "";
+		}
 		
 		if(result > 0) {
 			// 수정 성공시 검색조건 유지하고 첫 페이지로 이동
-			path = String.format("/board/community/%d?cp=%d&searchType=%s&searchInput=%s", boardCode, 1, paramMap.get("searchType"), searchInput);
+			path = String.format("/board/community/%d?cp=%d&searchType=%s&searchInput=%s", boardCode, 1, searchType, searchInput);
 			message = "수정 되었습니다!";
 			
 		} else {
 			// 수정 실패시 검색조건 유지한 게시글 상세페이지 이동
-			path = String.format("/board/%d/%d?cp=%d&searchType=%s&searchInput=%s", boardCode, boardNo, cp, paramMap.get("searchType"), searchInput);
+			path = String.format("/board/%d/%d?cp=%d&searchType=%s&searchInput=%s", boardCode, boardNo, cp, searchType, searchInput);
 			message = "수정 실패";
 			
 		}

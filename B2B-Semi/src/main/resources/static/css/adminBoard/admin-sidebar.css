@@ -65,6 +65,7 @@
 	color: var(--primary-color);
 	font-weight: bold;
 	cursor: default;
+	border-left: 5px solid #fbbf24 !important; /* 선택된 항목에 왼쪽 경계선 추가 */
 }
 
 .admin-sidebar .nav-link i {

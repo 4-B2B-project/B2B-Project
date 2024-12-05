@@ -40,7 +40,7 @@ public class AdminController {
 	
 	// 관리자 대쉬보드 홈
 	@GetMapping("dashAdmin")
-	public String dashAdmin(Model model) {
+	public String dashAdmin(Model model, @SessionAttribute("loginMember") Member loginMember) {
 		
 		int bookCount = Adservice.bookCount();
 		
@@ -52,7 +52,7 @@ public class AdminController {
 		model.addAttribute("bookCount", bookCount);
 		model.addAttribute("memberCount", memberCount);
 		model.addAttribute("boardCount", boardCount);
-		
+		model.addAttribute("member", loginMember);
 		return "adminBoard/dashAdmin";
 	}
 
@@ -244,23 +244,26 @@ public class AdminController {
 	// 회원 추방/탈퇴 복구.
 	@ResponseBody
 	@PostMapping("updateStatus")
-	public ResponseEntity<?> updateStatus(@RequestBody Map<String, Object> paramMap) {
+	public Map<String, Object> updateStatus(@RequestBody Map<String, Object> paramMap) {
 		
 		List<String> memberNos = (List<String>)paramMap.get("memberNos");
 		String action = (String) paramMap.get("action");
 		
 		boolean updateY = action.equals("탈퇴");
 		
-		log.debug("memberNos :" + memberNos);
-		
 		int result = Adservice.updateStatus(memberNos, updateY);
 		
-		if(result > 0) {
-			return ResponseEntity.ok(Map.of("success", true));
+		Map<String, Object> map = new HashMap<>();
+		
+		if (result > 0) {
+			map.put("success", true);
 		}
 		else {
-			return ResponseEntity.ok(Map.of("success", false, "message", "업데이트 실패.."));
-		}
+			map.put("success", false);
+			map.put("message", "업데이트 실패...");
+	}
+	
+	return map;
 		
 	}
 	
@@ -302,35 +305,39 @@ public class AdminController {
 		return "adminBoard/bookManage";
 		
 	}
-	
-	// 도서 삭제/삭제 복구.
+
+	// 도서 삭제/삭제 복구
 	@ResponseBody
 	@PostMapping("updateBookStatus")
-	public ResponseEntity<?> updateBookStatus(@RequestBody Map<String, Object> paramMap) {
+	public Map<String, Object> updateBookStatus(@RequestBody Map<String, Object> paramMap) {
 		
-		List<String> bookList = (List<String>)paramMap.get("bookList");
-		String action = (String)paramMap.get("action");
-		
-		log.debug("bookList : " + bookList);
+		List<String> bookList = (List<String>) paramMap.get("bookList");
+		String action = (String) paramMap.get("action");
 		
 		boolean updateY = action.equals("삭제");
-		
 		int result = Adservice.updateBookStatus(bookList, updateY);
 		
-		if(result > 0) {
-			return ResponseEntity.ok(Map.of("success", true));
+		Map<String, Object> map = new HashMap<>();
+		
+		if (result > 0) {
+			map.put("success", true);
 		}
 		else {
-			return ResponseEntity.ok(Map.of("success", false, "message", "업데이트 실패..."));
+			map.put("success", false);
+			map.put("message", "업데이트 실패...");
 		}
+		
+		return map;
 		
 	}
 	
 	// 선택한 도서 데이터 보내기.
 	@GetMapping("updateBook")
-	public Book updateBook(@RequestParam("bookId") int bookId) {
+	public Book updateBook(@RequestParam("bookId") int bookId, Model model) {
 		
 		Book book = Adservice.selectBookDetail(bookId);
+		
+		model.addAttribute("activeMenu", "bookManage");
 		
 		return book;
 	}
@@ -529,45 +536,29 @@ public class AdminController {
 	}
 	
 	
-	/** 게시글 삭제 / 삭제 복구.
-	 * @param paramMap
-	 * 
-	 * ResponseEntity<?>
-	 * RESTful API 개발 시 유연한 응답 처리를 가능하게 해줌.
-	 * HTTP 응답의 세부 설정 가능, 예외 처리와 에러 응답에 유용, API 개발 시 높은 유연성 제공.
-	 * 
-	 * ResponseEntity.ok() : 200 OK 상태 코드로 응답.
-	 * ResponseEntity.ok() : 200 OK 상태 코드로 응답.
-	 * ResponseEntity.ok() : 200 OK 상태 코드로 응답.
-	 * ResponseEntity.ok() : 200 OK 상태 코드로 응답.
-	 * 
-	 * @return
-	 */
+	// 게시글 삭제 / 삭제 복구.
 	@ResponseBody
 	@PostMapping("updateBoardStatus")
-	public ResponseEntity<?> updateBoardStatus(@RequestBody Map<String, Object> paramMap) {
+	public Map<String, Object> updateBoardStatus(@RequestBody Map<String, Object> paramMap) {
 		
 		List<String> boardList = (List<String>)paramMap.get("boardList");
 		String action = (String)paramMap.get("action");
 		
-		log.debug("boardList : " + boardList);
-		log.debug("Request paramMap: " + paramMap);
-		log.debug("boardList: " + boardList);
-		log.debug("action: " + action);
-		
 		boolean updateY = action.equals("삭제");
 		
 		int result = Adservice.updateBoardStatus(boardList, updateY);
-		
-		log.debug("updateY: " + updateY);
-		log.debug("Update result: " + result);
+
+		Map<String, Object> map = new HashMap<>();
 		
 		if(result > 0) {
-			return ResponseEntity.ok(Map.of("success", true));
+			map.put("success", true);
 		}
 		else {
-			return ResponseEntity.ok(Map.of("success", false, "message", "업데이트 실패..."));
+			map.put("success", false);
+			map.put("message", "업데이트 실패...");
 		}
+		
+		return map;
 		
 	}
 	

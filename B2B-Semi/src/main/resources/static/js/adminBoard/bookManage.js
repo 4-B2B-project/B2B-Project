@@ -30,7 +30,6 @@ function updateBookStatus(action) {
 	
 	const bookList = Array.from(checkboxes).map(box => box.value);
 	
-	console.log(bookList);
 	
 	fetch("/adminBoard/updateBookStatus", {
 		method : "POST",
@@ -50,8 +49,6 @@ function updateBookStatus(action) {
 		else {
 			alert("상태 변경 실패:" + data.message);
 		}
-		
-		console.log("data:" + data);
 		
 	})
 	.catch(error => console.error("Error:",error));
