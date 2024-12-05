@@ -2,32 +2,39 @@
 const goToListBtn = document.querySelector("#communityList");
 
 goToListBtn.addEventListener("click", () => {
-	// 현재 경로: /board/detailCommunity/1?cp=1&boardNo=5
-	// 원하는 경로: /board/community/1?cp=1
+	let path = location.pathname.split("/");
+	
+	console.log(path);
+		
+    if (path[1] === "editBoard" && path.length >= 3) {
+        // 'board' 뒤의 2번째 요소를 'community'로 변경하고 3번째 요소까지만 유지
+		path[1] = "board";
+		path[3] = path[2];
+        path[2] = "community";
+    }
 
-	let path = location.pathname.split("/"); // 경로를 "/" 기준으로 분리
-	path[2] = "community"; // "detailCommunity"를 "community"로 변경
-
-	// 새로운 경로 조합
-	const newUrl = path.join("/") + location.search;
-
-	console.log(newUrl); // 디버깅용
-	location.href = newUrl; // 새로운 URL로 이동
+    // 새로운 경로 조합
+    const newUrl = path.join("/") + location.search;
+	
+    // 실제 이동
+    location.href = newUrl;
 });
 
 
 // 작성 폼 유효성 검사 및 제출 처리
-document.querySelector("#boardWriteFrm").addEventListener("submit", e => {
+document.querySelector("#boardInsert").addEventListener("click", e => {
 	const boardTitle = document.querySelector("[name='boardTitle']");
 	const boardContent = document.querySelector("[name='boardContent']");
 	const secretCheck = document.querySelector("[name='secretCheck']");
 	const selectCheckBox = document.querySelector("#selectCheckBox");
 	
 	// 체크 여부에 따른 값 세팅
-	if(selectCheckBox.checked) {
-		secretCheck.value = "Y";
-	} else {
-		secretCheck.value = "N";
+	if(selectCheckBox != null) {
+		if(selectCheckBox.checked) {
+			secretCheck.value = "Y";
+		} else {
+			secretCheck.value = "N";
+		}
 	}
 	
 	// 유효성 검사
