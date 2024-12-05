@@ -1,19 +1,3 @@
-// 이메일 인증 폼 서브밋 후 회원가입 폼으로 교체
-document.getElementById('email-form').addEventListener('submit', function(e) {
-	e.preventDefault();
-	document.getElementById('email-form').style.display = 'none';
-	document.getElementById('signUpForm').style.display = 'block';
-});
-
-// 취소버튼 눌렀을때 로그인 페이지로 돌아가기
-document.querySelectorAll('#cancelButton').forEach(button => {
-	button.addEventListener('click', function() {
-		if (confirm("회원가입을 취소하고 로그인 페이지로 이동 하시겠습니까?")) {
-			window.location.href = '/member/login';
-		}
-	});
-});
-
 // 다음 주소 API
 function execDaumPostcode() {
 	new daum.Postcode({
@@ -55,11 +39,8 @@ const checkObj = {
 	"memberPwConfirm": false,
 	"memberNickname": false,
 	"memberTel": false,
-	"authKey": false
-};
-
-const emailCheck = {
-	"check": false
+	"authKey": false,
+	"memberEmail": false
 };
 
 // ---------------------------------
@@ -90,7 +71,7 @@ let sec = initSec;
 /* 이메일 유효성 검사 */
 
 // 1) 이메일 유효성 검사에 사용될 요소 얻어오기
-const memberEmail = document.querySelector("#memberEmail");
+const memberEmail = document.querySelector("#inputEmail");
 const emailMessage = document.querySelector("#emailMessage");
 
 // ------------------------------------------
@@ -122,19 +103,40 @@ memberEmail.addEventListener("input", e => {
 		emailMessage.classList.remove('confirm'); // 초록색 제거
 		return;
 	}
+	
+	// 중복 검사 수행
+	// 비동기(ajax)
+	fetch("/member/checkEmail?memberEmail=" + inputEmail)
+		.then(resp => resp.text())
+		.then(count => {
+			
+			if (count == 1) { // 중복 O
+				emailMessage.innerText = "이미 사용중인 이메일 입니다.";
+				emailMessage.classList.add("error");
+				emailMessage.classList.remove("confirm");
+				checkObj.memberEmail = false; // 중복은 유효하지 않은 상태다..
+				return;
+			}
 
-	// 중복 X 경우
-	emailMessage.innerText = "사용 가능한 이메일입니다.";
-	emailMessage.classList.add("confirm");
-	emailMessage.classList.remove("error");
-	emailCheck.check = true;
+			// 중복 X 경우
+			emailMessage.innerText = "사용 가능한 이메일입니다.";
+			emailMessage.classList.add("confirm");
+			emailMessage.classList.remove("error");
+			checkObj.memberEmail= true;
+
+		})
+		.catch(error => {
+			// fetch 수행 중 예외 발생 시 처리
+			console.log(error); // 발생한 예외 출력
+		});
+
 
 });
 
 // 인증번호 받기 버튼 클릭 시 
 sendAuthKeyBtn.addEventListener("click", () => {
 	
-	if(emailCheck.check) {
+	if(checkObj.memberEmail) {
 
 		checkObj.authKey = false;
 		authKeyMessage.innerText = "";
@@ -196,7 +198,7 @@ sendAuthKeyBtn.addEventListener("click", () => {
 	
 		}, 1000); // 1초 지연시간
 	} else {
-		alert("올바른 이메일 형식을 입력해주세요.");
+		alert("이메일을 다시 확인해 주세요.");
 		memberEmail.focus();
 	}
 });
@@ -258,6 +260,7 @@ checkAuthKeyBtn.addEventListener("click", () => {
 			authKeyMessage.innerText = "인증 되었습니다.";
 			authKeyMessage.classList.remove("error");
 			authKeyMessage.classList.add("confirm");
+			document.querySelector("#memberEmail").value = memberEmail.value;
 
 			checkObj.authKey = true; // 인증번호 검사여부 true 변경
 		});
@@ -314,9 +317,7 @@ memberId.addEventListener("input", e => {
 	fetch("/member/checkId?memberId=" + inputId)
 		.then(resp => resp.text())
 		.then(count => {
-			// count : 1이면 중복, 0이면 중복 아님
-			// ==   :  값이 같은지     ex) "1" == 1  -> true
-			// ===  : 타입까지 같은지  ex) "1" === 1 -> false
+			console.log(count);
 			if (count == 1) { // 중복 O
 				idMessage.innerText = "이미 사용중인 아이디 입니다.";
 				idMessage.classList.add("error");
@@ -548,6 +549,9 @@ signUpForm.addEventListener("submit", e => {
 
 				case "memberTel":
 					str = "전화번호가 유효하지 않습니다"; break;
+					
+				case "memberEmail":
+					str = "이메일이 유효하지 않습니다"; break;
 			}
 
 			alert(str);
@@ -560,5 +564,22 @@ signUpForm.addEventListener("submit", e => {
 	}
 });
 
+// 이메일 인증 폼 서브밋 후 회원가입 폼으로 교체
+document.getElementById('checkAuthKeyBtn').addEventListener('click', function(e) {
+	e.preventDefault();
+	
+	if(checkObj.memberEmail) {
+		document.getElementById('email-form').style.display = 'none';
+		document.getElementById('signUpDiv').style.display = 'block';
+	}
+});
 
+// 취소버튼 눌렀을때 로그인 페이지로 돌아가기
+document.querySelectorAll('#cancelButton').forEach(button => {
+	button.addEventListener('click', function() {
+		if (confirm("회원가입을 취소하고 로그인 페이지로 이동 하시겠습니까?")) {
+			window.location.href = '/member/login';
+		}
+	});
+});
 

@@ -24,7 +24,15 @@
 	const hrefAddress = Array.from(pageLink);
 	
 	let locationLink = location.pathname.split("/");
-	let locHref = "/" + locationLink[1];
+	let locHref;
+	
+	if(locationLink[1] == 'editBoard') {
+		locHref = "/board";
+		
+	} else {
+		locHref = "/" + locationLink[1];
+		
+	}
 	
 	if(locationLink[2] == 'community') {
 		locHref += `/${locationLink[2]}/${locationLink[3]}`;
@@ -44,6 +52,7 @@
 			addr.style.color = "#4F46E5";
 			addr.style.transform = "translateX(5px)";
 			addr.style.fontWeight = "bold"; 
+			addr.style.borderLeft = "5px solid #fbbf24";
 			
 		}
 	})
