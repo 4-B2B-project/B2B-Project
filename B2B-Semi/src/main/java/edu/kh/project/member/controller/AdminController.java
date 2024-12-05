@@ -159,7 +159,7 @@ public class AdminController {
 	public String searchMember(@RequestParam Map<String, Object> paramMap, Model model, @RequestParam(value="cp", required = false, defaultValue="1") int cp) {
 		
 		Map<String, Object> map = Adservice.searchMember(paramMap, cp);
-
+		
 		model.addAttribute("memberList", map.get("memberList"));
 		model.addAttribute("pagination", map.get("pagination"));
 	    model.addAttribute("key", paramMap.get("key"));
