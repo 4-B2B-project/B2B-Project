@@ -56,7 +56,7 @@ public class MyPageController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping("info") 
+	@GetMapping("profile") 
 	public String info(@SessionAttribute("loginMember") Member loginMember, Model model, HttpServletRequest request) {
 
 		System.out.println("loginMember: " + loginMember);
@@ -89,7 +89,7 @@ public class MyPageController {
 			
 		}
 
-		return "myPage/myPage-info";
+		return "myPage/myPage-profile";
 	}
 
 	/** 내 정보 수정 화면 이동
@@ -381,7 +381,7 @@ public class MyPageController {
 	 * @param ra
 	 * @return
 	 */
-	@PostMapping("info")
+	@PostMapping("profile")
 	public String profileImageInfo(@RequestParam("profileImg") MultipartFile profileImg,
 			@SessionAttribute("loginMember") Member loginMember, RedirectAttributes ra) throws Exception {
 
@@ -399,7 +399,7 @@ public class MyPageController {
 		// POST 요청에 대한 처리 로직 작성
 		// 예를 들어, 폼에서 전달된 데이터를 처리하고 DB에 업데이트
 
-		return "redirect:info"; // POST 후 다시 GET 요청으로 리다이렉트 (정보 갱신 후 내 정보 페이지로 돌아감)
+		return "redirect:profile"; // POST 후 다시 GET 요청으로 리다이렉트 (정보 갱신 후 내 정보 페이지로 돌아감)
 	}
 
 	/**
@@ -465,7 +465,7 @@ public class MyPageController {
 			// 리다이렉트 /myPage/info
 
 			message = "비밀번호 변경 성공!!!";
-			path = "/myPage/info";
+			path = "/myPage/profile";
 
 		} else {
 			// 변경 실패시
@@ -538,7 +538,7 @@ public class MyPageController {
 
 		ra.addFlashAttribute("message", message);
 
-		return "redirect:info";
+		return "redirect:profile";
 
 	}
 

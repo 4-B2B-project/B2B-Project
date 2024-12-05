@@ -43,8 +43,10 @@
 
 						<!-- 프로필 이미지 추가 -->
 						<div class="writer-profile">
-							<img th:src="@{|${#messages.msg('user.default.image')}|}" alt="프로필 이미지" class="profile-img"
-								style="width: 50px; height: 50px; border-radius: 50%;">
+							<img
+								th:src="${session.loginMember.profileImg != null ? session.loginMember.profileImg : '/images/user.png'}"
+								alt="프로필 이미지" class="profile-img" style="width: 50px; height: 50px; border-radius: 50%;">
+
 						</div>
 
 						<div class="writer-value" th:text="*{memberNickname}">작성자이름</div>
@@ -94,9 +96,10 @@
 
 		<script th:inline="javascript">
 			/*<![CDATA[*/
-			const userDefaultImage = /*[[${#messages.msg('user.default.image')}]]*/ '/images/user.png';
+			const userDefaultImage = /*[[${session.loginMember?.profileImg != null ? session.loginMember.profileImg : '/images/user.png'}]]*/ '/images/user.png';
 			/*]]>*/
 		</script>
+
 
 		<script src="/js/myPage/myPage-commentDetail.js"></script>
 		<script src="/js/board/comment.js"></script>

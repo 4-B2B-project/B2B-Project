@@ -126,7 +126,10 @@ public class MyPageServiceImpl implements MyPageService {
 		}
 
 		// 수정된 프로필 이미지 경로 + 회원 번호를 저장할 DTO 객체
-		Member mem = Member.builder().memberNo(loginMember.getMemberNo()).profileImg(updatePath).build();
+		Member mem = Member.builder()
+				.memberNo(loginMember.getMemberNo())
+				.profileImg(updatePath)
+				.build();
 
 		// UPDATE 수행
 		int result = mapper.profileImageInfo(mem);
