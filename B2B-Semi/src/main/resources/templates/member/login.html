@@ -37,19 +37,21 @@
 							<label for="userPw">비밀번호</label>
 							<input type="password" name="memberPw" class="input-field" placeholder="비밀번호를 입력하세요">
 							<div class="button-group">
-							
-								<label>
-								  <!-- label 태그 : input 태그의 제목을 나타내는 태그  -->
-								  <input type="checkbox" name="saveId">
-								  아이디 저장
-								</label>
-								
+								<div class="button-save-container">
+									<label class="save-id-label">
+										<input type="checkbox" name="saveId">
+										아이디 저장
+									</label>
+									<div class="find-links">
+										<a href="/member/srchId">ID 찾기</a>
+										<a href="/member/srchPw">PW 찾기</a>
+									</div>
+								</div>
+
 								<button type="submit" id="loginButton">로그인</button>
 								<button type="button" id="signUpButton">회원가입</button>
 							</div>
-							
-							<a href="/member/srchId" style="margin-left: 32px;">ID찾기</a>
-							<a href="/member/srchPw" style="margin-left: 32px;">PW찾기</a>
+						</div>
 					</form>
 				</div>
 			</div>
@@ -62,17 +64,17 @@
 
 	<script>
 		document.querySelectorAll('#signUpButton').forEach(button => {
-            button.addEventListener('click', function() {
-							if(confirm("회원가입 페이지로 이동 하시겠습니까?")) {
-                window.location.href = '/member/submit'; 
-							} else {
-								window.location.href = '/member/login';
-							}
-            });
-        });
+			button.addEventListener('click', function () {
+				if (confirm("회원가입 페이지로 이동 하시겠습니까?")) {
+					window.location.href = '/member/submit';
+				} else {
+					window.location.href = '/member/login';
+				}
+			});
+		});
 	</script>
 
-<script src="/js/member/login.js"></script>
+	<script src="/js/member/login.js"></script>
 
 </body>
 

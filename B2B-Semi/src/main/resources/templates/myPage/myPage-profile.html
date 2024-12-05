@@ -42,7 +42,7 @@
           <div class="profile-container">
             <div class="profile-header">
 
-              <form action="info" method="POST" name="myPageFrm" id="profile" enctype="multipart/form-data">
+              <form action="profile" method="POST" name="myPageFrm" id="profile" enctype="multipart/form-data">
                 <div class="profile-image-area">
 
                   <img th:with="user=#{user.default.image}" th:src="${session.loginMember.profileImg ?: user}"

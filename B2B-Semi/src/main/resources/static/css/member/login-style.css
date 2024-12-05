@@ -86,8 +86,7 @@ body {
 
 #button-group {
 	display: flex;
-	gap: 1rem;
-	margin-top: 150px;
+	flex-direction: column;
 }
 
 #loginButton {
@@ -124,6 +123,60 @@ body {
 #signUpButton:hover {
 	background: var(--primary-hover);
 	transform: translateY(-1px);
+}
+
+
+.button-save-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 12rem;
+}
+
+.save-id-label {
+	display: flex;
+	align-items: center;
+	font-size: 0.9rem;
+	color: var(--text-secondary);
+}
+
+.save-id-label input {
+	margin-right: 0.5rem;
+}
+
+.find-links {
+	display: flex;
+	gap: 1rem;
+}
+
+.find-links a {
+	text-decoration: none;
+	color: var(--text-secondary);
+	font-size: 0.8rem;
+	font-weight: 500;
+	transition: all 0.2s ease;
+	position: relative;
+	padding-bottom: 0.25rem;
+}
+
+.find-links a:hover {
+	color: var(--primary-color);
+}
+
+.find-links a::after {
+	content: '';
+	position: absolute;
+	width: 0;
+	height: 2px;
+	bottom: 0;
+	left: 50%;
+	background-color: var(--primary-color);
+	transition: all 0.3s ease;
+}
+
+.find-links a:hover::after {
+	width: 100%;
+	left: 0;
 }
 
 @media (max-width: 768px) {
