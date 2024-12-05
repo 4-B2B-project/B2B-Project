@@ -1,10 +1,14 @@
 package edu.kh.project.member.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,6 +41,88 @@ public class MemberController {
 	public String login() {
 		return "/member/login";
 	}
+	
+	/** 아이디 찾기 페이지 이동
+	 * @return
+	 */
+	@GetMapping("srchId")
+	public String srchId() {
+		return "/member/srchId";
+	}
+	
+	
+	/** 비동기 회원 아이디 출력
+	 * @param memberEmail
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("srchId")
+	public String srchId(@RequestBody Map<String, String> map) {
+		return service.srchId(map);
+	}
+	
+	
+	/** 비밀번호 찾기 페이지 이동
+	 * @return
+	 */
+	@GetMapping("srchPw")
+	public String srchPw() {
+		return "/member/srchPw";
+	}
+	
+	
+	/** 비동기 해당 회원 찾기
+	 * @param memberEmail
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("searchUser")
+	public int srchPw(@RequestBody Map<String, String> map) {
+		return service.searchUser(map);
+	}
+	
+	
+	/** 해당 회원 비밀번호 변경
+	 * @param memberEmail
+	 * @return
+	 */
+	@PostMapping("updatePw")
+	public String updatePw(@RequestParam("newPw") String newPw,
+			@RequestParam("memberId") String memberId,
+			@RequestParam("memberEmail") String memberEmail,
+			RedirectAttributes ra) {
+		
+		log.debug("map : " + newPw);
+		log.debug("map : " + memberId);
+		log.debug("map : " + memberEmail);
+		
+		Map<String, Object> paramMap = new HashMap<>();
+		
+		paramMap.put("newPw", newPw);		
+		paramMap.put("memberId", memberId);		
+		paramMap.put("memberEmail", memberEmail);		
+		
+		// 비밀번호 변경
+		int result = service.updatePw(paramMap);
+		
+		String message = null;
+		String path = null;
+		
+		if(result > 0) {
+			message = "비밀번호 변경 성공!!!";
+			path = "/";
+			
+		} else {
+			message = "비밀번호 변경 실패";
+			path = "srchPw";
+			
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+	}
+	
 	
 	/** 로그인 진행
 	 * @param inputMember
@@ -105,6 +191,15 @@ public class MemberController {
 	}
 	
 	/** 이메일 중복검사 (비동기 요청)
+	 * @return
+	 */
+	@ResponseBody // 응답 본문(fetch)으로 돌려보냄
+	@GetMapping("checkEmail")   // Get요청 /member/checkEmail 
+	public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
+		return service.checkEmail(memberEmail);
+	}
+	
+	/** 아이디 중복검사 (비동기 요청)
 	 * @return
 	 */
 	@ResponseBody // 응답 본문(fetch)으로 돌려보냄

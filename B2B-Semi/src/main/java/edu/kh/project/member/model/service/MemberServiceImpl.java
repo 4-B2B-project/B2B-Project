@@ -1,5 +1,7 @@
 package edu.kh.project.member.model.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import edu.kh.project.member.model.dto.Member;
 public class MemberServiceImpl implements MemberService {
 	
 	private final MemberMapper mapper;
+	
 	@Autowired
 	private BCryptPasswordEncoder bcrypt;
 	
@@ -57,6 +60,12 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 
+	// 이메일 중복 체크
+	@Override
+	public int checkEmail(String memberEmail) {
+		return mapper.checkEmail(memberEmail);
+	}
+	
 	// 아이디 중복 체크
 	@Override
 	public int checkId(String memberId) {
@@ -90,6 +99,32 @@ public class MemberServiceImpl implements MemberService {
 
 		// 회원 가입 매퍼 메서드 호출
 		return mapper.signup(inputMember);
+	}
+
+
+	// 아이디 찾기
+	@Override
+	public String srchId(Map<String, String> map) {
+		return mapper.srchId(map);
+	}
+
+
+	// 비밀번호 찾기전 해당 회원 존재 여부 조회
+	@Override
+	public int searchUser(Map<String, String> map) {
+		return mapper.searchUser(map);
+	}
+
+
+	// 비밀번호 변경
+	@Override
+	public int updatePw(Map<String, Object> paramMap) {
+		
+		String encPw = bcrypt.encode((String) paramMap.get("newPw"));
+
+		paramMap.put("encPw", encPw);
+		
+		return mapper.updatePw(paramMap);
 	}
 	
 	

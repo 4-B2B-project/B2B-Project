@@ -15,105 +15,116 @@
 			background-color: #F9FAFB;
 		}
 	</style>
-  <th:block th:replace="~{common/header}"></th:block>
+	<th:block th:replace="~{common/header}"></th:block>
 </head>
+
 <body>
-  <div class="split-container">
-      <div class="left-section">
-          <h1 class="login-title">회원가입</h1>
-      </div>
-      <div class="right-section">
-          <div class="login-container">
-            <!-- 이메일 인증 폼 -->
-              <form id="email-form">
-                  <div class="input-group">
-                      <label for="userEmail">이메일</label>
-                      <input type="email" id="memberEmail" class="input-field" placeholder="이메일을 입력하세요" required>
-                      <span class="signUp-message" id="emailMessage"></span>
-                      <button type="button" id="sendAuthKeyBtn">인증번호 받기</button>
-                  </div>
-                  <div class="input-group">
-                      <label for="verificationCode">인증 번호</label>
-                      <input type="text" id="authKey" class="input-field" placeholder="인증 번호를 입력하세요" required>
-                      <span class="signUp-message" id="authKeyMessage"></span>
-                  </div>
-                  <div class="button-group">
-                      <button type="submit" id="checkAuthKeyBtn" class="submit-button">확인</button>
-                      <button type="button" class="cancel-button" onclick="window.history.back()">취소</button>
-                  </div>
-              </form>
-              <!-- 회원가입 폼 -->
-              <div class="login-container">
-                <form action="/member/signup" method="POST" name="signUpForm" id="signUpForm">
-                    <div class="input-group">
-                        <label for="userId">아이디</label>
-                        <input type="text" id="memberId" name="memberId" class="input-field" placeholder="아이디를 입력하세요">
-                        <span class="signUp-message" id="idMessage"></span>
-                    </div>
-                    <div class="input-group">
-                        <label for="userPw">비밀번호</label>
-                        <input type="password" id="memberPw" name="memberPw" class="input-field" placeholder="비밀번호를 입력하세요">
-                        <span class="signUp-message" id="pwMessage"></span>
-                    </div>
-                    <div class="input-group">
-                      <label for="userId">비밀번호 확인</label>
-                      <input type="password" id="memberPwConfirm" class="input-field" placeholder="비밀번호를 한번 더 입력하세요">
-                      <span class="signUp-message" id="confirmPwMessage"></span>
-                  </div>
-                  <div class="input-group">
-                      <label for="userPw">닉네임</label>
-                      <input type="text" id="memberNickname" name="memberNickname" class="input-field" placeholder="닉네임을 입력하세요">
-                      <span class="signUp-message" id="nickMessage"></span>
-                  </div>
-                  <div class="input-group">
-                    <label for="memberAddress">주소</label>
+	<div class="split-container">
+		<div class="left-section">
+			<h1 class="login-title">회원가입</h1>
+		</div>
+		<div class="right-section">
+			<div class="login-container">
+				<!-- 이메일 인증 폼 -->
+				<!-- 회원가입 폼 -->
+				<div class="login-container">
+					<form action="/member/signup" method="POST" name="signUpForm" id="signUpForm">
+						<div id="email-form">
+							<div class="input-group">
+								<label for="userEmail">이메일</label>
+								<input type="email" id="inputEmail" class="input-field" placeholder="이메일을 입력하세요"
+									required>
+								<span class="signUp-message" id="emailMessage"></span>
+								<button type="button" id="sendAuthKeyBtn">인증번호 받기</button>
+							</div>
+							<div class="input-group">
+								<label for="verificationCode">인증 번호</label>
+								<input type="text" id="authKey" class="input-field" placeholder="인증 번호를 입력하세요" required>
+								<span class="signUp-message" id="authKeyMessage"></span>
+							</div>
+							<div class="button-group">
+								<button type="button" id="checkAuthKeyBtn" class="submit-button">확인</button>
+								<button type="button" class="cancel-button" onclick="window.history.back()">취소</button>
+							</div>
+						</div>
+						<div id="signUpDiv">
+							<input type="hidden" name="memberEmail" id="memberEmail" />
+							<div class="input-group">
+								<label for="userId">아이디</label>
+								<input type="text" id="memberId" name="memberId" class="input-field"
+									placeholder="아이디를 입력하세요">
+								<span class="signUp-message" id="idMessage"></span>
+							</div>
+							<div class="input-group">
+								<label for="userPw">비밀번호</label>
+								<input type="password" id="memberPw" name="memberPw" class="input-field"
+									placeholder="비밀번호를 입력하세요">
+								<span class="signUp-message" id="pwMessage"></span>
+							</div>
+							<div class="input-group">
+								<label for="userId">비밀번호 확인</label>
+								<input type="password" id="memberPwConfirm" class="input-field"
+									placeholder="비밀번호를 한번 더 입력하세요">
+								<span class="signUp-message" id="confirmPwMessage"></span>
+							</div>
+							<div class="input-group">
+								<label for="userPw">닉네임</label>
+								<input type="text" id="memberNickname" name="memberNickname" class="input-field"
+									placeholder="닉네임을 입력하세요">
+								<span class="signUp-message" id="nickMessage"></span>
+							</div>
+							<div class="input-group">
+								<label for="memberAddress">주소</label>
 
-                    <div class="input-group">
-                    <input type="text" name="memberAddress" placeholder="우편번호" maxlength="6" id="postcode">                       
-          
-                    <button type="button" id="searchAddress">검색</button>
-                    </div>
+								<div class="input-group">
+									<input type="text" name="memberAddress" placeholder="우편번호" maxlength="6"
+										id="postcode">
 
-                    <div class="input-group">
-                    <input type="text" name="memberAddress" placeholder="도로명/지번 주소" id="address">
-                    </div>
+									<button type="button" id="searchAddress">검색</button>
+								</div>
 
-                    <div class="input-group">
-                    <input type="text" name="memberAddress" placeholder="상세 주소" id="detailAddress">
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label for="userId">전화 번호</label>
-                    <input type="text" id="memberTel" name="memberTel" class="input-field" placeholder="전화번호를 입력하세요">
-                    <span class="signUp-message" id="telMessage"></span>
-                </div>
-                <div class="input-group">
-                    <label for="memberBookCategory">선호 장르</label>
-                    <select id="memberBookCategory" name="memberBookCategory" class="input-field">
-                        <option value="">장르를 선택하세요</option>
-                        <option value="소설">소설</option>
-                        <option value="시/에세이">시/에세이</option>
-                        <option value="경제/경영">경제/경영</option>
-                        <option value="자기계발">자기계발</option>
-                        <option value="인문">인문</option>
-                        <option value="역사/문화">역사/문화</option>
-                        <option value="사회/정치">사회/정치</option>
-                        <option value="과학/공학">과학/공학</option>
-                        <option value="예술/대중문화">예술/대중문화</option>
-                        <option value="아동">아동</option>
-                        <option value="만화">만화</option>
-                    </select>
-                </div>
-                    <div class="button-group">
-                        <button type="submit" id="signupBtn">회원가입</button>
-                        <button type="button" id="cancelButton">취소</button>
-                    </div>
-                </form>
-            </div>
-          </div>
-      </div>
-  </div>
-  <th:block th:replace="~{common/footer}"></th:block>
-  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-  <script src="/js/member/signup.js"></script>
-  </body>
+								<div class="input-group">
+									<input type="text" name="memberAddress" placeholder="도로명/지번 주소" id="address">
+								</div>
+
+								<div class="input-group">
+									<input type="text" name="memberAddress" placeholder="상세 주소" id="detailAddress">
+								</div>
+							</div>
+							<div class="input-group">
+								<label for="userId">전화 번호</label>
+								<input type="text" id="memberTel" name="memberTel" class="input-field"
+									placeholder="전화번호를 입력하세요">
+								<span class="signUp-message" id="telMessage"></span>
+							</div>
+							<div class="input-group">
+								<label for="memberBookCategory">선호 장르</label>
+								<select id="memberBookCategory" name="memberBookCategory" class="input-field">
+									<option value="">장르를 선택하세요</option>
+									<option value="소설">소설</option>
+									<option value="시/에세이">시/에세이</option>
+									<option value="경제/경영">경제/경영</option>
+									<option value="자기계발">자기계발</option>
+									<option value="인문">인문</option>
+									<option value="역사/문화">역사/문화</option>
+									<option value="사회/정치">사회/정치</option>
+									<option value="과학/공학">과학/공학</option>
+									<option value="예술/대중문화">예술/대중문화</option>
+									<option value="아동">아동</option>
+									<option value="만화">만화</option>
+								</select>
+							</div>
+							<div class="button-group">
+								<button type="submit" id="signupBtn">회원가입</button>
+								<button type="button" id="cancelButton">취소</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:replace="~{common/footer}"></th:block>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script src="/js/member/signup.js"></script>
+</body>

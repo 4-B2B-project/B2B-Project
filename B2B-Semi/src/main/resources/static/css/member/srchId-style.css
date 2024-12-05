@@ -1,0 +1,167 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+:root {
+	--primary-color: #4f46e5;
+	--primary-hover: #4338ca;
+	--background: #ffffff;
+	--text-primary: #1f2937;
+	--text-secondary: #4b5563;
+	--card-background: #ffffff;
+}
+
+body {
+	background-color: var(--background);
+	color: var(--text-primary);
+	line-height: 1.6;
+	min-height: 100vh;
+}
+
+.split-container {
+	display: flex;
+	min-height: 100vh;
+}
+
+.left-section {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--background);
+	padding: 2rem;
+}
+
+.right-section {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: left;
+	background-color: var(--background);
+	padding: 2rem;
+}
+
+.login-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	color: var(--text-primary);
+}
+
+.login-container {
+	width: 100%;
+	max-width: 400px;
+	transition: transform 0.3s ease;
+}
+
+.input-group {
+	margin-bottom: 1.5rem;
+}
+
+.input-group label {
+	display: block;
+	color: var(--text-secondary);
+	margin-bottom: 0.5rem;
+	font-size: 0.9rem;
+}
+
+.input-field {
+	width: 100%;
+	padding: 0.75rem 1rem;
+	border: 2px solid #e5e7eb;
+	border-radius: 8px;
+	font-size: 1rem;
+	transition: all 0.2s ease;
+	background: #f9fafb;
+}
+
+.input-field:focus {
+	outline: none;
+	border-color: var(--primary-color);
+	background: #ffffff;
+	box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+#button-group {
+	display: flex;
+	gap: 1rem;
+	margin-top: 150px;
+}
+
+.send-authBtn {
+	margin: 20px 10px 0px 0px;
+	flex: 1;
+	padding: 0.75rem 1.5rem;
+	background: var(--primary-color);
+	color: white;
+	border: none;
+	border-radius: 8px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.send-authBtn:hover {
+	background: var(--primary-hover);
+	transform: translateY(-1px);
+}
+
+.submit-button {
+	background: var(--primary-color);
+	text-decoration: none;
+	padding: 0.75rem 1.5rem;
+	border-radius: 8px;
+	font-weight: 600;
+	color: white;
+}
+
+.submit-button:hover {
+	background: var(--primary-hover);
+	transform: translateY(-1px);
+}
+
+.cancel-button {
+	background: #f3f4f6;
+	color: var(--text-primary);
+}
+
+.cancel-button:hover {
+	background: #e5e7eb;
+	transform: translateY(-1px);
+}
+
+.button-group button {
+	flex: 1;
+	padding: 0.75rem 1.5rem;
+	border: none;
+	border-radius: 8px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+
+@media (max-width: 768px) {
+	.split-container {
+		flex-direction: column;
+	}
+
+	.left-section {
+		padding: 2rem;
+		justify-content: flex-start;
+	}
+
+	.right-section {
+		padding: 2rem;
+	}
+
+	.login-container {
+		padding: 0;
+	}
+
+	.button-group {
+		flex-direction: column;
+	}
+}
