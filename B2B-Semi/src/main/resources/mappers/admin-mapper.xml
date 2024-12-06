@@ -34,61 +34,65 @@
 	<select id="searchMemberCount">
 		SELECT COUNT(*) FROM TB_MEMBER
 		WHERE 1 = 1
-		<choose>
-			<when test="key == 'id'">
-	          AND MEMBER_ID LIKE '%' || #{search} || '%'
-	        </when>
-	        <when test="key == 'nickname'">
-	          AND MEMBER_NICKNAME LIKE '%' || #{search} || '%'
-	        </when>
-	        <when test="key == 'delflY'">
-	          AND MEMBER_DEL_FL = 'Y'
-	        </when>
-	        <when test="key == 'delflN'">
-	          AND MEMBER_DEL_FL = 'N'
-	        </when>
-		</choose>
+		<if test="key != null and key != '' and search != '' and search != null">
+		
+			<choose>
+				<when test="key == 'id'">
+		          AND LOWER(MEMBER_ID) LIKE LOWER('%' || #{search} || '%')
+		        </when>
+		        <when test="key == 'nickname'">
+		          AND LOWER(MEMBER_NICKNAME) LIKE LOWER('%' || #{search} || '%')
+		        </when>
+			</choose>
+		</if>
+		
+		<if test="delfl != null and delfl != ''">
+			AND MEMBER_DEL_FL = #{delfl}
+		</if>
 	</select>
 	
 	<!-- 검색으로 회원 목록 조회. -->
 	<select id="memberSearchList">
 		SELECT * FROM TB_MEMBER
 		WHERE 1 = 1
+		<if test="key != null and key != '' and search != null and search != ''">
+		
 			<choose>
-			<when test="key == 'id'">
-	          AND MEMBER_ID LIKE '%' || #{search} || '%'
-	        </when>
-	        <when test="key == 'nickname'">
-	          AND MEMBER_NICKNAME LIKE '%' || #{search} || '%'
-	        </when>
-	        <when test="key == 'delflY'">
-	          AND MEMBER_DEL_FL = 'Y'
-	        </when>
-	        <when test="key == 'delflN'">
-	          AND MEMBER_DEL_FL = 'N'
-	        </when>
-		</choose>
+				<when test="key == 'id'">
+		          AND MEMBER_ID LIKE LOWER('%' || #{search} || '%')
+		        </when>
+		        <when test="key == 'nickname'">
+		          AND MEMBER_NICKNAME LIKE LOWER('%' || #{search} || '%')
+		        </when>
+			</choose>
+		</if>
+		
+		<if test="delfl != null and delfl != ''">
+			AND MEMBER_DEL_FL = #{delfl}
+		</if>
+
 	</select>
 	
 	<!-- 회원 검색. -->
 	<select id="searchMember" parameterType="map" resultType="Member">
 		SELECT MEMBER_NO, MEMBER_ID, MEMBER_NICKNAME, TO_CHAR(ENROLL_DATE, 'YYYY"년" MM"월" DD"일"') ENROLL_DATE, MEMBER_DEL_FL
 		FROM TB_MEMBER
-		WHERE
-		<choose>
-			<when test='key == "id"'>
-				MEMBER_ID LIKE '%' || #{search} || '%'
-			</when>
-			<when test='key == "nickname"'>
-				MEMBER_NICKNAME LIKE '%' || #{search} || '%'
-			</when>
-			<when test='key == "delflY"'>
-				MEMBER_DEL_FL = 'Y'
-			</when>
-			<when test='key == "delflN"'>
-				MEMBER_DEL_FL = 'N'
-			</when>
-		</choose>
+		WHERE 1 = 1
+		<if test="key != null and key != '' and search != '' and search != null">
+		
+			<choose>
+				<when test="key == 'id'">
+		          AND MEMBER_ID LIKE LOWER('%' || #{search} || '%')
+		        </when>
+		        <when test="key == 'nickname'">
+		          AND MEMBER_NICKNAME LIKE LOWER('%' || #{search} || '%')
+		        </when>
+			</choose>
+		</if>
+		
+		<if test="delfl != null and delfl != ''">
+			AND MEMBER_DEL_FL = #{delfl}
+		</if>
 	</select>
 	
 	<!-- 선택한 회원 정보 조회. -->
@@ -179,22 +183,20 @@
 	
 		FROM TB_BOOKS BOOK
 		WHERE 1 = 1
-		
+		<if test="key != null and key != '' and search != null and search != ''">
 		<choose>
 	        <when test="key == 'title'">
-	          AND TITLE LIKE '%' || #{search} || '%'
+	          AND LOWER(TITLE) LIKE LOWER('%' || #{search} || '%')
 	        </when>
 	        <when test="key == 'name'">
-	          AND AUTHOR LIKE '%' || #{search} || '%'
+	          AND LOWER(AUTHOR) LIKE LOWER('%' || #{search} || '%')
 	        </when>
-	        <when test='key == "delflY"'>
-			  AND IS_DELETED = 'Y'
-			</when>
-			<when test='key == "delflN"'>
-			  AND IS_DELETED = 'N'
-			</when>
 		</choose>
+		</if>
 		
+		<if test="delfl != null and delfl != ''">
+			AND IS_DELETED = #{delfl}
+		</if>
 		ORDER BY TITLE) BK
 	</select>
 	
@@ -220,20 +222,20 @@
 		FROM TB_BOOKS BOOK
 		WHERE 1 = 1
 		
+		<if test="key != null and key != '' and search != null and search != ''">
 		<choose>
 	        <when test="key == 'title'">
-	          AND TITLE LIKE '%' || #{search} || '%'
+	          AND LOWER(TITLE) LIKE LOWER('%' || #{search} || '%')
 	        </when>
 	        <when test="key == 'name'">
-	          AND AUTHOR LIKE '%' || #{search} || '%'
+	          AND LOWER(AUTHOR) LIKE LOWER('%' || #{search} || '%')
 	        </when>
-	        <when test='key == "delflY"'>
-			  AND IS_DELETED = 'Y'
-			</when>
-			<when test='key == "delflN"'>
-			  AND IS_DELETED = 'N'
-			</when>
 		</choose>
+		</if>
+		
+		<if test="delfl != null and delfl != ''">
+			AND IS_DELETED = #{delfl}
+		</if>
 		
 		ORDER BY TITLE) BK
 	</select>
@@ -316,23 +318,24 @@
 		JOIN TB_MEMBER USING (MEMBER_NO)
 		WHERE
 		1 = 1
+		<if test="key != null and key != '' and search != '' and search != null">
 			<choose>
-	        <when test="key == 'kind'">
-	          AND BOARD_KIND LIKE '%' || #{search} || '%'
-	        </when>
-	        <when test="key == 'title'">
-	          AND BOARD_TITLE LIKE '%' || #{search} || '%'
-	        </when>
-	        <when test="key == 'nickname'">
-	          AND MEMBER_NICKNAME LIKE '%' || #{search} || '%'
-	        </when>
-	        <when test="key == 'delflY'">
-	          AND BOARD_DEL_FL = 'Y'
-	        </when>
-	        <when test="key == 'delflN'">
-	          AND BOARD_DEL_FL = 'N'
-	        </when>
-		</choose>
+		        <when test="key == 'kind'">
+		          AND BOARD_KIND LIKE '%' || #{search} || '%'
+		        </when>
+		        <when test="key == 'title'">
+		          AND LOWER(BOARD_TITLE) LIKE LOWER('%' || #{search} || '%')
+		        </when>
+		        <when test="key == 'nickname'">
+		          AND MEMBER_NICKNAME LIKE '%' || #{search} || '%'
+		        </when>
+			</choose>
+		</if>
+		
+		<if test="delfl != null and delfl != ''">
+			AND BOARD_DEL_FL = #{delfl}
+		</if>
+		
 	</select>
 	
 	<!-- 검색한 게시판 조회 / 검색. -->
@@ -342,23 +345,23 @@
 		JOIN TB_MEMBER USING (MEMBER_NO)
 		JOIN BOARD_KIND USING (BOARD_CODE)
 		WHERE 1 = 1
-		<choose>
-	        <when test="key == 'kind'">
-	         AND BOARD_KIND LIKE '%' || #{search} || '%'
-	        </when>
-	        <when test="key == 'title'">
-	         AND BOARD_TITLE LIKE '%' || #{search} || '%'
-	        </when>
-	        <when test="key == 'nickname'">
-	         AND MEMBER_NICKNAME LIKE '%' || #{search} || '%'
-	        </when>
-	        <when test="key == 'delflY'">
-	          AND BOARD_DEL_FL = 'Y'
-	        </when>
-	        <when test="key == 'delflN'">
-	          AND BOARD_DEL_FL = 'N'
-	        </when>
-		</choose>
+		<if test="key != null and key != '' and search != '' and search != null">
+			<choose>
+		        <when test="key == 'kind'">
+		          AND BOARD_KIND LIKE '%' || #{search} || '%'
+		        </when>
+		        <when test="key == 'title'">
+		          AND LOWER(BOARD_TITLE) LIKE LOWER('%' || #{search} || '%')
+		        </when>
+		        <when test="key == 'nickname'">
+		          AND MEMBER_NICKNAME LIKE '%' || #{search} || '%'
+		        </when>
+			</choose>
+		</if>
+		
+		<if test="delfl != null and delfl != ''">
+			AND BOARD_DEL_FL = #{delfl}
+		</if>
 		ORDER BY BOARD_NO DESC
 	</select>
 	

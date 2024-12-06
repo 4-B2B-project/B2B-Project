@@ -222,7 +222,7 @@
 
           <div class="profile-container">
             <div class="profile-image-container">
-              <img src="placeholder.jpg" alt="프로필 이미지" class="profile-image">
+              <img th:with="user=#{user.default.image}" th:src="${member.profileImg ?: user}" alt="프로필 이미지" class="profile-image">
             </div>
 
             <form th:action="@{/adminBoard/updateMember}" method="POST" name="myPageFrm" id="updateInfo" accept-charset="UTF-8">
