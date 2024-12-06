@@ -18,7 +18,7 @@ public interface AdminMapper {
 
 	Member selectedMember(int memberNo);
 
-	List<Member> searchMember(Map<String, Object> map);
+	List<Member> searchMember(Map<String, Object> map, RowBounds rowBounds);
 
 	int updateStatus(@Param("memberIds")List<String> memberIds, @Param("status") String status);
 

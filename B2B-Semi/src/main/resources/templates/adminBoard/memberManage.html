@@ -33,17 +33,23 @@
 				<div class="search-wrapper">
 					<div class="input-group flex-grow-1">
 						
-						<select name="key" id="searchKey" class="form-select" style="border-radius: 8px;" th:value="${key}">
+						<select name="key" id="searchKey" class="form-select" style="border-radius: 8px; " th:value="${key}">
+						  <option value="">필터 선택</option>
 						  <option value="id" th:selected="${key == 'id'}">아이디</option>
 						  <option value="nickname" th:selected="${key == 'nickname'}">닉네임</option>
-						  <option value="delflY" th:selected="${key == 'delflY'}">탈퇴</option>
-						  <option value="delflN" th:selected="${key == 'delflN'}">활성</option>
 						</select>
+						
 						<input type="text" class="form-control" 
 						style="border-radius: 8px;" placeholder="검색어를 입력하세요."
 						 id="searchInput" name="search" th:value="${search}">
-						
+
 					</div>
+					
+					<select name="delfl" class="form-select" style="border-radius: 8px; width: 12%;" th:value="${delfl}">
+					  <option value="" th:selected="${delfl == ''}">탈퇴 여부</option>
+					  <option value="Y" th:selected="${delfl == 'Y'}">탈퇴</option>
+					  <option value="N" th:selected="${delfl == 'N'}">활성</option>
+					</select>
 					
 					<button id="searchBtn" class="search-button"><i class="fa-solid fa-magnifying-glass"></i>검색</button>
 					
@@ -106,7 +112,7 @@
 				            <a class="page-link py-1 px-2"
 				               th:href="${pagination.currentPage <= 1 || pagination.startPage == 1} 
 				                        ? '#' 
-				                        : @{/adminBoard/memberManage(cp=1, key=${key}, search=${search})}"
+				                        : @{/adminBoard/memberManage(cp=1, key=${key ?: ''}, search=${search ?: ''}, delfl=${delfl ?: ''})}"
 				               th:aria-disabled="${pagination.currentPage <= 1 || pagination.startPage == 1}">&lt;&lt;</a>
 				        </li>
 
@@ -115,7 +121,7 @@
 				            <a class="page-link py-1 px-2"
 				               th:href="${pagination.currentPage <= 1 || pagination.startPage == 1} 
 				                        ? '#' 
-				                        : @{/adminBoard/memberManage(cp=${pagination.prevPage}, key=${key}, search=${search})}"
+				                        : @{/adminBoard/memberManage(cp=${pagination.prevPage}, key=${key ?: ''}, search=${search ?: ''}, delfl=${delfl ?: ''})}"
 				               th:aria-disabled="${pagination.currentPage <= 1 || pagination.startPage == 1}">이전</a>
 				        </li>
 
@@ -126,7 +132,7 @@
 						        <a class="page-link py-1 px-2"
 						           th:href="${i == pagination.currentPage} 
 						                    ? '#' 
-						                    : @{/adminBoard/memberManage(cp=${i}, key=${key}, search=${search})}"
+						                    : @{/adminBoard/memberManage(cp=${i}, key=${key ?: ''}, search=${search ?: ''}, delfl=${delfl ?: ''})}"
 						           th:text="${i}"
 						           th:aria-current="${i == pagination.currentPage} ? 'page'">현재페이지</a>
 						    </li>
@@ -137,7 +143,7 @@
 				            <a class="page-link py-1 px-2"
 				               th:href="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} 
 				                        ? '#' 
-				                        : @{/adminBoard/memberManage(cp=${pagination.nextPage}, key=${key}, search=${search})}"
+				                        : @{/adminBoard/memberManage(cp=${pagination.nextPage}, key=${key ?: ''}, search=${search ?: ''}, delfl=${delfl ?: ''})}"
 				               th:aria-disabled="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage}">다음</a>
 				        </li>
 
@@ -146,7 +152,7 @@
 				            <a class="page-link py-1 px-2"
 				               th:href="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage} 
 				                        ? '#' 
-				                        : @{/adminBoard/memberManage(cp=${pagination.maxPage}, key=${key}, search=${search})}"
+				                        : @{/adminBoard/memberManage(cp=${pagination.maxPage}, key=${key ?: ''}, search=${search ?: ''}, delfl=${delfl ?: ''})}"
 				               th:aria-disabled="${pagination.currentPage >= pagination.maxPage || pagination.endPage == pagination.maxPage}">&gt;&gt;</a>
 				        </li>
 				    </ul>

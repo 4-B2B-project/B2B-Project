@@ -38,21 +38,21 @@
 		<input type="hidden" name="cp" th:value="${pagination != null ? pagination.currentPage : 1}">
 	  	<img src="#" th:src="${book.coverUrl}" alt="Book cover" class="book-detail-cover">
 	  	<div class="book-detail-info">
-	  		<h2 class="book-detail-title mb-2" th:text="${book.title}">도서 제목</h2>
+	  		<h2 class="book-detail-title mb-2" th:utext="${book.title}">도서 제목</h2>
 
 	  		<p class="book-detail-author mb-3">
 	  			<i class="fas fa-pen-nib me-2"></i>
-				<span th:text="${book.author}">작가 이름</span>
+				<span th:utext="${book.author}">작가 이름</span>
 	  		</p>
 			
 			<div class="book-detail-genres mb-3">
 				<i class="fa-solid fa-building"></i>
-				<span th:text="${book.publisher}">출판사</span>
+				<span th:utext="${book.publisher}">출판사</span>
 			</div>
 			
 			<div class="book-detail-pubDate mb-3">
 				<i class="fa-solid fa-calendar-days"></i>
-				<span th:text="${book.pubDate}">출판일</span>
+				<span th:utext="${book.pubDate}">출판일</span>
 			</div>
 				
 	  		<div class="book-detail-stats mb-3">
@@ -76,7 +76,7 @@
 	  <!-- 책 소개 -->
 	  <div class="book-synopsis mb-4">
 	  	<h3 class="section-title">작품 소개</h3>
-	  	<textarea id="descriptionTextarea" name="description" class="book-synopsis-text" th:text="${book.description}" rows="5" cols="100">
+	  	<textarea id="descriptionTextarea" name="description" class="book-synopsis-text" th:utext="${book.description}" rows="5" cols="100">
 			책 소개
 	  	</textarea>
 	  </div>

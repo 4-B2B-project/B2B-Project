@@ -6,12 +6,13 @@ cancelBtn.addEventListener("click", () => {
 	const key = URLParams.get('key');
 	const search = URLParams.get('search');
 	const cp = URLParams.get('cp');
+	const delfl = URLParams.get('delfl');
 	
 	if(key == null) {
 		window.location.href = `memberManage?cp=${cp}`;
 	}
 	else {
-		window.location.href = `memberManage?cp=${cp}&key=${key}&search=${search}`;
+		window.location.href = `memberManage?cp=${cp}&key=${key}&search=${search}&delfl=${delfl}`;
 	}
 
 });
