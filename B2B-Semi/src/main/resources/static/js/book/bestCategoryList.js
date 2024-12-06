@@ -1,14 +1,10 @@
-// URL에서 category 파라미터 값 가져오기
-const params = new URLSearchParams(window.location.search);
-const selectedCategory = params.get("category"); // 선택된 카테고리 값
-
 // 버튼의 해당 장르 도서목록 조회
 const categoryButton = document.querySelectorAll(".categoryButton");
 const bookList = document.querySelector("#bookList");
 
 // 버튼 배경색 설정
 categoryButton.forEach(button => {
-    if (button.getAttribute("value") === selectedCategory) {
+    if (button.getAttribute("value") === category) {
         button.style.backgroundColor = "#DDD6FE"; // 선택된 버튼 강조
     } else {
         button.style.backgroundColor = "#f3f4f6"; // 다른 버튼은 초기화
@@ -110,9 +106,9 @@ bookList.addEventListener("click", (event) => {
 		const steamCount = row.getAttribute('data-steamCount');
 
         // 모달 내용 업데이트
-        document.querySelector('.book-detail-title').textContent = bookTitle;
+        document.querySelector('.book-detail-title').innerHTML = bookTitle;
         document.querySelector('.book-detail-cover').src = bookCover;
-        document.querySelector('.book-detail-author').textContent = bookAuthor;
+        document.querySelector('.book-detail-author').innerHTML = bookAuthor;
         document.querySelector('.book-detail-stats .stat-item:first-child span').textContent = bookRating;
         document.querySelector('.book-detail-stats .stat-item:nth-child(2) span').textContent = reviewCount;
 		document.querySelector('.book-detail-stats .stat-item:last-child span').textContent = steamCount;
@@ -135,7 +131,7 @@ bookList.addEventListener("click", (event) => {
             genreContainer.appendChild(genreBadge);
         });
 
-        document.querySelector('.book-synopsis-text').textContent = bookDescription;
+        document.querySelector('.book-synopsis-text').innerHTML = bookDescription;
 
         // 모달 보여주기
         modal.show();

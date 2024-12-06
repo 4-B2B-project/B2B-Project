@@ -39,7 +39,7 @@
 										<th:block th:each="book, iterStat : ${group}">
 											<div class="book-card"
 												th:data-bookId="${book.bookId}" th:data-title="${book.fullTitle}"
-												th:data-coverUrl="${book.coverUrl}" th:data-author="${book.author}"
+												th:data-coverUrl="${book.coverUrl}" th:data-author="${book.fullAuthor}"
 												th:data-rating="${book.customerReviewRank}" th:data-genres="${book.genres}"
 												th:data-description="${book.description}" th:data-reviewCount="${book.reviewCount}" 
 												th:data-steamCount="${book.steamCount}">
@@ -50,8 +50,8 @@
 													<div class="book-title" th:text="${book.title}"
 														th:data-full-title="${book.title}"></div>
 													<!-- 책 저자 -->
-													<div class="book-author" th:text="${book.author}"
-														th:data-full-author="${book.author}"></div>
+													<div class="book-author" th:text="${book.fullAuthor}"
+														th:data-full-author="${book.fullAuthor}"></div>
 													<div class="book-stats">
 														<!-- 평점 -->
 														<span class="stat-item">평점: <span
@@ -88,6 +88,9 @@
 				<div class="genre-card">경제경영</div>
 				<div class="genre-card">만화</div>
 			</div>
+			<form id="postForm" action="/book/bestCategoryList" method="POST" style="display: none;">
+			    <input type="hidden" name="category" id="categoryInput">
+			</form>
 		</section>
 
 		<section class="community-section">

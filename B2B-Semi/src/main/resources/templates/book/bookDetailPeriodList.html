@@ -79,7 +79,7 @@
 					<th:block th:unless="${#lists.isEmpty(bookList)}">
 						<div class="book-card" th:each="book, iterStat : ${bookList}" th:object="${bookList}" 
 						th:data-bookId="${book.bookId}" th:data-title="${book.fullTitle}"
-						th:data-coverUrl="${book.coverUrl}" th:data-author="${book.author}"
+						th:data-coverUrl="${book.coverUrl}" th:data-author="${book.fullAuthor}"
 						th:data-rating="${book.customerReviewRank}" th:data-genres="${book.genres}"
 						th:data-description="${book.description}" th:data-reviewCount="${book.reviewCount}" 
 						th:data-pubDate="${book.pubDate}" th:data-steamCount="${book.steamCount}">

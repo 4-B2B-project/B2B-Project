@@ -66,17 +66,17 @@
 		AND BOARD_CODE = #{boardCode}
 		<choose>
 			<when test='searchType == "title"'>
-				AND BOARD_TITLE LIKE '%' || #{searchInput} || '%'
+				AND LOWER(BOARD_TITLE) LIKE LOWER('%' || #{searchInput} || '%')
 			</when>
 			<when test='searchType == "content"'>
-				AND BOARD_CONTENT LIKE '%' || #{searchInput} || '%'
+				AND LOWER(BOARD_CONTENT) LIKE LOWER('%' || #{searchInput} || '%')
 			</when>
 			<when test='searchType == "writer"'>
 				AND (
-					SELECT MEMBER_NICKNAME 
+					SELECT LOWER(MEMBER_NICKNAME) 
 					FROM "TB_MEMBER" MEM
 					WHERE BOARD.MEMBER_NO = MEM.MEMBER_NO
-				) LIKE '%' || #{searchInput} || '%'
+				) LIKE LOWER('%' || #{searchInput} || '%')
 			</when>
 		</choose>
 	</select>
@@ -128,13 +128,13 @@
 		WHERE 1=1
 		<choose>
 			<when test='searchType == "title"'>
-				AND BOARD_TITLE LIKE '%' || #{searchInput} || '%'
+				AND LOWER(BOARD_TITLE) LIKE LOWER('%' || #{searchInput} || '%')
 			</when>
 			<when test='searchType == "content"'>
-				AND BOARD_CONTENT LIKE '%' || #{searchInput} || '%'
+				AND LOWER(BOARD_CONTENT) LIKE LOWER('%' || #{searchInput} || '%')
 			</when>
 			<when test='searchType == "writer"'>
-				AND MEMBER_NICKNAME LIKE '%' || #{searchInput} || '%'
+				AND LOWER(MEMBER_NICKNAME) LIKE LOWER('%' || #{searchInput} || '%')
 			</when>
 		</choose>
 	</select>

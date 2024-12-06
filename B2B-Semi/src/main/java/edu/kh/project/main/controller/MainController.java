@@ -62,6 +62,7 @@ public class MainController {
 		            bookMap.put("title", book.getTitle());
 		            bookMap.put("coverUrl", book.getCoverUrl());
 		            bookMap.put("author", book.getAuthor());
+		            bookMap.put("fullAuthor", book.getFullAuthor());
 		            bookMap.put("customerReviewRank", book.getCustomerReviewRank());
 		            bookMap.put("genres", book.getGenres());
 		            bookMap.put("description", book.getDescription());
