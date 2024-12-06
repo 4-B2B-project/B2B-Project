@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const key = searchParams.get("key") || "";
 	const search = searchParams.get("search") || "";
 	const cp = searchParams.get("cp") || 1;
+	const delfl = searchParams.get("delfl") || "";
 	
 	submitUpdate.addEventListener("click", () => {
 		
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 			if(data.success) {
 				alert("수정 완료.");
-				window.location.href = `/adminBoard/bookManage?cp=${cp}&key=${key}&search=${search}`;
+				window.location.href = `/adminBoard/bookManage?cp=${cp}&key=${key}&search=${search}&delfl=${delfl}`;
 			}
 			
 			else {
@@ -59,12 +60,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		const key = URLParams.get('key') || '';
 		const search = URLParams.get('search') || '';
 		const cp = URLParams.get('cp') || '';
+		const delfl = URLParams.get('delfl') || '';
 		
 		if(key == null) {
 			window.location.href = `/adminBoard/bookManage?cp=${cp}`;
 		}
 		else {
-			window.location.href = `/adminBoard/bookManage?cp=${cp}&key=${key}&search=${search}`;
+			window.location.href = `/adminBoard/bookManage?cp=${cp}&key=${key}&search=${search}&delfl=${delfl}`;
 		}
 		
 	});

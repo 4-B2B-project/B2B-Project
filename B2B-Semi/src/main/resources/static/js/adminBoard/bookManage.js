@@ -7,8 +7,25 @@ searchBookListBtn.addEventListener("click", () => {
 	
 	const key = document.querySelector("#searchKey").value;
 	const query = input.value.trim();
+	const delfl = document.querySelector("select[name='delfl']").value;
 	
-	window.location.href = `/adminBoard/searchBook?key=${key}&search=${query}`;
+	const params = new URLSearchParams();
+
+	if (key) params.append("key", key);
+	if (query) params.append("search", query);
+	if (delfl) params.append("delfl", delfl);
+
+	params.append("cp", "1");
+
+	const queryString = params.toString();
+
+	if (!key && !query && !delfl) {
+	    alert("검색 조건을 입력하거나 필터를 선택하세요.");
+	    e.preventDefault();
+	    return;
+	}
+
+	window.location.href = `/adminBoard/searchBook?${queryString}`;
 })
 
 input.addEventListener("keyup", e => {
@@ -80,18 +97,14 @@ const updateBookBtn = document.querySelectorAll("button[name='updateBookBtn']").
 		let key = URLParams.get('key');
 		let search = URLParams.get('search');
 		let cp = URLParams.get('cp');
+		let delfl = URLParams.get('delfl');
 		
-		if(cp == null) {
-			cp = 1;
-		}
-		if(key == null) {
-			key = '';
-		}
-		if(search == null) {
-			search = '';
-		}
+		if( key == null) key = '';
+		if( search == null) search = '';
+		if( delfl == null) delfl = '';
+		if( cp == null) cp = 1;
 		
-		window.location.href = `/adminBoard/updateBook?cp=${cp}&key=${key}&search=${search}&bookId=${bookId}`;
+		window.location.href = `/adminBoard/updateBook?cp=${cp}&key=${key}&search=${search}&delfl=${delfl}&bookId=${bookId}`;
 	})
 });
 

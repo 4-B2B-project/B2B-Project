@@ -96,12 +96,12 @@ goToListBtn.addEventListener("click", () => {
 	const key = URLParams.get('key') || '';
 	const search = URLParams.get('search') || '';
 	const cp = URLParams.get('cp') || '';
-	
+	const delfl = URLParams.get('delfl') || '';
 	if(key == null) {
 		window.location.href = `/adminBoard/boardManage?cp=${cp}`;
 	}
 	else {
-		window.location.href = `/adminBoard/boardManage?cp=${cp}&key=${key}&search=${search}`;
+		window.location.href = `/adminBoard/boardManage?cp=${cp}&key=${key}&search=${search}&delfl=${delfl}`;
 	}
 	
 });

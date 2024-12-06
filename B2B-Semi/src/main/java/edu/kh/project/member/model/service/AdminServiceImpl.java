@@ -128,11 +128,17 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public Map<String, Object> memberSearchList(int cp, Map<String, Object> paramMap) {
 
+	    if (paramMap.get("search") != null) {
+	        paramMap.put("search", ((String)paramMap.get("search")).trim());
+	    }
+		
 		int memberCount = mapper.searchMemberCount(paramMap);
+		
 		Pagination pagination = new Pagination(cp, memberCount);
 		
 		int limit = pagination.getLimit();
 		int offset = (cp - 1) * limit;
+		
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
 		List<Member> memberList = mapper.memberSearchList(paramMap, rowBounds);
@@ -152,11 +158,16 @@ public class AdminServiceImpl implements AdminService{
 		
 		Pagination pagination = new Pagination(cp, listCount);
 		
+		int limit = pagination.getLimit();
+		int offset = (cp - 1) * limit;
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
 		Map<String, Object> searchParam = new HashMap<>();
 	    searchParam.put("pagination", pagination);
 	    searchParam.putAll(paramMap);
 	    
-	    List<Member> memberList = mapper.searchMember(searchParam);
+	    List<Member> memberList = mapper.searchMember(searchParam, rowBounds);
 	    
 	    Map<String, Object> map = new HashMap<>();
 	    map.put("pagination", pagination);

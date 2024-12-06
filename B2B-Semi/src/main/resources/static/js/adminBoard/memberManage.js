@@ -3,20 +3,29 @@ const tbody = document.querySelector("#tbody");
 const input = document.querySelector("#searchInput");
 const checkAll = document.querySelector("#theadCheckAll");
 
-searchMemberListBtn.addEventListener("click", () => {
+searchMemberListBtn.addEventListener("click", e => {
 
-	if(searchMemberListBtn) {
-		let key = document.querySelector("#searchKey").value;
-		let query = input.value.trim();
-		if(key == null) {
-			key = '';
+		const key = document.querySelector("#searchKey").value;
+		const query = input.value.trim();
+		const delfl = document.querySelector("select[name='delfl']").value;
+		
+		const params = new URLSearchParams();
+		if (key) params.append("key", key);
+		if (query) params.append("search", query);
+		if (delfl) params.append("delfl", delfl);
+
+		// 검색은 항상 첫 페이지(cp=1)부터 시작
+		params.append("cp", "1");
+
+		const queryString = params.toString();
+		
+		if (!key && !query && !delfl) {
+		    alert("검색 조건을 입력하거나 필터를 선택하세요.");
+		    e.preventDefault();
+		    return;
 		}
 		
-		if(query == null) {
-			query = '';
-		}
-		window.location.href = `/adminBoard/searchMember?key=${key}&search=${query}`;
-	}
+		window.location.href = `/adminBoard/searchMember?${queryString}`;
 
 });
 
@@ -87,16 +96,13 @@ const updateMemberBtn = document.querySelectorAll("button[name='updateMemberBtn'
 		let key = URLParams.get('key');
 		let search = URLParams.get('search');
 		let cp = URLParams.get('cp');
+		let delfl = URLParams.get('delfl');
 		
-		if(cp == null) {
-			cp = 1;
-		}
-		if(key == null) {
-			key = '';
-		}
-		if(search == null) {
-			search = '';
-		}
+		if( key == null) key = '';
+		if( search == null) search = '';
+		if( delfl == null) delfl = '';
+		if( cp == null) cp = 1;
 		
-		window.location.href = `/adminBoard/updateMember?cp=${cp}&key=${key}&search=${search}&memberNo=${memberNo}`;	})
+		window.location.href = `/adminBoard/updateMember?cp=${cp}&key=${key}&search=${search}&delfl=${delfl}&memberNo=${memberNo}`;
+	})
 });
