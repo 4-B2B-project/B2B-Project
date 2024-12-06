@@ -32,7 +32,7 @@
 			<section class="genre-section">
 			    <th:block th:unless="${#lists.isEmpty(bookList)}">
 			        <th:block th:each="subGroups : ${bookList}">
-			            <div class="swiper">
+			            <div class="swiper" style="margin-bottom: 20px;">
 			                <!-- 각 그룹의 첫 번째 책의 category를 표시 -->
 			                <h1 class="ranking-title" th:text="${subGroups[0][0].firstCategory}">장르별 도서</h1>
 

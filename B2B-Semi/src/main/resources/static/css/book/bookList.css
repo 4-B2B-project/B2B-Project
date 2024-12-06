@@ -177,6 +177,11 @@ body {
 }
 
 /* 마지막 th만 오른쪽 상단 모서리 둥글게 */
+.bookInfo {
+	cursor: pointer;
+}
+
+
 .table thead th:last-child {
 	border-top-right-radius: 8px;
 }

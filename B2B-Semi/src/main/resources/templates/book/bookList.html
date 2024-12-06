@@ -106,22 +106,22 @@
 
 								<tr th:each="book, iterStat : ${bookList}" th:object="${book}" class="bookInfo"
 									th:data-bookId="${book.bookId}" th:data-title="${book.fullTitle}"
-									th:data-coverUrl="${book.coverUrl}" th:data-author="${book.author}"
+									th:data-coverUrl="${book.coverUrl}" th:data-author="${book.fullAuthor}"
 									th:data-rating="${book.customerReviewRank}" th:data-genres="${book.genres}"
 									th:data-description="${book.description}" th:data-reviewCount="${book.reviewCount}" 
 									th:data-steamCount="${book.steamCount}">
 									<td th:text="${book.rowNum}" style="text-align: center;">구분번호</td>
 									<td>
 										<div class="book-title"
-											th:data-full-text="${book.title + ' (★' + book.customerReviewRank + ')'}"
+											th:data-full-text="${book.fullTitle + ' (★' + book.customerReviewRank + ')'}"
 											onmousemove="showTooltip(event, this)">
-											<span th:text="${book.title}"></span>
+											<span th:text="${book.fullTitle}"></span>
 											(<span class="rating" th:text="|★${book.customerReviewRank}|"></span>)
 										</div>
 									</td>
 									<td>
-										<div class="book-author" th:data-full-text="${book.author}"
-											th:text="${book.author}" onmousemove="showTooltip(event, this)">
+										<div class="book-author" th:data-full-text="${book.fullAuthor}"
+											th:text="${book.fullAuthor}" onmousemove="showTooltip(event, this)">
 											작가
 										</div>
 									</td>

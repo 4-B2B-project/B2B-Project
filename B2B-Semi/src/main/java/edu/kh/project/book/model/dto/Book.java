@@ -33,6 +33,7 @@ public class Book {
 	// DB외의 별도 추가 항목
 	private String genres;				// 도서 1,2장르 합친부분
 	private String fullTitle;			// 도서 전체 제목
+	private String fullAuthor;			// 작가 전체 제목
 	private float customerReviewRank;	// 도서 리뷰 점수
 	private int rowNum;					// rownum
 	private int reviewCount;			// 리뷰 카운트
