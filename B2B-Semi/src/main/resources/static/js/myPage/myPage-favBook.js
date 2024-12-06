@@ -1,136 +1,124 @@
-
-
 // .bookInfo 클래스를 가진 모든 DOM 요소를 선택
 const bookInfoRows = document.querySelectorAll('.bookInfo');
 
 // 선택된 요소들에 대해 반복 처리
 bookInfoRows.forEach(row => {
-	// 각 row에 클릭 이벤트 리스너 추가
-	row.addEventListener('click', () => {
-		const modal = new bootstrap.Modal(document.getElementById('bookDetailModal'));
-		
-		// 아래부터 row 클릭된 요소의 데이터를 가져와 세팅작업 진행
-
-		// tr 요소에서 필요한 데이터 가져오기 (data-attributes 사용)
-		const bookId = row.getAttribute('data-bookId');
-		const bookTitle = row.getAttribute('data-title');
-		const bookCover = row.getAttribute('data-coverUrl');
-		const bookAuthor = row.getAttribute('data-author');
-		const bookRating = row.getAttribute('data-rating');
-		const bookGenres = row.getAttribute('data-genres');
-		const bookDescription = row.getAttribute('data-description');
-		const reviewCount = row.getAttribute('data-reviewCount');
-		const steamCount = row.getAttribute('data-steamCount');
-
-
-		// 모달 내 요소 업데이트
-		document.querySelector('.book-detail-title').textContent = bookTitle;
-		document.querySelector('.book-detail-cover').src = bookCover;
-		document.querySelector('.book-detail-author').textContent = bookAuthor;
-		document.querySelector('.book-detail-stats .stat-item:first-child span').textContent = bookRating;
-		document.querySelector('.book-detail-stats .stat-item:nth-child(2) span').textContent = reviewCount;
-		document.querySelector('.book-detail-stats .stat-item:last-child span').textContent = steamCount;
-		document.querySelector('.avgScore').textContent = "평균 " + bookRating + " : 10.0";
-		document.querySelector('.reviewCount').textContent = "총 " + reviewCount + "개의 리뷰";
-
-		// bookId 저장
-		document.querySelector('#selectBookId').value = bookId;
-		
-		// 찜 여부 조회
-		isBookSteam(bookId);
-
-		// 장르 업데이트
-		const genreContainer = document.querySelector('.book-detail-genres');
-		genreContainer.innerHTML = ''; // 기존 장르 제거
-		bookGenres.split(',').forEach(genre => {
-
-			// 태그 생성 및 class, text입히기
-			const genreBadge = document.createElement('span');
-			genreBadge.className = 'badge bg-primary me-2';
-			genreBadge.textContent = genre;
-
-			// 장르 태그 안에 자식으로 추가
-			genreContainer.appendChild(genreBadge);
-		});
-
-
-		// 책 소개 업데이트
-		document.querySelector('.book-synopsis-text').textContent = bookDescription;
-
-		// 모달 보여주기
-		modal.show();
-
-		// 댓글 조회 비동기 함수
-		selectReviewList(bookId);
-	});
+    // 각 row에 클릭 이벤트 리스너 추가
+    row.addEventListener('click', () => {
+        showBookDetailModal(row);
+    });
 });
+
+// 모달 표시 함수
+function showBookDetailModal(row) {
+    const modal = new bootstrap.Modal(document.getElementById('bookDetailModal'));
+
+    // tr 요소에서 필요한 데이터 가져오기 (data-attributes 사용)
+    const bookId = row.getAttribute('data-bookId');
+    const bookTitle = row.getAttribute('data-title');
+    const bookCover = row.getAttribute('data-coverUrl');
+    const bookAuthor = row.getAttribute('data-author');
+    const bookRating = row.getAttribute('data-rating');
+    const bookGenres = row.getAttribute('data-genres');
+    const bookDescription = row.getAttribute('data-description');
+    const reviewCount = row.getAttribute('data-reviewCount');
+    const steamCount = row.getAttribute('data-steamCount');
+
+    // 모달 내 요소 업데이트
+    document.querySelector('.book-detail-title').textContent = bookTitle;
+    document.querySelector('.book-detail-cover').src = bookCover;
+    document.querySelector('.book-detail-author').textContent = bookAuthor;
+    document.querySelector('.book-detail-stats .stat-item:first-child span').textContent = bookRating;
+    document.querySelector('.book-detail-stats .stat-item:nth-child(2) span').textContent = reviewCount;
+    document.querySelector('.book-detail-stats .stat-item:last-child span').textContent = steamCount;
+    document.querySelector('.avgScore').textContent = "평균 " + bookRating + " : 10.0";
+    document.querySelector('.reviewCount').textContent = "총 " + reviewCount + "개의 리뷰";
+
+    // bookId 저장
+    document.querySelector('#selectBookId').value = bookId;
+
+    // 찜 여부 조회
+    isBookSteam(bookId);
+
+    // 장르 업데이트
+    const genreContainer = document.querySelector('.book-detail-genres');
+    genreContainer.innerHTML = ''; // 기존 장르 제거
+    bookGenres.split(',').forEach(genre => {
+        // 태그 생성 및 class, text입히기
+        const genreBadge = document.createElement('span');
+        genreBadge.className = 'badge bg-primary me-2';
+        genreBadge.textContent = genre;
+
+        // 장르 태그 안에 자식으로 추가
+        genreContainer.appendChild(genreBadge);
+    });
+
+    // 책 소개 업데이트
+    document.querySelector('.book-synopsis-text').innerHTML = bookDescription;
+
+    // 모달 보여주기
+    modal.show();
+
+    // 댓글 조회 비동기 함수
+    selectReviewList(bookId);
+}
 
 // 찜하기 구현
 const steamBtn = document.querySelector("#steamBtn");
-if(steamBtn != null) {
-	steamBtn.addEventListener("click", () => {
-		
-		const bookId = document.getElementById("selectBookId").value;
-		
-		fetch("/book/steamBook", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(bookId)
-		})
-		.then(resp => resp.json())
-		.then(result => {
-			if(result == 1) {
-				steamBtn.style.backgroundColor = "#4f46e5";
-				steamBtn.style.color = "white";
-				alert("찜 완료");
-				
-			} else if(result == 2) {
-				steamBtn.style.backgroundColor = "white";
-				steamBtn.style.color = "#4F46E5";
-				alert("찜 취소")
-				
-			} else {
-				alert("찜하기 오류 발생");
-				
-			}
-			
-		});
-		
-	});
-	
+if (steamBtn != null) {
+    steamBtn.addEventListener("click", () => {
+        const bookId = document.getElementById("selectBookId").value;
+
+        fetch("/book/steamBook", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(bookId)
+        })
+            .then(resp => resp.json())
+            .then(result => {
+                if (result == 1) {
+                    steamBtn.style.backgroundColor = "#4f46e5";
+                    steamBtn.style.color = "white";
+                    alert("찜 완료");
+
+                } else if (result == 2) {
+                    steamBtn.style.backgroundColor = "white";
+                    steamBtn.style.color = "#4F46E5";
+                    alert("찜 취소");
+
+                } else {
+                    alert("찜하기 오류 발생");
+                }
+            });
+    });
 }
 
 // 찜 여부 조회
 function isBookSteam(bookId) {
-	
-	if(loginMember != null) {
-		memberNo = loginMember.memberNo;
-		
-		obj = {
-			"memberNo" : memberNo,
-			"bookId" : bookId
-		};
-		
-		fetch("/book/isBookSteam"	, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(obj)
-		})
-		.then(resp => resp.json())
-		.then(result => {
-			if(result == 1) {
-				steamBtn.style.backgroundColor = "#4f46e5";
-				steamBtn.style.color = "white";
-				
-			} else {
-				steamBtn.style.backgroundColor = "white";
-				steamBtn.style.color = "#4F46E5";
-				
-			}
-			 		
-		});
-	}
-	
+    if (loginMember != null) {
+        const memberNo = loginMember.memberNo;
+
+        const obj = {
+            "memberNo": memberNo,
+            "bookId": bookId
+        };
+
+        fetch("/book/isBookSteam", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(obj)
+        })
+            .then(resp => resp.json())
+            .then(result => {
+                if (result == 1) {
+                    steamBtn.style.backgroundColor = "#4f46e5";
+                    steamBtn.style.color = "white";
+                } else {
+                    steamBtn.style.backgroundColor = "white";
+                    steamBtn.style.color = "#4F46E5";
+                }
+            });
+    }
 }
 
 
@@ -607,3 +595,102 @@ document.querySelector('.review-list').addEventListener('click', function(e) {
         }
     }
 });
+
+
+/* 무한 스크롤 */
+
+let currentPage = 1;
+const bookGrid = document.getElementById('book-grid');
+
+// 전역 변수로 toTopButton 정의
+window.toTopButton = document.getElementById('toTopBtn');
+
+// 스크롤 이벤트 리스너 추가 (무한스크롤)
+window.addEventListener('scroll', () => {
+
+	// 스크롤이 페이지 하단에 도달했을 때 추가 데이터 로드
+	if(document.documentElement.scrollTop > 100) {
+		toTopButton.style.display = 'block';
+	} else {
+		toTopButton.style.display = 'none';
+	}
+
+	if((window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight){
+		loadMoreBooks();
+	}
+});
+
+// "맨 위로" 버튼 클릭 시 부드럽게 스크롤 맨 위로 이동
+window.scrollToTop = function () {
+	window.scrollTo({
+		top : 0,
+		behavior: 'smooth'
+	});
+};
+
+function loadMoreBooks() {
+	currentPage++;
+	fetch(`/myPage/favBook/loadMore?page=${currentPage}`, {
+			method: "GET",
+			headers: { "Content-Type": "application/json" }
+	})
+			.then(resp => resp.json())
+			.then(books => {
+					if (books.length > 0) {
+							books.forEach(book => {
+									// 새로운 책 카드 생성
+									const bookCard = document.createElement('div');
+									bookCard.className = 'book-card bookInfo';
+									bookCard.setAttribute('data-bookId', book.bookId);
+									bookCard.setAttribute('data-title', book.title);
+									bookCard.setAttribute('data-author', book.author);
+									bookCard.setAttribute('data-coverUrl', book.coverUrl);
+									bookCard.setAttribute('data-rating', book.customerReviewRank);
+									bookCard.setAttribute('data-genres', book.genres || '');
+									bookCard.setAttribute('data-description', book.description);
+									bookCard.setAttribute('data-reviewCount', book.reviewCount || 0);
+									bookCard.setAttribute('data-steamCount', book.steamCount || 0);
+
+									// bookCard의 내부 콘텐츠 추가
+									bookCard.innerHTML = `
+											<div class="rank-badge">${bookGrid.children.length + 1}</div>
+											<img src="${book.coverUrl}" alt="Book Cover" class="book-cover">
+											<div class="book-info">
+													<h3 class="book-title">${book.title}</h3>
+													<div class="book-stats">
+															<div class="stat-item">
+																	<i class="fa-solid fa-pen-nib"></i>
+																	<span>${book.author}</span>
+															</div>
+															<div class="stat-item">
+																	<i class="fas fa-star text-warning"></i>
+																	<span>${book.customerReviewRank}</span>
+															</div>
+															<div class="stat-item">
+																	<i class="fas fa-comment text-primary"></i>
+																	<span>${book.reviewCount}</span>
+															</div>
+															<div class="stat-item">
+																	<i class="fas fa-heart text-danger"></i>
+																	<span>${book.steamCount}</span>
+															</div>
+													</div>
+											</div>
+									`;
+
+									// 새로운 책 카드 book-grid에 추가
+									bookGrid.appendChild(bookCard);
+
+									// 각 bookCard에 클릭 이벤트 리스너 추가
+									bookCard.addEventListener('click', () => {
+											showBookDetailModal(bookCard);
+									});
+							});
+					} else {
+							console.log('더 이상 가져올 도서가 없습니다.');
+					}
+			})
+			.catch(error => {
+					console.error('도서 목록을 로드하는 중 오류 발생:', error);
+			});
+}

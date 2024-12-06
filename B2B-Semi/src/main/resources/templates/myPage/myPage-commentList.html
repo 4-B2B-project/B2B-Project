@@ -71,11 +71,11 @@
                   </th>
 
                   <th style="width: 40%;">
-                    제목    
+                    댓글내용   
                   </th>
 
                   <th style="width: 27.5%;">
-                    작성자
+                    게시글 제목
                   </th>
 
                   <th style="width: 22.5%;">
@@ -107,8 +107,8 @@
                       </div>
                     </td>
 
-                    <!-- 작성자 -->
-                    <td th:text="${comment.memberNickname}">작성자</td>
+                    <!-- 게시글 제목 -->
+                    <td th:text="${comment.boardTitle != null ? comment.boardTitle : '게시글 제목 없음'}">게시글 제목</td>
 
                     <!-- 작성일 -->
                     <td th:text="${comment.commentWriteDate}">작성일</td>
