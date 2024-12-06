@@ -61,7 +61,7 @@
       <section class="genre-section">
         <div class="table-responsive">
           <table class="table table-hover">
-            <thead>
+            <thead style="text-align: center;">
               <tr>
                 <th style="width: 10%;">
                   구분
@@ -70,16 +70,16 @@
                   </span>
                 </th>
 
-                <th style="width: 40%;">
+                <th style="width: 50%;">
                   제목
                 </th>
 
-                <th style="width: 27.5%;">
-                  작성자
+                <th style="width: 20%;">
+                  작성일
                 </th>
 
-                <th style="width: 22.5%;">
-                  작성일
+                <th style="width: 20%;" >
+                  조회수
                 </th>
 
 
@@ -96,7 +96,7 @@
               <th:block th:unless="${#lists.isEmpty(boardList)}">
                 <tr th:each="board : ${boardList}" th:if="${board.boardDelFl == 'N'}">
                   <!-- 게시글 구분 -->
-                  <td>
+                  <td style="text-align: center;">
                     <span th:switch="${board.boardCode}">
                       <span th:case="1" class="board-label board-label-1">자유</span>
                       <span th:case="2" class="board-label board-label-2">추천</span>
@@ -108,18 +108,21 @@
 
                   <!-- 게시글 제목 -->
                   <td>
-                    <div class="board-title" th:data-full-text="${board.boardTitle}">
+                    <div class="board-title ellipsis" th:data-full-text="${board.boardTitle}">
                       <a th:href="@{/myPage/boardDetail(boardNo=${board.boardNo})}" th:text="${board.boardTitle}">게시글 제목</a>
                     </div>
                   </td>
 
-                  <!-- 작성자 -->
-                  <td th:text="${board.memberNickname}">작성자</td>
-
+                
                   <!-- 작성일 -->
-                  <td>
+                  <td style="text-align: center;">
                     <span th:if="${board.boardUpdateDate != null}" th:text="${board.boardUpdateDate}">수정된 작성일</span>
                     <span th:unless="${board.boardUpdateDate != null}" th:text="${board.boardWriteDate}">최초 작성일</span>
+                  </td>
+
+                  <!-- 조회 수-->
+                  <td style="text-align: center;">
+                    <span th:text="${board.readCount}" >조회수</span>
                   </td>
                   
                 </tr>
