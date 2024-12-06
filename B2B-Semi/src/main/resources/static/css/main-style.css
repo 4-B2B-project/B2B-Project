@@ -100,6 +100,7 @@ body {
 }
 
 .book-card {
+	cursor: pointer;
 	display: flex;
 	flex-direction: column;
 	position: relative;

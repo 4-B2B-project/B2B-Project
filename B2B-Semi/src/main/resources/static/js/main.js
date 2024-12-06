@@ -21,13 +21,17 @@ const getCookie = (key) => {
 
 // 장르별 퀵 엑세스의 해당 장르 클릭시 페이지 이동
 const genreCard = document.querySelectorAll(".genre-card");
-genreCard.forEach(row => {
-	row.addEventListener("click", e => {
-		const category = e.target.innerText;
-		location.href = `/book/bestCategoryList?category=${encodeURIComponent(category)}`;
+const form = document.getElementById("postForm");
+const categoryInput = document.getElementById("categoryInput");
 
-	});
+genreCard.forEach(row => {
+    row.addEventListener("click", e => {
+        const category = e.target.innerText;
+        categoryInput.value = category; // 선택된 카테고리를 폼 데이터에 설정
+        form.submit(); // POST 요청으로 페이지 이동
+    });
 });
+
 
 // .bookInfo 클래스를 가진 모든 DOM 요소를 선택
 const bookInfoRows = document.querySelectorAll('.book-card');
@@ -53,9 +57,9 @@ bookInfoRows.forEach(row => {
 
 
 		// 모달 내 요소 업데이트
-		document.querySelector('.book-detail-title').textContent = bookTitle;
+		document.querySelector('.book-detail-title').innerHTML = bookTitle;
 		document.querySelector('.book-detail-cover').src = bookCover;
-		document.querySelector('.book-detail-author').textContent = bookAuthor;
+		document.querySelector('.book-detail-author').innerHTML = bookAuthor;
 		document.querySelector('.book-detail-stats .stat-item:first-child span').textContent = bookRating;
 		document.querySelector('.book-detail-stats .stat-item:nth-child(2) span').textContent = reviewCount;
 		document.querySelector('.book-detail-stats .stat-item:last-child span').textContent = steamCount;
@@ -79,9 +83,8 @@ bookInfoRows.forEach(row => {
 			genreContainer.appendChild(genreBadge);
 		});
 
-
 		// 책 소개 업데이트
-		document.querySelector('.book-synopsis-text').textContent = bookDescription;
+		document.querySelector('.book-synopsis-text').innerHTML = bookDescription;
 
 		// 모달 보여주기
 		modal.show();

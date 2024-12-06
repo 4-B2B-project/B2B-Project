@@ -73,9 +73,9 @@ bookInfoRows.forEach(row => {
 
 
 		// 모달 내 요소 업데이트
-		document.querySelector('.book-detail-title').textContent = bookTitle;
+		document.querySelector('.book-detail-title').innerHTML = bookTitle;
 		document.querySelector('.book-detail-cover').src = bookCover;
-		document.querySelector('.book-detail-author').textContent = bookAuthor;
+		document.querySelector('.book-detail-author').innerHTML = bookAuthor;
 		document.querySelector('.book-detail-stats .stat-item:first-child span').textContent = bookRating;
 		document.querySelector('.book-detail-stats .stat-item:nth-child(2) span').textContent = reviewCount;
 		document.querySelector('.book-detail-stats .stat-item:last-child span').textContent = steamCount;
@@ -105,7 +105,7 @@ bookInfoRows.forEach(row => {
 
 
 		// 책 소개 업데이트
-		document.querySelector('.book-synopsis-text').textContent = bookDescription;
+		document.querySelector('.book-synopsis-text').innerHTML = bookDescription;
 
 		// 모달 보여주기
 		modal.show();

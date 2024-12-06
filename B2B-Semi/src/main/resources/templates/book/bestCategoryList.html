@@ -51,7 +51,7 @@
 				            <img th:src="${book.coverUrl}" th:alt="${book.title}" class="book-cover">
 				            <div class="book-info"
 								th:data-bookId="${book.bookId}" th:data-title="${book.fullTitle}"
-								th:data-coverUrl="${book.coverUrl}" th:data-author="${book.author}"
+								th:data-coverUrl="${book.coverUrl}" th:data-author="${book.fullAuthor}"
 								th:data-rating="${book.customerReviewRank}" th:data-genres="${book.genres}"
 								th:data-description="${book.description}" th:data-reviewCount="${book.reviewCount}" 
 								th:data-steamCount="${book.steamCount}">
@@ -199,6 +199,7 @@
 
 		<script th:inline="javascript">
 			const loginMember = /*[[${session.loginMember}]]*/ "로그인한 멤버";
+			const category = /*[[${category}]]*/ "카테고리값";
 		</script>
 
 		<script src="/js/book/bestCategoryList.js"></script>
