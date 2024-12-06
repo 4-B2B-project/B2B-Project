@@ -59,10 +59,10 @@
 		
 			<choose>
 				<when test="key == 'id'">
-		          AND MEMBER_ID LIKE LOWER('%' || #{search} || '%')
+		          AND LOWER(MEMBER_ID) LIKE LOWER('%' || #{search} || '%')
 		        </when>
 		        <when test="key == 'nickname'">
-		          AND MEMBER_NICKNAME LIKE LOWER('%' || #{search} || '%')
+		          AND LOWER(MEMBER_NICKNAME) LIKE LOWER('%' || #{search} || '%')
 		        </when>
 			</choose>
 		</if>
@@ -82,10 +82,10 @@
 		
 			<choose>
 				<when test="key == 'id'">
-		          AND MEMBER_ID LIKE LOWER('%' || #{search} || '%')
+		          AND LOWER(MEMBER_ID) LIKE LOWER('%' || #{search} || '%')
 		        </when>
 		        <when test="key == 'nickname'">
-		          AND MEMBER_NICKNAME LIKE LOWER('%' || #{search} || '%')
+		          AND LOWER(MEMBER_NICKNAME) LIKE LOWER('%' || #{search} || '%')
 		        </when>
 			</choose>
 		</if>
@@ -327,7 +327,7 @@
 		          AND LOWER(BOARD_TITLE) LIKE LOWER('%' || #{search} || '%')
 		        </when>
 		        <when test="key == 'nickname'">
-		          AND MEMBER_NICKNAME LIKE '%' || #{search} || '%'
+		          AND LOWER(MEMBER_NICKNAME) LIKE LOWER('%' || #{search} || '%')
 		        </when>
 			</choose>
 		</if>
@@ -354,7 +354,7 @@
 		          AND LOWER(BOARD_TITLE) LIKE LOWER('%' || #{search} || '%')
 		        </when>
 		        <when test="key == 'nickname'">
-		          AND MEMBER_NICKNAME LIKE '%' || #{search} || '%'
+		          AND LOWER(MEMBER_NICKNAME) LIKE LOWER('%' || #{search} || '%')
 		        </when>
 			</choose>
 		</if>
