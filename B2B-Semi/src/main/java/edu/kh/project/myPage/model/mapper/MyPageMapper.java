@@ -206,6 +206,15 @@ public interface MyPageMapper {
 	int deleteComment(int commentNo, int memberNo);
 
 
+	/** 무한 스크롤
+	 * @param memberNo
+	 * @param offset
+	 * @param limit
+	 * @return
+	 */
+	List<Book> selectFavoriteBooksByPage(int memberNo, int offset, int limit);
+
+
 
 
 	
