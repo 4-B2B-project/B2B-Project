@@ -343,4 +343,12 @@ public class MyPageServiceImpl implements MyPageService {
 		return mapper.deleteComment(commentNo,memberNo);
 	}
 
+	// 무한 스크롤
+	@Override
+	public List<Book> selectFavoriteBooksByPage(int memberNo, int page, int limit) {
+		
+		 int offset = (page - 1) * limit;
+	     return mapper.selectFavoriteBooksByPage(memberNo, offset, limit);
+	}
+
 }

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>게시판 목록</title>
+  <title>게시글 목록</title>
 
   <link rel="stylesheet" href="/css/myPage/myPage-boardList.css">
 
@@ -36,6 +36,7 @@
         <form th:action="@{/myPage/boardList}" method="get" id="boardSearch">
           <div class="search-section">
             <div class="search-wrapper">
+              
 
               <div class="input-group flex-grow-1">
                 <select class="form-select" name="searchType" style="border-radius: 8px;" th:value="${searchType}">
@@ -64,6 +65,9 @@
               <tr>
                 <th style="width: 10%;">
                   구분
+                  <span class="sort-icon">
+                    <i class="fas fa-sort"></i>
+                  </span>
                 </th>
 
                 <th style="width: 40%;">

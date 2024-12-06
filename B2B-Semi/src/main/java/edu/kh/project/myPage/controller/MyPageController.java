@@ -154,16 +154,36 @@ public class MyPageController {
 		// 모델에 데이터 추가
 		model.addAttribute("favoriteBooks", favoriteBooks);
 
-		if (favoriteBooks == null || favoriteBooks.isEmpty()) {
-		    model.addAttribute("message", "찜한 도서가 없습니다.");
-		} else {
-		    model.addAttribute("favoriteBooks", favoriteBooks);
-		}
 		
 		model.addAttribute("currentUri", request.getRequestURI());
 
 		return "myPage/myPage-favBook";
 	}
+	
+	
+	/** 찜한 도서 목록 무한 스크롤
+	 * @param loginMember
+	 * @param page
+	 * @return
+	 */
+	@GetMapping("favBook/loadMore")
+	@ResponseBody
+	public List<Book> loadMoreFavoriteBooks(@SessionAttribute("loginMember") Member loginMember, 
+	                                        @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+	    int memberNo = loginMember.getMemberNo();
+	    int limit = 10; // 한 번에 불러올 도서 수
+
+	    // 페이지 번호와 제한 수를 기반으로 찜한 도서 목록 가져오기
+	    return service.selectFavoriteBooksByPage(memberNo, page, limit);
+	}
+
+	
+	
+	
+	
+	
+	
+	
 
 	
 	/** 내가 작성한 게시글 목록 이동

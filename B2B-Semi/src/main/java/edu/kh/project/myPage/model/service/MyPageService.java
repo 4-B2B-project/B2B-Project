@@ -147,6 +147,17 @@ public interface MyPageService {
 	
 	
 	
+	/** 무한 스크롤
+	 * @param memberNo
+	 * @param page
+	 * @param limit
+	 * @return
+	 */
+	List<Book> selectFavoriteBooksByPage(int memberNo, int page, int limit);
+
+	
+	
+	
 	
 	
 	

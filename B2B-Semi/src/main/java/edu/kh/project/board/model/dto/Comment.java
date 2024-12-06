@@ -23,4 +23,6 @@ public class Comment {
 	private String memberNickname;
 	private String profileImg;
 	
+	private String boardTitle; // 게시글 제목
+	
 }

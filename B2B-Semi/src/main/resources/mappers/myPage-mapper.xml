@@ -64,6 +64,25 @@
 		b.BOOK_ID
 		WHERE f.MEMBER_NO = #{memberNo}
 	</select>
+	
+	<!-- 무한 스크롤을 위한 찜한 도서 목록 조회 -->
+	<select id="selectFavoriteBooksByPage" parameterType="Book">
+	    <![CDATA[
+	    SELECT *
+	    FROM (
+	        SELECT book.*, ROWNUM AS rnum
+	        FROM (
+	            SELECT *
+	            FROM favorite_books
+	            WHERE member_no = #{memberNo}
+	            ORDER BY book_id DESC
+	        ) book
+	        WHERE ROWNUM <= #{offset} + #{limit}
+	    )
+	    WHERE rnum > #{offset}
+	    ]]>
+	</select>
+
 
 
 
@@ -135,13 +154,13 @@
 			AND
 			<choose>
 				<when test="searchType == 'title'">
-					b.BOARD_TITLE LIKE '%' || #{searchInput} || '%'
+					UPPER(b.BOARD_TITLE) LIKE '%' || UPPER(#{searchInput}) || '%'
 				</when>
 				<when test="searchType == 'content'">
-					b.BOARD_CONTENT LIKE '%' || #{searchInput} || '%'
+					UPPER(b.BOARD_CONTENT) LIKE '%' || UPPER(#{searchInput}) || '%'
 				</when>
 				<otherwise>
-					m.MEMBER_NICKNAME LIKE '%' || #{searchInput} || '%'
+					UPPER(m.MEMBER_NICKNAME) LIKE '%' || UPPER(#{searchInput}) || '%'
 				</otherwise>
 			</choose>
 		</if>
@@ -172,14 +191,14 @@
 			AND
 			<choose>
 				<when test="searchType == 'title'">
-					b.BOARD_TITLE LIKE '%' || #{searchInput} || '%'
+					UPPER(b.BOARD_TITLE) LIKE '%' || UPPER(#{searchInput}) || '%'
 				</when>
 				<when test="searchType == 'content'">
-					b.BOARD_CONTENT LIKE '%' || #{searchInput} || '%'
+					UPPER(b.BOARD_CONTENT) LIKE '%' || UPPER(#{searchInput}) || '%'
 				</when>
 
 				<otherwise>
-					m.MEMBER_NICKNAME LIKE '%' || #{searchInput} || '%'
+					UPPER(m.MEMBER_NICKNAME) LIKE '%' || UPPER(#{searchInput}) || '%'
 				</otherwise>
 			</choose>
 		</if>
@@ -221,34 +240,37 @@
 	<!-- 댓글 목록 조회 -->
 	<select id="selectAllCommentList" resultMap="CommentResultMap">
 		SELECT 
-			COMMENT_NO,
-			COMMENT_CONTENT,
-			COMMENT_DEL_FL,
-			COMMENT_WRITE_DATE,
-			MEMBER_NO,
-			BOARD_NO,
-			MEMBER_NICKNAME,
-			PROFILE_IMG
+		    COM.COMMENT_NO,
+		    COM.COMMENT_CONTENT,
+		    COM.COMMENT_DEL_FL,
+		    COM.COMMENT_WRITE_DATE,
+		    COM.MEMBER_NO,
+		    COM.BOARD_NO,
+		    COM.MEMBER_NICKNAME,
+		    COM.PROFILE_IMG,
+		    COM.BOARD_TITLE  
 		FROM 
-			(SELECT
-				c.COMMENT_NO,
-				c.COMMENT_CONTENT,
-				c.COMMENT_DEL_FL,
-				TO_CHAR(c.COMMENT_WRITE_DATE, 'yyyy-MM-dd') AS COMMENT_WRITE_DATE,
-				c.MEMBER_NO,
-				(
-					SELECT BOARD_NO FROM "TB_BOARD" TBB
-					WHERE TBB.BOARD_NO = C.BOARD_NO
-					AND BOARD_DEL_FL = 'N'
-				) AS BOARD_NO,
-				m.MEMBER_NICKNAME,
-				m.PROFILE_IMG
-			FROM TB_COMMENT c
-			JOIN
-			TB_MEMBER m ON c.MEMBER_NO = m.MEMBER_NO
-			WHERE c.MEMBER_NO = #{memberNo}
-			AND c.COMMENT_DEL_FL = 'N'
-			AND BOARD_NO IS NOT NULL) COM
+		    (SELECT
+		        c.COMMENT_NO,
+		        c.COMMENT_CONTENT,
+		        c.COMMENT_DEL_FL,
+		        TO_CHAR(c.COMMENT_WRITE_DATE, 'yyyy-MM-dd') AS COMMENT_WRITE_DATE,
+		        c.MEMBER_NO,
+		        (
+		            SELECT TBB.BOARD_NO FROM "TB_BOARD" TBB
+		            WHERE TBB.BOARD_NO = c.BOARD_NO
+		            AND TBB.BOARD_DEL_FL = 'N'
+		        ) AS BOARD_NO,
+		        m.MEMBER_NICKNAME,
+		        m.PROFILE_IMG,
+		        b.BOARD_TITLE  -- BOARD_TITLE 추가
+		    FROM TB_COMMENT c
+		    JOIN TB_MEMBER m ON c.MEMBER_NO = m.MEMBER_NO
+		    JOIN TB_BOARD b ON c.BOARD_NO = b.BOARD_NO  
+		    WHERE c.MEMBER_NO = #{memberNo}
+		    AND c.COMMENT_DEL_FL = 'N'
+		    AND b.BOARD_DEL_FL = 'N'
+		    AND c.BOARD_NO IS NOT NULL) COM
 		WHERE COM.BOARD_NO IS NOT NULL
 	</select>
 
@@ -272,11 +294,15 @@
 			AND
 			<choose>
 				<when test="searchType == 'content'">
-					c.COMMENT_CONTENT LIKE '%' || #{searchInput} || '%'
+					UPPER(c.COMMENT_CONTENT) LIKE '%' || UPPER(#{searchInput}) || '%'
 				</when>
 				
+				 <when test="searchType == 'title'">
+                UPPER(b.BOARD_TITLE) LIKE '%' || UPPER(#{searchInput}) || '%'  
+            	</when>
+            	
 				<otherwise>
-					m.MEMBER_NICKNAME LIKE '%' || #{searchInput} || '%'
+					UPPER(m.MEMBER_NICKNAME) LIKE '%' || UPPER(#{searchInput}) || '%'
 				</otherwise>
 
 			</choose>
@@ -300,7 +326,8 @@
 			c.MEMBER_NO,
 			c.BOARD_NO,
 			m.MEMBER_NICKNAME AS MEMBER_NICKNAME,
-			m.PROFILE_IMG
+			m.PROFILE_IMG,
+        	b.BOARD_TITLE  
 		FROM TB_COMMENT c
 		JOIN TB_MEMBER m ON c.MEMBER_NO = m.MEMBER_NO
 		JOIN TB_BOARD b ON b.BOARD_NO = c.BOARD_NO
@@ -312,13 +339,15 @@
 			AND
 			<choose>
 				<when test="searchType == 'content'">
-					c.COMMENT_CONTENT LIKE '%' || #{searchInput} || '%'
+					UPPER(c.COMMENT_CONTENT) LIKE '%' || UPPER(#{searchInput}) || '%'
 				</when>
-				<when test="searchType == 'nickname'">
-					c.MEMBER_NICKNAME LIKE '%' || #{searchInput} || '%'
-				</when>
+				
+				<when test="searchType == 'title'">
+                UPPER(b.BOARD_TITLE) LIKE '%' || UPPER(#{searchInput}) || '%'
+            	</when>
+				
 				<otherwise>
-					m.MEMBER_NICKNAME LIKE '%' || #{searchInput} || '%'
+					UPPER(m.MEMBER_NICKNAME) LIKE '%' || UPPER(#{searchInput}) || '%'
 				</otherwise>
 			</choose>
 		</if>

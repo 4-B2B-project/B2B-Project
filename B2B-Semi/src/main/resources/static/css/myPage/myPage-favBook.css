@@ -391,3 +391,33 @@ body {
 	font-weight: bold; /* 글자 굵게 */
 	margin-right: 0.5rem; /* 장르들 간의 간격 */
 }
+
+
+/* 맨 위로 스크롤 */
+.to-top-btn {
+	position: fixed;
+	right: 3%;
+	bottom: 20%;
+	background-color: #4f46e5;
+	color: white;
+	border: none;
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	cursor: pointer;
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background-color 0.3s, transform 0.3s;
+	z-index: 1000;
+}
+
+.to-top-btn:hover {
+	background-color: #4338ca;
+	transform: scale(1.1);
+}
+
+.to-top-btn i {
+	font-size: 1.5rem;
+}
