@@ -137,7 +137,10 @@ public class AdminController {
 		
 		Map<String, Object> map;
 		
-		if(paramMap.get("key") == null || paramMap.get("search") == null) {
+		paramMap.entrySet().removeIf(entry -> entry.getValue() == null);
+		
+		// 검색 조건이 없는 경우 기본 조회.
+		if(!paramMap.containsKey("key") || !paramMap.containsKey("search")) {
 			map = Adservice.memberList(cp);
 		}
 		
@@ -147,8 +150,9 @@ public class AdminController {
 		
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("memberList", map.get("memberList"));
-	    model.addAttribute("key", paramMap.get("key"));
-	    model.addAttribute("search", paramMap.get("search"));
+	    model.addAttribute("key", paramMap.getOrDefault("key", ""));
+	    model.addAttribute("search", paramMap.getOrDefault("search", ""));
+	    model.addAttribute("delfl", paramMap.getOrDefault("delfl", ""));
 	    model.addAttribute("activeMenu", "memberManage");
 	    
 		return "adminBoard/memberManage";
@@ -164,6 +168,7 @@ public class AdminController {
 		model.addAttribute("pagination", map.get("pagination"));
 	    model.addAttribute("key", paramMap.get("key"));
 	    model.addAttribute("search", paramMap.get("search"));
+	    model.addAttribute("delfl", paramMap.get("delfl"));
 	    model.addAttribute("activeMenu", "memberManage");
 		
 		return "adminBoard/memberManage";
@@ -202,6 +207,7 @@ public class AdminController {
 						    @RequestParam(value = "key", required = false) String key,
 						    @RequestParam(value = "search", required = false) String search,
 						    @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+						    @RequestParam(value="delfl", required = false) String delfl,
 						    Model model) {
 		
 		int result = Adservice.updateInfo(inputMember, memberAddress);
@@ -224,7 +230,7 @@ public class AdminController {
 		if(result > 0) {
 			message = "회원 정보 수정 성공함.";
 			
-			path = String.format("/adminBoard/memberManage?cp=%d&key=%s&search=%s", cp, key, search);
+			path = String.format("/adminBoard/memberManage?cp=%d&key=%s&search=%s&delfl=%s", cp, key, search, delfl);
 			
 			model.addAttribute("cp", cp);
 		}
@@ -283,6 +289,7 @@ public class AdminController {
 		model.addAttribute("bookList", map.get("bookList"));
 	    model.addAttribute("key", paramMap.get("key"));
 	    model.addAttribute("search", paramMap.get("search"));
+	    model.addAttribute("delfl", paramMap.get("delfl"));
 		
 		return "adminBoard/bookManage";
 	}
@@ -298,6 +305,7 @@ public class AdminController {
 		model.addAttribute("pagination", map.get("pagination"));
 	    model.addAttribute("key", paramMap.get("key"));
 	    model.addAttribute("search", paramMap.get("search"));
+	    model.addAttribute("delfl", paramMap.get("delfl"));
 	    model.addAttribute("activeMenu", "bookManage");
 		
 		return "adminBoard/bookManage";
@@ -345,6 +353,7 @@ public class AdminController {
 	public String updateBookPage(@PathVariable int bookId, Model model,
 			@RequestParam(value="key", required = false) String key,
 			@RequestParam(value="search", required = false) String search,
+			@RequestParam(value="delfl", required = false) String delfl,
 			@RequestParam(value="cp", required = false, defaultValue = "1") int cp) {
 		Book book = Adservice.selectBookDetail(bookId);
 		
@@ -352,6 +361,7 @@ public class AdminController {
 		model.addAttribute("key", key);
 		model.addAttribute("search", search);
 		model.addAttribute("cp", cp);
+		model.addAttribute("delfl", delfl);
 		model.addAttribute("activeMenu", "bookManage");
 		
 		return "adminBoard/updateBook";
@@ -362,6 +372,7 @@ public class AdminController {
 	@PostMapping("updateBook")
 	public Map<String, Object> updateBook(@RequestBody Book book, 
 			@RequestParam(value="key", required = false) String key,
+			@RequestParam(value="delfl", required = false) String delfl,
 			@RequestParam(value="search", required = false) String search,
 			@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
 			RedirectAttributes ra) {
@@ -377,6 +388,7 @@ public class AdminController {
 				ra.addAttribute("key", key != null ? key : "");
 				ra.addAttribute("search", search != null ? search : "");
 				ra.addAttribute("cp", cp);
+				ra.addAttribute("delfl", delfl);
 			}
 			else {
 				map.put("success", false);
@@ -395,11 +407,13 @@ public class AdminController {
 	public String cancelUpdateBook(@RequestParam(value="key", required = false) String key,
 			@RequestParam(value="search, required = false") String search,
 			@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
+			@RequestParam(value="delfl", required = false) String delfl,
 			RedirectAttributes ra) {
 		
 		ra.addAttribute("key", key != null ? key : "");
 		ra.addAttribute("search", search != null ? search : "");
 		ra.addAttribute("cp", cp);
+		ra.addAttribute("delfl", delfl);
 		
 		return "redirect:/adminBoard/bookManage";
 	}
@@ -423,6 +437,7 @@ public class AdminController {
 		model.addAttribute("boardList", map.get("boardList"));
 	    model.addAttribute("key", paramMap.get("key"));
 	    model.addAttribute("search", paramMap.get("search"));
+	    model.addAttribute("delfl", paramMap.get("delfl"));
 		
 		return "adminBoard/boardManage";
 	}
@@ -438,6 +453,7 @@ public class AdminController {
 		model.addAttribute("pagination", map.get("pagination"));
 	    model.addAttribute("key", paramMap.get("key"));
 	    model.addAttribute("search", paramMap.get("search"));
+	    model.addAttribute("delfl", paramMap.get("delfl"));
 	    model.addAttribute("activeMenu", "boardManage");
 		
 		return "adminBoard/boardManage";
@@ -448,7 +464,8 @@ public class AdminController {
 	public String boardDetail(@PathVariable("boardNo") int boardNo, Model model, RedirectAttributes ra,
 			@RequestParam(value="key", required = false) String key,
 			@RequestParam(value="search", required = false) String search,
-			@RequestParam(value="cp", required = false, defaultValue = "1") int cp) {
+			@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
+			@RequestParam(value="delfl", required = false) String delfl) {
 		
 		Board board = Adservice.boardDetail(boardNo);
 		
@@ -461,6 +478,7 @@ public class AdminController {
 		model.addAttribute("key", key);
 		model.addAttribute("search", search);
 		model.addAttribute("cp", cp);
+		model.addAttribute("delfl", delfl);
 		model.addAttribute("activeMenu", "boardManage");
 		return "adminBoard/boardDetail";
 	}
@@ -472,6 +490,7 @@ public class AdminController {
 			@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
 			@RequestParam(value="key", required = false) String key,
 			@RequestParam(value="search" , required = false) String search,
+			@RequestParam(value="delfl", required = false) String delfl,
 			@SessionAttribute("loginMember") Member loginMember,
 			RedirectAttributes ra) {
 	
@@ -484,7 +503,7 @@ public class AdminController {
 		String message = null;
 		
 		if(result > 0) {
-			path = String.format("/adminBoard/boardManage?cp=%d&key=%s&search=%s" , cp, key, search );
+			path = String.format("/adminBoard/boardManage?cp=%d&key=%s&search=%s&delfl=%s" , cp, key, search, delfl );
 			message = "수정 완료.";
 		}
 		else {
@@ -505,6 +524,7 @@ public class AdminController {
 			@SessionAttribute("loginMember") Member loginMember,
 			RedirectAttributes ra,
 			@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
+			@RequestParam(value="delfl", required = false) String delfl,
 			@RequestParam(value="key", required = false) String key,
 			@RequestParam(value="search" , required = false) String search) {
 		
@@ -517,7 +537,7 @@ public class AdminController {
 		String message = null;
 		
 		if ( result > 0) {
-			path = String.format("/adminBoard/boardManage?cp=%d&key=%s&search=%s", 1, key, search);
+			path = String.format("/adminBoard/boardManage?cp=%d&key=%s&search=%s&delfl=%s", 1, key, search, delfl);
 			message = "게시글 삭제 완료.";
 		}
 		else {
