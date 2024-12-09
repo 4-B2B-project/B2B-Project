@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>board Community</title>
+	<title>커뮤니티</title>
 
 	<link rel="stylesheet" href="/css/board/community.css">
 
@@ -118,7 +118,7 @@
 														             ? @{/board/{boardCode}/{boardNo}(boardCode=*{boardCode}, cp=${cp}, boardNo=*{boardNo}, searchType=*{searchType}, searchInput=*{searchInput})}
 														             : '#'" th:text="${#strings.equals(board.secretCheck, 'Y') }
 														            ? '비밀글' 
-														            : |${board.boardTitle} (${board.commentCount})|">
+														            : |${board.boardTitle} (${board.commentCount})|" onclick="checkSecret(this)">
 															제목
 														</a>
 														<span th:if="${#strings.equals(board.secretCheck, 'Y')}">
@@ -131,7 +131,7 @@
 														<th:block th:if="${#strings.equals(board.secretCheck, 'Y')}">
 															<a th:href="${memberNo == board.memberNo || memberAuth == 2} 
 															   			? @{/board/{boardCode}/{boardNo}(boardCode=*{boardCode}, cp=${cp}, boardNo=*{boardNo}, searchType=*{searchType}, searchInput=*{searchInput})}
-																		: '#'" th:text="비밀글">
+																		: '#'" th:text="비밀글" onclick="checkSecret(this)">
 																제목
 															</a>
 															<i class="fas fa-lock" style="color: #ffd400;"></i> <!-- 자물쇠 아이콘 -->
@@ -252,6 +252,14 @@
 
 		<script th:inline="javascript">
 			const loginMember = /*[[${session.loginMember}]]*/ "로그인한 멤버";
+			
+			function checkSecret(anchor) {
+		        if (anchor.getAttribute('href') === '#') {
+		            alert('비밀글은 접근 권한이 필요합니다.');
+		            return false; // 기본 동작(페이지 이동) 방지
+		        }
+		    }
+			
 		</script>
 
 		<script src="/js/board/community.js"></script>

@@ -202,6 +202,10 @@ function selectReviewList(bookId) {
 			result.forEach(({ MEMBER_NICKNAME, COMMENT, STAR_POINT, WRITE_DATE, PROFILE_IMG }) => {
 				// 별점은 따로 불러오기
 				const starHTML = getStarHTML(STAR_POINT);
+				
+				if(PROFILE_IMG != null) {
+					PROFILE_IMG = userDefaultIamge;
+				}
 
 				const reviewHTML = `
 					<div class="review-item">

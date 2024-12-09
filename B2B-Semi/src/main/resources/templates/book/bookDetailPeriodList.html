@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Book Community</title>
+	<title>상세 기간별 랭킹</title>
 
 	<link rel="stylesheet" href="/css/book/bookDetailPeriodList.css">
 
@@ -291,6 +291,8 @@
 
 		<script th:inline="javascript">
 			const loginMember = /*[[${session.loginMember}]]*/ "로그인한 멤버";
+			
+			const userDefaultIamge = /*[[#{user.default.image}]]*/ "기본이미지";
 		</script>
 
 		<script src="/js/book/bookDetailPeriodList.js"></script>

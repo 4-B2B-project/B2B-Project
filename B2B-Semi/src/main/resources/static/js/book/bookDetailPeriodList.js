@@ -209,6 +209,10 @@ function selectReviewList(bookId) {
 					if (loginMember != null) {
 						memberNo = loginMember.memberNo;
 					}
+					
+					if(PROFILE_IMG != null) {
+						PROFILE_IMG = userDefaultIamge;
+					}
 
 					const reviewHTML = `
 						<div class="review-item">
