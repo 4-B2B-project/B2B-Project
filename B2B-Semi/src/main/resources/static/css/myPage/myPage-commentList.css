@@ -408,3 +408,13 @@ body {
 	background-color: #f7d7d9; /* 문의 게시판 배경색 (연한 분홍색) */
 	color: #c53030; /* 문의 게시판 텍스트 색상 */
 }
+
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 300px; /* 필요한 너비 설정 */
+  word-break: break-word;
+}
