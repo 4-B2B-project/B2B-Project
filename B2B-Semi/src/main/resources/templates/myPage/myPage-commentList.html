@@ -64,7 +64,7 @@
         <section class="genre-section">
           <div class="table-responsive">
             <table class="table table-hover">
-              <thead>
+              <thead style="text-align: center;">
                 <tr>
                   <th style="width: 10%;">
                     구분
@@ -84,7 +84,9 @@
 
 
                 </tr>
-              </thead>
+              </thead >
+
+
               <tbody id="commentList">
                 <th:block th:if="${#lists.isEmpty(commentList)}">
                   <tr>
@@ -96,11 +98,11 @@
                 <th:block th:unless="${#lists.isEmpty(commentList)}">
                   <tr th:each="comment : ${commentList}" th:if="${comment.commentDelFl == 'N'}">
                     <!-- 댓글 구분 -->
-                    <td th:text="${comment.commentNo}">댓글 번호</td>
+                    <td th:text="${comment.commentNo}" style="text-align: center;">댓글 번호</td>
 
                     <!-- 댓글 내용 -->
                     <td>
-                      <div class="comment-title"
+                      <div class="comment-title ellipsis"
                         th:data-full-text="${comment.commentContent != null ? comment.commentContent : '내용이 없습니다.'}">
                         <a th:href="@{/myPage/commentDetail(commentNo=${comment.commentNo})}"
                           th:text="${comment.commentContent != null ? comment.commentContent : '내용이 없습니다.'}">댓글 내용</a>
@@ -111,7 +113,7 @@
                     <td th:text="${comment.boardTitle != null ? comment.boardTitle : '게시글 제목 없음'}">게시글 제목</td>
 
                     <!-- 작성일 -->
-                    <td th:text="${comment.commentWriteDate}">작성일</td>
+                    <td th:text="${comment.commentWriteDate}" style="text-align: center;">작성일</td>
                   </tr>
                 </th:block>
               </tbody>
