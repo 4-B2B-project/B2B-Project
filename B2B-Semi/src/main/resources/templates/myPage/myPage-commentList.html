@@ -102,7 +102,7 @@
 
                     <!-- 댓글 내용 -->
                     <td>
-                      <div class="comment-title "
+                      <div class="comment-title ellipsis"
                         th:data-full-text="${comment.commentContent != null ? comment.commentContent : '내용이 없습니다.'}">
                         <a th:href="@{/myPage/commentDetail(commentNo=${comment.commentNo})}"
                           th:text="${comment.commentContent != null ? comment.commentContent : '내용이 없습니다.'}">댓글 내용</a>
