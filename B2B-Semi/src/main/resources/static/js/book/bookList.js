@@ -192,7 +192,7 @@ function selectReviewList(bookId) {
 						memberNo = loginMember.memberNo;
 					}
 					
-					if(PROFILE_IMG != null) {
+					if(PROFILE_IMG == null || PROFILE_IMG == 'undefined') {
 						PROFILE_IMG = userDefaultIamge;
 					}
 
