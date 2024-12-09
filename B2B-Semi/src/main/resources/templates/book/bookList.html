@@ -72,7 +72,7 @@
 			<section class="genre-section">
 				<div class="table-responsive">
 					<table class="table table-hover">
-						<thead>
+						<thead style="text-align: center;">
 							<tr>
 								<th style="width: 8%;">
 									구분
@@ -125,8 +125,8 @@
 											작가
 										</div>
 									</td>
-									<td th:text="${book.firstCategory}">장르</td>
-									<td th:text="${book.pubDate}">출판일</td>
+									<td th:text="${book.firstCategory}" style="text-align: center;">장르</td>
+									<td th:text="${book.pubDate}" style="text-align: center;">출판일</td>
 								</tr>
 
 							</th:block>

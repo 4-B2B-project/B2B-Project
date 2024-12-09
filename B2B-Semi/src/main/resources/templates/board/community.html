@@ -72,7 +72,7 @@
 			<section class="genre-section">
 				<div class="table-responsive">
 					<table class="table table-hover">
-						<thead>
+						<thead style="text-align: center;">
 							<tr>
 								<th style="width: 8%;">
 									구분
@@ -158,8 +158,8 @@
 									<td>
 										<div class="board-author" th:text="*{memberNickname}">작성자</div>
 									</td>
-									<td th:text="*{boardWriteDate}">등록일</td>
-									<td th:text="*{readCount}">조회수</td>
+									<td th:text="*{boardWriteDate}" style="text-align: center;">등록일</td>
+									<td th:text="*{readCount}" style="text-align: center;">조회수</td>
 								</tr>
 
 							</th:block>
