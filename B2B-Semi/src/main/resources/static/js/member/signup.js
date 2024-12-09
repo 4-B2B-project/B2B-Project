@@ -253,6 +253,9 @@ checkAuthKeyBtn.addEventListener("click", () => {
 				checkObj.authKey = false;
 				return;
 			}
+			
+			document.getElementById('email-form').style.display = 'none';
+			document.getElementById('signUpDiv').style.display = 'block';
 
 			// 일치할 때
 			clearInterval(authTimer); // 타이머 멈춤
@@ -561,16 +564,6 @@ signUpForm.addEventListener("submit", e => {
 			e.preventDefault(); // form 태그 기본 이벤트(제출) 막기
 			return;
 		}
-	}
-});
-
-// 이메일 인증 폼 서브밋 후 회원가입 폼으로 교체
-document.getElementById('checkAuthKeyBtn').addEventListener('click', function(e) {
-	e.preventDefault();
-	
-	if(checkObj.memberEmail) {
-		document.getElementById('email-form').style.display = 'none';
-		document.getElementById('signUpDiv').style.display = 'block';
 	}
 });
 
