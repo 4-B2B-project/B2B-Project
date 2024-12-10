@@ -632,6 +632,11 @@ function deleteReview(reviewItem) {
 	const editedRating = reviewItem.querySelector('.review-actions').textContent;
 	const bookId = document.querySelector('#selectBookId').value;
 	
+	if (!confirm("해당 리뷰를 삭제 하시겠습니까?")) {
+		alert("취소됨")
+		return;
+	}
+	
 	// 서버로 수정 요청
     const obj = {
         "bookId": bookId,

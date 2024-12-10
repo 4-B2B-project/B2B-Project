@@ -600,6 +600,11 @@ function deleteReview(reviewItem) {
         "memberNo": loginMember.memberNo
     };
 	
+	if (!confirm("해당 리뷰를 삭제 하시겠습니까?")) {
+		alert("취소됨")
+		return;
+	}
+	
     fetch("/book/deleteReview", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
