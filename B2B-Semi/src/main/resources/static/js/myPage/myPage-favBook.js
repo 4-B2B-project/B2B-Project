@@ -551,7 +551,7 @@ function deleteReview(reviewItem) {
 	const bookId = document.querySelector('#selectBookId').value;
 	
 	if (!confirm("해당 리뷰를 삭제 하시겠습니까?")) {
-		alert("취소됨")
+		alert("취소되었습니다.")
 		return;
 	}
 	
