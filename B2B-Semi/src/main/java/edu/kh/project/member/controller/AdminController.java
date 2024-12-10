@@ -137,8 +137,6 @@ public class AdminController {
 		
 		Map<String, Object> map;
 		
-		paramMap.entrySet().removeIf(entry -> entry.getValue() == null);
-		
 		// 검색 조건이 없는 경우 기본 조회.
 		if(!paramMap.containsKey("key") || !paramMap.containsKey("search")) {
 			map = Adservice.memberList(cp);
@@ -150,9 +148,9 @@ public class AdminController {
 		
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("memberList", map.get("memberList"));
-	    model.addAttribute("key", paramMap.getOrDefault("key", ""));
-	    model.addAttribute("search", paramMap.getOrDefault("search", ""));
-	    model.addAttribute("delfl", paramMap.getOrDefault("delfl", ""));
+	    model.addAttribute("key", paramMap.get("key"));
+	    model.addAttribute("search", paramMap.get("search"));
+	    model.addAttribute("delfl", paramMap.get("delfl"));
 	    model.addAttribute("activeMenu", "memberManage");
 	    
 		return "adminBoard/memberManage";
