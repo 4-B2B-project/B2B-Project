@@ -494,6 +494,12 @@ function setupEditRatingLogic(reviewItem, currentStarPoint) {
         editCurrentRating = isLeftHalf ? (rating * 2 - 1) : rating * 2;
         editSelectedRating.textContent = editCurrentRating;
     });
+	
+	// 마우스가 떠났을때 
+	editRatingSelect.addEventListener('mouseleave', () => { 
+	    updateEditStars(editCurrentRating); 
+	    editSelectedRating.textContent = editCurrentRating; 
+	});
 }
 
 // 리뷰 저장 함수
