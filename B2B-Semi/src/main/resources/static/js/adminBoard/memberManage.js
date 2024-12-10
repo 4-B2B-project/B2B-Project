@@ -49,6 +49,8 @@ tbody.addEventListener("change", e => {
 		const checkboxes = tbody.querySelectorAll(".checkbox");
 		const allChecked = Array.from(checkboxes).every(cb => cb.checked);
 		document.querySelector("#theadCheckAll").checked = allChecked;
+		
+		console.log("allChecked : " + allChecked);
 	}
 });
 
