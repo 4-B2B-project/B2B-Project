@@ -156,7 +156,7 @@ if (deleteBtn != null) {
 	deleteBtn.addEventListener("click", () => {
 
 		if (!confirm("삭제 하시겠습니까?")) {
-			alert("취소됨")
+			alert("취소됬습니다.");
 			return;
 		}
 

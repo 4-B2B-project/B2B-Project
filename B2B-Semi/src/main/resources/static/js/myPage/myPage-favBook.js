@@ -487,6 +487,12 @@ function setupEditRatingLogic(reviewItem, currentStarPoint) {
         editCurrentRating = isLeftHalf ? (rating * 2 - 1) : rating * 2;
         editSelectedRating.textContent = editCurrentRating;
     });
+	
+	// 마우스가 떠났을때 
+	editRatingSelect.addEventListener('mouseleave', () => { 
+	    updateEditStars(editCurrentRating); 
+	    editSelectedRating.textContent = editCurrentRating; 
+	});
 }
 
 // 리뷰 저장 함수
@@ -543,6 +549,11 @@ function deleteReview(reviewItem) {
 	console.log(reviewItem);
 	const editedRating = reviewItem.querySelector('.review-actions').textContent;
 	const bookId = document.querySelector('#selectBookId').value;
+	
+	if (!confirm("해당 리뷰를 삭제 하시겠습니까?")) {
+		alert("취소되었습니다.")
+		return;
+	}
 	
 	// 서버로 삭제 요청
     const obj = {

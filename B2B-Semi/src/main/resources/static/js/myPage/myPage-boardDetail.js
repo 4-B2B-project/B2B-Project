@@ -140,7 +140,7 @@ const deleteBtn = document.querySelector("#deleteBtn");
 if (deleteBtn != null) {
   deleteBtn.addEventListener("click", () => {
     if (!confirm("삭제 하시겠습니까?")) {
-      alert("취소됨");
+      alert("취소되었습니다.");
       return;
     }
 
