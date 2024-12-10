@@ -112,4 +112,33 @@ const addBookBtn = document.querySelector("#addBook").addEventListener("click", 
 	window.location.href = "/insertBook/addBook";
 });
 
-
+function showTooltip(event, element) {
+	
+	let tooltip = document.getElementById('dynamic-tooltip');
+	
+	if(!tooltip) {
+		tooltip = document.createElement('div');
+		tooltip.id = 'dynamic-tooltip';
+		tooltip.style.position = 'fixed';
+		tooltip.style.backgroundColor = 'white';
+		tooltip.style.padding = '5px';
+		tooltip.style.border = '1px solid #ccc';
+		tooltip.style.borderRadius = '4px';
+		tooltip.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+		tooltip.style.zIndex = '1000';
+		tooltip.style.display = 'none';
+		document.body.appendChild(tooltip);
+	}
+	
+	tooltip.textContent = element.getAttribute('data-full-text');
+	tooltip.style.display = 'block';
+	
+	const offset = 5;
+	tooltip.style.left = (event.pageX + offset) + 'px';
+	tooltip.style.top = (event.clientY - offset * 14) + 'px';
+	
+	element.onmouseleave = function() {
+		tooltip.style.display = 'none';
+	};
+	
+}

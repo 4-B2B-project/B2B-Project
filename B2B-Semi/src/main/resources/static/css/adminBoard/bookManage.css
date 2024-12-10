@@ -257,8 +257,7 @@ body {
 	color: #ffc107;
 }
 
-.book-title,
-.book-author {
+.book-title {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -266,6 +265,16 @@ body {
 	max-width: 450px;
 	word-break: break-word;
 }
+
+.book-author {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: block;
+	max-width: 200px;
+	word-break: break-word;
+}
+
 
 /* 테이블 내용 끝 */
 
