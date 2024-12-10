@@ -106,11 +106,9 @@
 	<!-- 작성자의 전체 게시글 수 조회 -->
 	<select id="getBoardListCount" resultType="int">
 		SELECT COUNT(*)
-		FROM
-		"TB_BOARD" 
-		WHERE MEMBER_NO = #{memberNo}
+		FROM "TB_BOARD" b 
+		WHERE b.MEMBER_NO = #{memberNo}
 		AND BOARD_DEL_FL = 'N'
-		
 	</select>
 
 
@@ -118,18 +116,15 @@
 	<!-- 작성자의 전체 게시글 목록 조회 -->
 	<select id="selectAllBoardList" resultType="Board">
 		SELECT
-		b.BOARD_NO,
-		b.BOARD_TITLE,
-		b.BOARD_CONTENT,
-		TO_CHAR(b.BOARD_WRITE_DATE, 'yyyy-MM-dd') AS BOARD_WRITE_DATE,
-        TO_CHAR(b.BOARD_UPDATE_DATE, 'yyyy-MM-dd') AS BOARD_UPDATE_DATE,
-		b.READ_COUNT,
-		b.BOARD_CODE,
-		b.BOARD_DEL_FL,
-		m.MEMBER_NICKNAME AS MEMBER_NICKNAME
-		FROM
-		TB_BOARD b
-		JOIN TB_MEMBER m ON b.MEMBER_NO = m.MEMBER_NO
+			b.BOARD_NO,
+			b.BOARD_TITLE,
+			b.BOARD_CONTENT,
+			TO_CHAR(b.BOARD_WRITE_DATE, 'yyyy-MM-dd') AS BOARD_WRITE_DATE,
+	        TO_CHAR(b.BOARD_UPDATE_DATE, 'yyyy-MM-dd') AS BOARD_UPDATE_DATE,
+			b.READ_COUNT,
+			b.BOARD_CODE,
+			b.BOARD_DEL_FL	
+		FROM TB_BOARD b
 		WHERE
 		b.MEMBER_NO = #{memberNo}
 		AND b.BOARD_DEL_FL = 'N'
@@ -145,10 +140,11 @@
 		resultType="int">
 		SELECT COUNT(*)
 		FROM TB_BOARD b
-		JOIN TB_MEMBER m ON b.MEMBER_NO =
-		m.MEMBER_NO
+		JOIN TB_MEMBER m ON b.MEMBER_NO = m.MEMBER_NO
+
 		WHERE b.MEMBER_NO = #{memberNo}
 		AND b.BOARD_DEL_FL = 'N'
+
 		<if
 			test="searchType != null and searchInput != null and searchInput != ''">
 			AND
@@ -186,6 +182,7 @@
 		WHERE b.MEMBER_NO =
 		#{memberNo}
 		AND b.BOARD_DEL_FL = 'N'
+
 		<if
 			test="searchType != null and searchInput != null and searchInput != ''">
 			AND
@@ -263,7 +260,7 @@
 		        ) AS BOARD_NO,
 		        m.MEMBER_NICKNAME,
 		        m.PROFILE_IMG,
-		        b.BOARD_TITLE  -- BOARD_TITLE 추가
+		        b.BOARD_TITLE  
 		    FROM TB_COMMENT c
 		    JOIN TB_MEMBER m ON c.MEMBER_NO = m.MEMBER_NO
 		    JOIN TB_BOARD b ON c.BOARD_NO = b.BOARD_NO  
