@@ -177,7 +177,8 @@ public class AdminController {
 	public String updateMember(@RequestParam("memberNo") int memberNo, Model model,
 							@RequestParam(value = "key", required = false) String key,
 				            @RequestParam(value = "search", required = false) String search,
-				            @RequestParam(value = "cp", required = false, defaultValue = "1") int cp ) {
+				            @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+				            @RequestParam(value="delfl", required = false) String delfl) {
 		
 		Member selectedMember = Adservice.selectedMember(memberNo);
 		
@@ -193,6 +194,7 @@ public class AdminController {
 		model.addAttribute("key", key);
 		model.addAttribute("search", search);
 		model.addAttribute("cp", cp);
+		model.addAttribute("delfl", delfl);
 		
 		return "adminBoard/updateMember";
 	}
