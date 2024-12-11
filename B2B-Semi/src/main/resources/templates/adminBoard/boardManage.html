@@ -90,7 +90,7 @@
 	                     	 <span th:case="*" class="board-label">알 수 없음</span> <!-- 기본 값 -->
 						</span>
 					</td>
-					<td th:text="*{boardTitle}">게시글 제목</td>
+					<td th:text="*{boardTitle}" style="text-align: left;">게시글 제목</td>
 					<td th:text="*{memberNickname}">작성자</td>
 					<td th:text="*{boardWriteDate}">등록일</td>
 					<td th:text="*{boardDelFl == 'Y' ? '삭제' : '활성'}"
