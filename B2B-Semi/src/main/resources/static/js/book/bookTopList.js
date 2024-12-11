@@ -23,10 +23,10 @@ function renderBookList() {
 					data-coverUrl="${book.coverUrl}" data-author="${book.author}"
 					data-rating="${book.customerReviewRank}" data-genres="${book.genres}"
 					data-description="${book.description}" data-reviewCount="${book.reviewCount}"
-					data-steamCount="${book.steamCount}">
+					data-steamCount="${book.steamCount}" data-full-author="${book.fullAuthor}">
 	                <h3 class="book-title">${book.title}
 	                </h3>
-	                <p class="book-author">${book.author}</p>
+	                <p class="book-author">${book.fullAuthor}</p>
 	                <div class="book-stats">
 	                    <div class="stat-item">
 	                        <span class="stat-value">${book.customerReviewRank}</span>
@@ -63,7 +63,7 @@ bookInfoRows.forEach(row => {
 		const bookId = row.getAttribute('data-bookId');
 		const bookTitle = row.getAttribute('data-title');
 		const bookCover = row.getAttribute('data-coverUrl');
-		const bookAuthor = row.getAttribute('data-author');
+		const bookAuthor = row.getAttribute('data-full-author');
 		const bookRating = row.getAttribute('data-rating');
 		const bookGenres = row.getAttribute('data-genres');
 		const bookDescription = row.getAttribute('data-description');
