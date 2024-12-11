@@ -86,6 +86,20 @@ if (steamBtn != null) {
                     steamBtn.style.color = "#4F46E5";
                     alert("찜 취소");
 
+								// 목록에서 도서 제거
+								const bookCard = document.querySelector(`.book-card[data-bookId="${bookId}"]`);
+								if (bookCard) {
+										bookCard.remove();
+										console.log("찜 도서 제거");
+								}
+
+								
+
+
+
+
+
+
                 } else {
                     alert("찜하기 오류 발생");
                 }
