@@ -237,6 +237,11 @@ body {
 	text-align : center;
 	vertical-align: middle;
 	padding: 1.25rem;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-break: break-word;
+	max-width: 465px;
 }
 
 /* 첫번째 th만 왼쪽 상단 모서리 둥글게 */
