@@ -63,6 +63,8 @@ function showBookDetailModal(row) {
     selectReviewList(bookId);
 }
 
+let shouldReloadOnModalClose = false; // 모달 닫힐 때 새로고침 여부 제어 변수
+
 // 찜하기 구현
 const steamBtn = document.querySelector("#steamBtn");
 if (steamBtn != null) {
@@ -84,27 +86,26 @@ if (steamBtn != null) {
                 } else if (result == 2) {
                     steamBtn.style.backgroundColor = "white";
                     steamBtn.style.color = "#4F46E5";
+										
                     alert("찜 취소");
 
-								// 목록에서 도서 제거
-								const bookCard = document.querySelector(`.book-card[data-bookId="${bookId}"]`);
-								if (bookCard) {
-										bookCard.remove();
-										console.log("찜 도서 제거");
-								}
-
-								
-
-
-
-
-
+										 // 찜 취소 성공 시 모달 닫힐 때 목록 새로고침하도록 설정
+										 shouldReloadOnModalClose = true;
 
                 } else {
                     alert("찜하기 오류 발생");
                 }
             });
     });
+}
+
+// 모달 닫힘 이벤트 처리
+if (bookDetailModal != null) {
+	bookDetailModal.addEventListener("hide.bs.modal", () => {
+			if (shouldReloadOnModalClose) {
+					location.reload(); // 목록 새로고침
+			}
+	});
 }
 
 // 찜 여부 조회
