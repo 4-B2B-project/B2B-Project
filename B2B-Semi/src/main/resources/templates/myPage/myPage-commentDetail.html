@@ -41,13 +41,7 @@
 					<div class="writer-detail">
 						<div class="writer-label">작성자</div>
 
-						<!-- 프로필 이미지 추가 -->
-						<div class="writer-profile">
-							<img
-								th:src="${session.loginMember.profileImg != null ? session.loginMember.profileImg : '/images/user.png'}"
-								alt="프로필 이미지" class="profile-img" style="width: 50px; height: 50px; border-radius: 50%;">
-
-						</div>
+					
 
 						<div class="writer-value" th:text="*{memberNickname}">작성자이름</div>
 					</div>
