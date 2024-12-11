@@ -389,26 +389,6 @@ body {
 	width: 60px; /* 고정된 너비 */
 }
 
-.board-label-1 {
-	background-color: #d4e9f7; /* 자유 게시판 배경색 (연한 파란색) */
-	color: #2b6cb0; /* 자유 게시판 텍스트 색상 */
-}
-
-.board-label-2 {
-	background-color: #e6fffa; /* 추천 게시판 배경색 (연한 청록색) */
-	color: #319795; /* 추천 게시판 텍스트 색상 */
-}
-
-.board-label-3 {
-	background-color: #fefcbf; /* 공지 게시판 배경색 (연한 노란색) */
-	color: #d69e2e; /* 공지 게시판 텍스트 색상 */
-}
-
-.board-label-4 {
-	background-color: #f7d7d9; /* 문의 게시판 배경색 (연한 분홍색) */
-	color: #c53030; /* 문의 게시판 텍스트 색상 */
-}
-
 
 .ellipsis {
   white-space: nowrap;
