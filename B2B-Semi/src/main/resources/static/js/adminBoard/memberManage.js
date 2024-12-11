@@ -20,7 +20,7 @@ searchMemberListBtn.addEventListener("click", e => {
 		const queryString = params.toString();
 		
 		if (!key && !query && !delfl) {
-		    alert("검색 조건을 입력하거나 필터를 선택하세요.");
+		    alert("필터를 선택하거나 검색어를 입력해주세요.");
 		    e.preventDefault();
 		    return;
 		}
