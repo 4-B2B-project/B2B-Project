@@ -63,6 +63,7 @@
 		JOIN TB_BOOKS b ON f.BOOK_ID =
 		b.BOOK_ID
 		WHERE f.MEMBER_NO = #{memberNo}
+		ORDER BY TITLE
 	</select>
 	
 	<!-- 무한 스크롤을 위한 찜한 도서 목록 조회 -->
