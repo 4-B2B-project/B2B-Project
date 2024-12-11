@@ -59,6 +59,9 @@ public class BoardController {
 		} else {
 			// 게시판 글 목록 검색 조회
 			paramMap.put("boardCode", boardCode);
+			if(loginMember != null) {
+				paramMap.put("memberNo", loginMember.getMemberNo());
+			}
 			map = service.communitySearchList(cp, paramMap);
 
 		}

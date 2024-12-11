@@ -137,6 +137,10 @@
 				AND LOWER(MEMBER_NICKNAME) LIKE LOWER('%' || #{searchInput} || '%')
 			</when>
 		</choose>
+		AND (
+	        SECRET_CHECK = 'N'
+	        OR (SECRET_CHECK = 'Y' AND MEMBER_NO = #{memberNo})
+	    )
 	</select>
 
 
