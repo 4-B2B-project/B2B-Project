@@ -74,7 +74,7 @@
   
           <tbody id="tbody">
 			<th:block th:if="${#lists.isEmpty(memberList)}"> <!-- 회원이 한명도 없을 때.-->
-				<tr><th colspan="7">일치하는 회원이 존재하지 않습니다.</th></tr>
+				<tr><th colspan="7">존재하지 않는 회원이거나 일치하는 회원이 없습니다.</th></tr>
 			</th:block>
 			
 			<th:block th:unless="${#lists.isEmpty(memberList)}">

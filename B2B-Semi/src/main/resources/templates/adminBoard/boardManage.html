@@ -74,7 +74,7 @@
 
 	      <tbody id="tbody">
           <th:block th:if="${#lists.isEmpty(boardList)}"> <!-- 게시글이 존재하지 않을 때. -->
-            <tr><th colspan="7">게시글이 존재하지 않습니다.</th></tr>
+            <tr><th colspan="7">존재하지 않는 게시글이거나 일치하는 게시글이 없습니다.</th></tr>
           </th:block>
 
 	          <th:block th:unless="${#lists.isEmpty(boardList)}"> <!--게시글이 하나라도 있을 때. -->
