@@ -9,7 +9,7 @@
 :root {
 	--primary-color: #4f46e5;
 	--primary-hover: #4338ca;
-	--background: #ffffff;
+	--background: #ffffff; 
 	--text-primary: #1f2937;
 	--text-secondary: #4b5563;
 	--card-background: #ffffff;
@@ -17,7 +17,7 @@
 
 body {
 	font-family: 'Segoe UI', 'Arial', sans-serif;
-	background-color: #F9FAFB;
+	background-color: #F9FAFB !important;
 }
 
 

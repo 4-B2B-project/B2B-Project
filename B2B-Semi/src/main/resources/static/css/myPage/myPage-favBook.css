@@ -39,7 +39,7 @@ body {
 /* 타이틀 시작 */
 .ranking-header {
   background: white;
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   margin-bottom: 2rem;
@@ -49,7 +49,6 @@ body {
   font-size: 2.2rem;
   font-weight: 700;
   color: var(--dark-text);
-  margin-bottom: 1.5rem;
 }
 
 /* 타이틀 끝 */
