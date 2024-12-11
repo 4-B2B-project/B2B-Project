@@ -433,6 +433,6 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   display: block;
-  max-width: 300px; /* 필요한 너비 설정 */
+  max-width: 710px; /* 필요한 너비 설정 */
   word-break: break-word;
 }

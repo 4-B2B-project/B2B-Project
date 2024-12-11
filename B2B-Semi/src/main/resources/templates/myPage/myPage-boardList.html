@@ -107,7 +107,7 @@
                   </td>
 
                   <!-- 게시글 제목 -->
-                  <td>
+                  <td style="align-content: center;">
                     <div class="board-title ellipsis" th:data-full-text="${board.boardTitle}">
                       <a th:href="@{/myPage/boardDetail(boardNo=${board.boardNo})}" th:text="${board.boardTitle}">게시글 제목</a>
                     </div>
@@ -115,13 +115,13 @@
 
                 
                   <!-- 작성일 -->
-                  <td style="text-align: center;">
+                  <td style="text-align: center; align-content: center;" >
                     <span th:if="${board.boardUpdateDate != null}" th:text="${board.boardUpdateDate}">수정된 작성일</span>
                     <span th:unless="${board.boardUpdateDate != null}" th:text="${board.boardWriteDate}">최초 작성일</span>
                   </td>
 
                   <!-- 조회 수-->
-                  <td style="text-align: center;">
+                  <td style="text-align: center; align-content: center;">
                     <span th:text="${board.readCount}" >조회수</span>
                   </td>
                   
