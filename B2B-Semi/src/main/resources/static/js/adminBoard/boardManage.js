@@ -61,6 +61,21 @@ function updateBoardStatus(action) {
 		if(data.success) {
 			alert(`게시글 상태가 ${action}으로 변경됐습니다.`);
 			location.reload();
+			
+			const key = document.querySelector("#searchKey").value;
+			const query = input.value.trim();
+			const delfl = document.querySelector("select[name='delfl']").value;
+
+			const params = new URLSearchParams();
+			
+			params.append("cp", "1");
+			if (key) params.append("key", key);
+			if (query) params.append("search", query);
+			if (delfl) params.append("delfl", delfl);
+
+			const queryString = params.toString();
+			
+			window.location.href = `/adminBoard/searchBoardList?${queryString}`;
 		}
 		else {
 			alert("상태 변경 실패:" + data.message);
