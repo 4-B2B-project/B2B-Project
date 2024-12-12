@@ -292,9 +292,6 @@ memberId.addEventListener("input", e => {
 		// 메시지에 색상을 추가하는 클래스 모두 제거
 		idMessage.classList.remove('confirm', 'error');
 
-		// 이메일 유효성 검사 여부를 false 변경
-		checkObj.idMessage = false;
-
 		// 잘못 입력한 띄어쓰기가 있을 경우 없앰
 		idMessage.value = "";
 
