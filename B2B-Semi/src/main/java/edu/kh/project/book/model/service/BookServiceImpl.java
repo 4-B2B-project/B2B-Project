@@ -114,7 +114,7 @@ public class BookServiceImpl implements BookService{
 	    String apiUrl = "https://www.aladin.co.kr/ttb/api/ItemSearch.aspx"
 	                    + "?ttbkey=ttbeotmd12131437001"  // 발급받은 API 키
 	                    + "&Query=" + title
-	                    + "&QueryType=Title"
+	                    + "&QueryType=keyword"
 	                    + "&MaxResults=10"
 	                    + "&start=1"
 	                    + "&SearchTarget=Book"
