@@ -114,7 +114,7 @@ public class BookServiceImpl implements BookService{
 	    String apiUrl = "https://www.aladin.co.kr/ttb/api/ItemSearch.aspx"
 	                    + "?ttbkey=ttbeotmd12131437001"  // 발급받은 API 키
 	                    + "&Query=" + title
-	                    + "&QueryType=keyword"
+	                    + "&QueryType=Keyword"
 	                    + "&MaxResults=10"
 	                    + "&start=1"
 	                    + "&SearchTarget=Book"
@@ -226,7 +226,7 @@ public class BookServiceImpl implements BookService{
 	    	Book book = Book.builder()
 	                .bookId((Integer) item.get("itemId")) // itemId를 Integer로 변환
 	                .title((String) item.get("title")) // 제목
-	                .isbn((String) item.get("isbn")) // ISBN (13자리)
+	                .isbn((String) item.get("isbn")) // ISBN (10자리)
 	                .author((String) item.get("author")) // 저자
 	                .publisher((String) item.get("publisher")) // 출판사
 	                .pubDate((String) item.get("pubDate")) // 출판일
