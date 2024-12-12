@@ -187,7 +187,7 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public int updateInfo(Member inputMember, String[] memberAddress) {
 
-		if(memberAddress == null || memberAddress.length == 0) {
+		if(inputMember.getMemberAddress().equals(",,")) {
 			inputMember.setMemberAddress(null);
 		}
 		
