@@ -184,13 +184,15 @@ public class AdminController {
 		
 		String[] address = (selectedMember.getMemberAddress() != null) ? selectedMember.getMemberAddress().split("\\^\\^\\^") : new String[3];
 		
+		if (address.length == 3) {
+			model.addAttribute("postcode", address[0]);
+			model.addAttribute("address", address[1]);
+			model.addAttribute("detailAddress", address[2]);
+		}
+		
 		model.addAttribute("member", selectedMember);
 		model.addAttribute("memberNo", memberNo);
-		model.addAttribute("postcode", address[0]);
-		model.addAttribute("address", address[1]);
-		model.addAttribute("detailAddress", address[2]);
 		model.addAttribute("activeMenu", "memberManage");
-		
 		model.addAttribute("key", key);
 		model.addAttribute("search", search);
 		model.addAttribute("cp", cp);
