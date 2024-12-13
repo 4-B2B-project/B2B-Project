@@ -209,7 +209,7 @@ if (changePw != null) {
 
 // (최종)
 // 폼 제출 시 유효성 검사
-
+//const checkObj = document.querySelector()
 const profileForm = document.querySelector("#editInfoForm");
 
 profileForm.addEventListener("submit", e => {
