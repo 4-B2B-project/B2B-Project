@@ -45,7 +45,7 @@
 		b.TITLE,
 		b.AUTHOR,
 		b.COVER_URL,
-		b.CUSTOMER_REVIEW_RANK,
+		ROUND(b.CUSTOMER_REVIEW_RANK, 1) CUSTOMER_REVIEW_RANK,
 		b.DESCRIPTION,
 	    CONCAT(FIRST_CATEGORY, CONCAT(',', SECOND_CATEGORY)) GENRES,
 	     (
@@ -507,7 +507,6 @@
         WHERE COMMENT_NO = #{commentNo}
         AND MEMBER_NO = #{memberNo}
     </update>
-
 
 
 </mapper>
